@@ -317,7 +317,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  13
+                  2
                 </span>
               
 
@@ -356,9 +356,7 @@
       
         
           
-            <h1 id="1、哈哈哈"><a href="#1、哈哈哈" class="headerlink" title="1、哈哈哈"></a>1、哈哈哈</h1><h2 id="1-1"><a href="#1-1" class="headerlink" title="1.1"></a>1.1</h2><script type="math/tex; mode=display">
-\frac{\partial C}{\partial b_1}</script><p>如图</p>
-<img src="/2019/02/14/word2vec/2019/02/14/word2vec/激活函数1.png">
+            <h1 id="占坑"><a href="#占坑" class="headerlink" title="占坑"></a>占坑</h1>
           
         
       
@@ -530,7 +528,7 @@
       
         
           
-            <h2 id="1、Sigmoid函数"><a href="#1、Sigmoid函数" class="headerlink" title="1、Sigmoid函数"></a>1、Sigmoid函数</h2><p>Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。</p>
+            <h2 id="Sigmoid函数"><a href="#Sigmoid函数" class="headerlink" title="Sigmoid函数"></a>Sigmoid函数</h2><p>Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。</p>
 <h3 id="函数形式"><a href="#函数形式" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 \sigma(x) = \frac{1}{1+e^{-x}}</script><script type="math/tex; mode=display">
 \sigma'(x) = \sigma(x)(1-\sigma(x))</script><p><img src="/2019/02/13/激活函数/激活函数1.png" alt="1"></p>
@@ -541,7 +539,7 @@
 \frac{\partial C}{\partial a_4}</script><p>根据上图的Sigmoid函数求导的曲线，该导数在$\sigma’(0) = \frac{1}{4}$时达到最高。如果我们初始化网络中的权重，假设初始化方法为均值为0方差为1的正态分布，那么所有的权重都会满足$w&lt;1$。那么参数求导的过程中，$\sigma’(z_j)w_j&lt;\frac{1}{4}$，并且随着参数项的叠加，乘积也在不断下降，最终$\frac{\partial C}{\partial b_1}$要远远小于1/4。</p>
 <h3 id="zero-centered"><a href="#zero-centered" class="headerlink" title="zero-centered"></a>zero-centered</h3><p>Sigmoid函数的输出值恒大于0，会导致模型训练的收敛速度变慢。比如下图所示，显然并非一个好的优化路径。</p>
 <p><img src="/2019/02/13/激活函数/激活函数3.png" alt="1"></p>
-<h2 id="2、Tanh函数"><a href="#2、Tanh函数" class="headerlink" title="2、Tanh函数"></a>2、Tanh函数</h2><p>Tanh函数即双曲正切函数。</p>
+<h2 id="Tanh函数"><a href="#Tanh函数" class="headerlink" title="Tanh函数"></a>Tanh函数</h2><p>Tanh函数即双曲正切函数。</p>
 <h3 id="函数形式-1"><a href="#函数形式-1" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 tanh(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}</script><script type="math/tex; mode=display">
 tanh'(x) = 1-(tanh(x))^2</script><p><img src="/2019/02/13/激活函数/激活函数4.png" alt="1"></p>
@@ -555,7 +553,7 @@ tanh'(x) = 1-(tanh(x))^2</script><p><img src="/2019/02/13/激活函数/激活函
 <li>sigmoid 用在了各种gate上，产生0~1之间的值，这个一般只有sigmoid最直接了。从第一个图中可以看出，LSTM有三个门，则有三个sigmod，GRU有两个门，则有两个sigmod。</li>
 <li>tanh 用在了状态和输出上，是对数据的处理，这个原始论文是使用sigmoid，但是后来换成了tanh。Tanh函数能让输出位于区间(-1, 1)内，从而调节神经网络输出。对于LSTM和GRU来说，Tanh函数是对原来的输入信息做了一种变换。</li>
 </ol>
-<h2 id="3、Relu函数"><a href="#3、Relu函数" class="headerlink" title="3、Relu函数"></a>3、Relu函数</h2><p>Relu函数其实就是一个取最大值函数，这并不是全区间可导的，但是我们可以取次梯度。</p>
+<h2 id="Relu函数"><a href="#Relu函数" class="headerlink" title="Relu函数"></a>Relu函数</h2><p>Relu函数其实就是一个取最大值函数，这并不是全区间可导的，但是我们可以取次梯度。</p>
 <h3 id="函数形式-2"><a href="#函数形式-2" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 Relu = max(0,x)</script><p><img src="/2019/02/13/激活函数/激活函数7.png" alt="1"></p>
 <h3 id="评价-1"><a href="#评价-1" class="headerlink" title="评价"></a>评价</h3><p>优点：</p>
@@ -577,10 +575,10 @@ W:W-\eta*\frac{dL}{dW}</script><p>当学习率$\eta$大的时候，W会变成负
 <p>xavier初始化对tanh有效</p>
 <p> he初始化对relu 有效</p>
 </blockquote>
-<h2 id="4、使用激活函数的目的"><a href="#4、使用激活函数的目的" class="headerlink" title="4、使用激活函数的目的"></a>4、使用激活函数的目的</h2><p>事实证明，如果你使用线性激活函数或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的，如果你愿意的话，可以证明一下。</p>
+<h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用线性激活函数或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的，如果你愿意的话，可以证明一下。</p>
 <p> 在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是线性函数，所以除非你引入非线性，否则你无法计算更有趣的函数，即使你的网络层数再多也不行；只有一个地方可以使用线性激活函数———，就是你在做机器学习中的回归问题。 是一个实数，举个例子，比如你想预测房地产价格， 就不是二分类任务0或1，而是一个实数，从0到正无穷。如果 是个实数，那么在输出层用线性激活函数也许可行，你的输出也是一个实数，从负无穷到正无穷。</p>
 <p> 总而言之，不能在隐藏层用线性激活函数，可以用<strong>ReLU</strong>或者<strong>tanh</strong>或者<strong>leaky ReLU</strong>或者其他的非线性激活函数，唯一可以用线性激活函数的通常就是输出层；除了这种情况，会在隐层用线性函数的，除了一些特殊情况，比如与压缩有关的，那方面在这里将不深入讨论。在这之外，在隐层使用线性激活函数非常少见。因为房价都是非负数，所以我们也可以在输出层使用<strong>ReLU</strong>函数这样你的都大于等于0。 </p>
-<h2 id="5、Gelu函数"><a href="#5、Gelu函数" class="headerlink" title="5、Gelu函数"></a>5、Gelu函数</h2><p>GELU高斯误差线性单元bridge确定性激活函数ReLU和随机正则子Dropout之间的gap，也就是希望GELU这种随机性激活函数替代ReLU。</p>
+<h2 id="Gelu函数"><a href="#Gelu函数" class="headerlink" title="Gelu函数"></a>Gelu函数</h2><p>GELU高斯误差线性单元bridge确定性激活函数ReLU和随机正则子Dropout之间的gap，也就是希望GELU这种随机性激活函数替代ReLU。</p>
 <h3 id="函数形式-3"><a href="#函数形式-3" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以依概率随机的概率分布$\Phi(x) = P(X\leq x)$，这里$\Phi(x)$是正太分布的概率函数，可以简单采用正太分布N(0,1)。</p>
 <p><img src="/2019/02/13/激活函数/激活函数8.png" alt="1"></p>
