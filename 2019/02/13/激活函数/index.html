@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="Sigmoid函数Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。 函数形式 \sigma(x) = \frac{1}{1+e^{-x}} \sigma&apos;(x) = \sigma(x)(1-\sigma(x)) Sigmoid梯度消失的原因 首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于b1的梯度，根据链式求导法则为：  \frac{\partial C}{\p">
+<meta name="description" content="Sigmoid函数Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。 函数形式 \sigma(x) = \frac{1}{1+e^{-x}} \sigma&apos;(x) = \sigma(x)(1-\sigma(x)) Sigmoid梯度消失的原因 首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于$b_1$的梯度，根据链式求导法则为：  \frac{\partial C}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="激活函数">
 <meta property="og:url" content="https://Lanme.github.io/2019/02/13/激活函数/index.html">
 <meta property="og:site_name" content="锦鲤木兰">
-<meta property="og:description" content="Sigmoid函数Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。 函数形式 \sigma(x) = \frac{1}{1+e^{-x}} \sigma&apos;(x) = \sigma(x)(1-\sigma(x)) Sigmoid梯度消失的原因 首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于b1的梯度，根据链式求导法则为：  \frac{\partial C}{\p">
+<meta property="og:description" content="Sigmoid函数Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。 函数形式 \sigma(x) = \frac{1}{1+e^{-x}} \sigma&apos;(x) = \sigma(x)(1-\sigma(x)) Sigmoid梯度消失的原因 首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于$b_1$的梯度，根据链式求导法则为：  \frac{\partial C}">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数1.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数2.png">
@@ -94,10 +94,10 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数6.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数7.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数8.png">
-<meta property="og:updated_time" content="2019-02-14T02:33:50.827Z">
+<meta property="og:updated_time" content="2019-02-18T15:38:22.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="激活函数">
-<meta name="twitter:description" content="Sigmoid函数Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。 函数形式 \sigma(x) = \frac{1}{1+e^{-x}} \sigma&apos;(x) = \sigma(x)(1-\sigma(x)) Sigmoid梯度消失的原因 首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于b1的梯度，根据链式求导法则为：  \frac{\partial C}{\p">
+<meta name="twitter:description" content="Sigmoid函数Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。 函数形式 \sigma(x) = \frac{1}{1+e^{-x}} \sigma&apos;(x) = \sigma(x)(1-\sigma(x)) Sigmoid梯度消失的原因 首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于$b_1$的梯度，根据链式求导法则为：  \frac{\partial C}">
 <meta name="twitter:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数1.png">
 
 
@@ -276,7 +276,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-18T23:38:22+08:00">
+                2019-02-18
+              </time>
             
           </span>
 
@@ -324,7 +336,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.7k
+                  1.8k
                 </span>
               
 
@@ -366,33 +378,34 @@
 \sigma(x) = \frac{1}{1+e^{-x}}</script><script type="math/tex; mode=display">
 \sigma'(x) = \sigma(x)(1-\sigma(x))</script><p><img src="/2019/02/13/激活函数/激活函数1.png" alt="1"></p>
 <h3 id="Sigmoid梯度消失的原因"><a href="#Sigmoid梯度消失的原因" class="headerlink" title="Sigmoid梯度消失的原因"></a>Sigmoid梯度消失的原因</h3><p><img src="/2019/02/13/激活函数/激活函数2.png" alt="1"></p>
-<p>首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于b1的梯度，根据链式求导法则为：</p>
+<p>首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于$b_1$的梯度，根据链式求导法则为：</p>
 <script type="math/tex; mode=display">
 \frac{\partial C}{\partial b_1} = \sigma'(z_1)w_2\sigma'(z_2)w_3\sigma'(z_3)w_4\sigma'(z_4)
-\frac{\partial C}{\partial a_4}</script><p>根据上图的Sigmoid函数求导的曲线，该导数在$\sigma’(0) = \frac{1}{4}$时达到最高。如果我们初始化网络中的权重，假设初始化方法为均值为0方差为1的正态分布，那么所有的权重都会满足$w&lt;1$。那么参数求导的过程中，$\sigma’(z_j)w_j&lt;\frac{1}{4}$，并且随着参数项的叠加，乘积也在不断下降，最终$\frac{\partial C}{\partial b_1}$要远远小于1/4。</p>
+\frac{\partial C}{\partial a_4}</script><p>根据上图的Sigmoid函数求导的曲线，该导数在$\sigma’(0) = \frac{1}{4}​$时达到最高。如果我们初始化网络中的权重，假设初始化方法为均值为0方差为1的正态分布，那么所有的权重都会满足$w&lt;1​$。那么参数求导的过程中，$\sigma’(z_j)w_j&lt;\frac{1}{4}​$，并且随着参数项的叠加，乘积也在不断下降，最终$\frac{\partial C}{\partial b_1}​$要远远小于1/4。</p>
 <h3 id="zero-centered"><a href="#zero-centered" class="headerlink" title="zero-centered"></a>zero-centered</h3><p>Sigmoid函数的输出值恒大于0，会导致模型训练的收敛速度变慢。比如下图所示，显然并非一个好的优化路径。</p>
 <p><img src="/2019/02/13/激活函数/激活函数3.png" alt="1"></p>
+<p>Sigmoid 函数包含 <code>exp 指数运算</code>，运算成本也比较大。</p>
 <h2 id="Tanh函数"><a href="#Tanh函数" class="headerlink" title="Tanh函数"></a>Tanh函数</h2><p>Tanh函数即双曲正切函数。</p>
 <h3 id="函数形式-1"><a href="#函数形式-1" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 tanh(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}</script><script type="math/tex; mode=display">
 tanh'(x) = 1-(tanh(x))^2</script><p><img src="/2019/02/13/激活函数/激活函数4.png" alt="1"></p>
 <h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><p>优点：解决了zero-centered的输出问题</p>
-<p>缺点：梯度消失的问题和幂运算的问题仍然存在</p>
+<p>缺点：<code>梯度消失</code>的问题和<code>幂运算</code>的问题仍然存在，其饱和区甚至比 Sigmoid 还要大一些，但不明显</p>
 <h3 id="Tanh与Sigmoid"><a href="#Tanh与Sigmoid" class="headerlink" title="Tanh与Sigmoid"></a>Tanh与Sigmoid</h3><p><img src="/2019/02/13/激活函数/激活函数5.png" alt="1"><img src="/2019/02/13/激活函数/激活函数6.png" alt="1"></p>
-<h3 id="RNN中的Tanh函数"><a href="#RNN中的Tanh函数" class="headerlink" title="RNN中的Tanh函数"></a>RNN中的Tanh函数</h3><p>循环神经网络用的激活函数经常是<strong>tanh</strong>，不过有时候也会用<strong>ReLU</strong>，但是<strong>tanh</strong>是更通常的选择，我们有其他方法来避免梯度消失问题。 另外，rnn中的激活函数是可以改的，如果采用relu函数的话，注意梯度爆炸的时候要采用梯度修剪。 </p>
-<p>事实上梯度消失在训练<strong>RNN</strong>时是首要的问题，尽管梯度爆炸也是会出现，但是梯度爆炸很明显，因为指数级大的梯度会让你的参数变得极其大，以至于你的网络参数崩溃。所以梯度爆炸很容易发现，因为参数会大到崩溃，你会看到很多<strong>NaN</strong>，或者不是数字的情况，这意味着你的网络计算出现了数值溢出。如果你发现了梯度爆炸的问题，一个解决方法就是用梯度修剪。梯度修剪的意思就是观察你的梯度向量，如果它大于某个阈值，缩放梯度向量，保证它不会太大，这就是通过一些最大值来修剪的方法。所以如果你遇到了梯度爆炸，如果导数值很大，或者出现了<strong>NaN</strong>，就用梯度修剪，这是相对比较鲁棒的，这是梯度爆炸的解决方法。 </p>
+<h3 id="RNN中的Tanh函数"><a href="#RNN中的Tanh函数" class="headerlink" title="RNN中的Tanh函数"></a>RNN中的Tanh函数</h3><p>循环神经网络用的激活函数经常是<strong>Tanh</strong>，不过有时候也会用<strong>ReLU</strong>，但是<strong>Tanh</strong>是更通常的选择，我们有其他方法来避免梯度消失问题。 另外，RNN中的激活函数是可以改的，如果采用Relu函数的话，注意梯度爆炸的时候要采用梯度修剪。 </p>
+<p>事实上梯度消失在训练<strong>RNN</strong>时是首要的问题，尽管梯度爆炸也是会出现，但是梯度爆炸很明显，因为指数级大的梯度会让你的参数变得极其大，以至于你的网络参数崩溃。所以梯度爆炸很容易发现，因为参数会大到崩溃，你会看到很多<strong>NaN</strong>，或者不是数字的情况，这意味着你的网络计算出现了数值溢出。如果你发现了梯度爆炸的问题，一个解决方法就是用<code>梯度修剪</code>。梯度修剪的意思就是观察你的梯度向量，如果它大于某个阈值，缩放梯度向量，保证它不会太大，这就是通过一些最大值来修剪的方法。所以如果你遇到了梯度爆炸，如果导数值很大，或者出现了<strong>NaN</strong>，就用梯度修剪，这是相对比较鲁棒的，这是梯度爆炸的解决方法。 </p>
 <h3 id="LSTM中的Tanh和sigmoid函数"><a href="#LSTM中的Tanh和sigmoid函数" class="headerlink" title="LSTM中的Tanh和sigmoid函数"></a>LSTM中的Tanh和sigmoid函数</h3><p>两种函数的功能并不一样。</p>
 <ol>
-<li>sigmoid 用在了各种gate上，产生0~1之间的值，这个一般只有sigmoid最直接了。从第一个图中可以看出，LSTM有三个门，则有三个sigmod，GRU有两个门，则有两个sigmod。</li>
-<li>tanh 用在了状态和输出上，是对数据的处理，这个原始论文是使用sigmoid，但是后来换成了tanh。Tanh函数能让输出位于区间(-1, 1)内，从而调节神经网络输出。对于LSTM和GRU来说，Tanh函数是对原来的输入信息做了一种变换。</li>
+<li>sigmoid 用在了各种<code>gate</code>上，产生0~1之间的值，这个一般只有sigmoid最直接了。从第一个图中可以看出，LSTM有三个门，则有三个sigmod，GRU有两个门，则有两个sigmod。</li>
+<li>tanh 用在了<code>状态</code>和<code>输出</code>上，是对数据的处理，这个原始论文是使用sigmoid，但是后来换成了Tanh。Tanh函数能让输出位于区间(-1, 1)内，从而调节神经网络输出。对于LSTM和GRU来说，Tanh函数是对原来的输入信息做了一种变换。</li>
 </ol>
-<h2 id="Relu函数"><a href="#Relu函数" class="headerlink" title="Relu函数"></a>Relu函数</h2><p>Relu函数其实就是一个取最大值函数，这并不是全区间可导的，但是我们可以取次梯度。</p>
+<h2 id="Relu函数"><a href="#Relu函数" class="headerlink" title="Relu函数"></a>Relu函数</h2><p>Relu函数其实就是一个取最大值函数，这并不是全区间可导的。</p>
 <h3 id="函数形式-2"><a href="#函数形式-2" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 Relu = max(0,x)</script><p><img src="/2019/02/13/激活函数/激活函数7.png" alt="1"></p>
 <h3 id="评价-1"><a href="#评价-1" class="headerlink" title="评价"></a>评价</h3><p>优点：</p>
 <ul>
 <li>解决了梯度消失的问题（正区间）</li>
-<li>计算速度非常快</li>
+<li>计算简单，速度非常快</li>
 <li>收敛速度远快于Sigmoid和Tanh</li>
 </ul>
 <p>缺点：</p>
@@ -400,22 +413,24 @@ Relu = max(0,x)</script><p><img src="/2019/02/13/激活函数/激活函数7.png"
 <li>输出不是zero-centered</li>
 <li>Dead Relu Problem</li>
 </ul>
-<p>Dead Relu Problem是指某些神经元可能永远都不会被激活，导致相应的参数永远都不能被更新。有主要两个原因可能导致：1、非常不幸的参数初始化 2、学习速率太高导致。</p>
+<p><code>Dead Relu Problem</code>是指某些神经元可能永远都不会被激活，导致相应的参数永远都不能被更新。有主要两个原因可能导致：1、非常不幸的参数初始化 2、学习速率太高导致。</p>
 <script type="math/tex; mode=display">
 y = Wx+b \\
 W:W-\eta*\frac{dL}{dW}</script><p>当学习率$\eta$大的时候，W会变成负数，导致relu(y)=0。解决方法是采用HE初始化方法，以及避免将学习速率设置太大。如果不好解决，可以试试 Leaky ReLU、PReLU 或者 Maxout。</p>
 <blockquote>
-<p>xavier初始化对tanh有效</p>
-<p> he初始化对relu 有效</p>
+<p>xavier初始化对Tanh有效</p>
+<p> he初始化对Relu 有效</p>
 </blockquote>
-<h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用线性激活函数或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的，如果你愿意的话，可以证明一下。</p>
-<p> 在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是线性函数，所以除非你引入非线性，否则你无法计算更有趣的函数，即使你的网络层数再多也不行；只有一个地方可以使用线性激活函数———，就是你在做机器学习中的回归问题。 是一个实数，举个例子，比如你想预测房地产价格， 就不是二分类任务0或1，而是一个实数，从0到正无穷。如果 是个实数，那么在输出层用线性激活函数也许可行，你的输出也是一个实数，从负无穷到正无穷。</p>
-<p> 总而言之，不能在隐藏层用线性激活函数，可以用<strong>ReLU</strong>或者<strong>tanh</strong>或者<strong>leaky ReLU</strong>或者其他的非线性激活函数，唯一可以用线性激活函数的通常就是输出层；除了这种情况，会在隐层用线性函数的，除了一些特殊情况，比如与压缩有关的，那方面在这里将不深入讨论。在这之外，在隐层使用线性激活函数非常少见。因为房价都是非负数，所以我们也可以在输出层使用<strong>ReLU</strong>函数这样你的都大于等于0。 </p>
+<p>为什么he或者xavier初始化有效？（参考deeplearning,ai的解释）</p>
+<p>$z = w_1 x_1 +w_2 x_2 +…+ w_n x_n$，暂时忽略$b$，为了预防$z$值过大或过小，可以看到当n越大，你希望$w_i$越小，因为z是$w_i x_i$的和，如果你把很多此类项相加，希望每项值更小，那么最合理的方法就是$w_i = \frac{1}{n}$，n表示神经元的输入特征数量，实际上，你要做的就是设置某层权重矩阵$w^{[l]} = np.random.randn( \text{shape}) * \text{np.}\text{sqrt}(\frac{1}{n^{[l-1]}})$，$n^{[l - 1]}$就是我喂给第$l$层神经单元的数量（即第$l-1$层神经元数量）。</p>
+<h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用<strong>线性激活函数(恒等激励函数)</strong>或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>Sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的。</p>
+<p> 在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是线性函数，所以除非你引入非线性，否则你无法计算更有趣的函数，即使你的网络层数再多也不行；只有一个地方可以使用线性激活函数———，就是你在做机器学习中的回归问题。 是一个实数，举个例子，比如你想预测房地产价格， 就不是二分类任务0或1，而是一个实数，从0到正无穷。如果是个实数，那么在输出层用线性激活函数也许可行，你的输出也是一个实数，从负无穷到正无穷。</p>
+<p> 总而言之，不能在隐藏层用线性激活函数，可以用<strong>ReLU</strong>或者<strong>tanh</strong>或者<strong>leaky ReLU</strong>或者其他的非线性激活函数，唯一可以用线性激活函数的通常就是输出层；除了这种情况，会在隐层用线性函数的，在这之外，在隐层使用线性激活函数非常少见。</p>
 <h2 id="Gelu函数"><a href="#Gelu函数" class="headerlink" title="Gelu函数"></a>Gelu函数</h2><p>GELU高斯误差线性单元bridge确定性激活函数ReLU和随机正则子Dropout之间的gap，也就是希望GELU这种随机性激活函数替代ReLU。</p>
 <h3 id="函数形式-3"><a href="#函数形式-3" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以依概率随机的概率分布$\Phi(x) = P(X\leq x)$，这里$\Phi(x)$是正太分布的概率函数，可以简单采用正太分布N(0,1)。</p>
 <p><img src="/2019/02/13/激活函数/激活函数8.png" alt="1"></p>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gelu</span><span class="params">(input_tensor)</span>:</span></span><br><span class="line">	cdf = <span class="number">0.5</span> * (<span class="number">1.0</span> + tf.erf(input_tensor / tf.sqrt(<span class="number">2.0</span>)))</span><br><span class="line">	<span class="keyword">return</span> input_tesnsor*cdf</span><br></pre></td></tr></table></figure>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#tensorflow</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gelu</span><span class="params">(input_tensor)</span>:</span></span><br><span class="line">	cdf = <span class="number">0.5</span> * (<span class="number">1.0</span> + tf.erf(input_tensor / tf.sqrt(<span class="number">2.0</span>)))</span><br><span class="line">	<span class="keyword">return</span> input_tesnsor*cdf</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -524,7 +539,7 @@ Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
