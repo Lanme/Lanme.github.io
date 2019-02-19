@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），梯度消失，超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
+<meta name="description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络优化">
 <meta property="og:url" content="https://Lanme.github.io/2019/02/16/网络优化/index.html">
 <meta property="og:site_name" content="锦鲤木兰">
-<meta property="og:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），梯度消失，超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
+<meta property="og:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/966e5a9b00687678374b8221fdd33475.jpg">
@@ -108,10 +108,10 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20180112195606874.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9d0db64a9c9b050466a039c935f36f93.png">
-<meta property="og:updated_time" content="2019-02-18T16:08:15.980Z">
+<meta property="og:updated_time" content="2019-02-18T16:48:40.674Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络优化">
-<meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），梯度消失，超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
+<meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找">
 <meta name="twitter:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg">
 
 
@@ -300,7 +300,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-19T00:08:15+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-19T00:48:40+08:00">
                 2019-02-19
               </time>
             
@@ -350,7 +350,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  6.9k
+                  7k
                 </span>
               
 
@@ -393,7 +393,7 @@
 </li>
 <li><p>对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）</p>
 </li>
-<li><p>深层神经网络的困难则是为了防止过拟合（泛化问题），梯度消失，超参数优化，当然还有加快性能</p>
+<li><p>深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能</p>
 </li>
 </ul>
 <h1 id="凸问题"><a href="#凸问题" class="headerlink" title="凸问题"></a>凸问题</h1><h2 id="为什么有凸优化问题"><a href="#为什么有凸优化问题" class="headerlink" title="为什么有凸优化问题"></a>为什么有凸优化问题</h2><p>ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找不到全局最小值。</p>
@@ -476,12 +476,12 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <h3 id="动量梯度下降法（Momentum）"><a href="#动量梯度下降法（Momentum）" class="headerlink" title="动量梯度下降法（Momentum）"></a>动量梯度下降法（Momentum）</h3><p><img src="/2019/02/16/网络优化/cc2d415b8ccda9fdaba12c575d4d3c4b.png" alt=""></p>
 <p>这种上下波动减慢了梯度下降法的速度，你就无法使用更大的学习率，如果你要用较大的学习率（紫色箭头），结果可能会偏离函数的范围，<strong>为了避免摆动过大，你要用一个较小的学习率</strong>。</p>
 <p>下图的前两行公式为指数加权平均，此时的梯度不再只是现在的数据的梯度，而是有<strong>一定权重的之前的梯度</strong>。就像是把原本的梯度压缩一点，并且补上一个之前就已经存在的<code>动量</code>。每一次梯度下降都会有一个之前的速度的作用，如果我这次的方向与之前相同，则会因为之前的速度继续加速；如果这次的方向与之前相反，则会由于之前存在速度的作用不会产生一个急转弯，而是尽量把路线向一条直线拉过去。</p>
-<p>$v<em>{dw}​$ 和$v</em>{db}​$的初始值为0。</p>
+<p>$v_{dw}​$ 、$v_{db}​$的初始值为0，$\alpha​$、$\beta​$是超参数，$\beta​$通常取为0.9。</p>
 <p><img src="/2019/02/16/网络优化/image1.png" alt=""></p>
 <h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>RMSprop 是 Geoff Hinton 提出的一种<code>自适应学习率方法</code>，根据历史梯度累积量来改变学习率。和动量梯度下降法一样，都解决了相同的问题，使梯度下降时的<code>折返情况</code>减轻，从而加快训练速度。因为下降的路线更接近同一个方向，因此也可以将学习率增大来加快训练速度。</p>
 <p><img src="/2019/02/16/网络优化/20190217233658.png" alt=""></p>
 <h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><p><code>RMSProp</code> + <code>Momentum</code></p>
-<p>初始化：$V<em>{dw}=0，S</em>{dw}=0，V<em>{db}=0，S</em>{db}=0$</p>
+<p>初始化：$V_{dw}=0，S_{dw}=0，V_{db}=0，S_{db}=0​$</p>
 <p><img src="/2019/02/16/网络优化/9ca9bfc160d53b23ea0d1164e6accffe.png" alt=""></p>
 <p><img src="/2019/02/16/网络优化/e9858303cd62eacc21759b16a121ff58.png" alt=""></p>
 <ul>
@@ -492,7 +492,7 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 </ul>
 <h3 id="各种优化算法的对比"><a href="#各种优化算法的对比" class="headerlink" title="各种优化算法的对比"></a>各种优化算法的对比</h3><p><img src="/2019/02/16/网络优化/optimizer-1.gif" alt=""></p>
 <p><img src="/2019/02/16/网络优化/optimizer-2.gif" alt=""></p>
-<h2 id="学习率衰减"><a href="#学习率衰减" class="headerlink" title="学习率衰减"></a>学习率衰减</h2><p>将$a$学习率设为$a= f(decay-rate,global<em>step)a</em>{0}$，<strong>decay-rate</strong>称为<code>衰减率</code>，<strong>global_step</strong>为<code>步数</code>，$\alpha_{0}$为<code>初始学习率</code>，注意这个衰减率是另一个你需要调整的超参数。[6]</p>
+<h2 id="学习率衰减"><a href="#学习率衰减" class="headerlink" title="学习率衰减"></a>学习率衰减</h2><p>将$a$学习率设为<span>$\alpha= f({decay-rate,global-step}) * \alpha_0$</span><!-- Has MathJax --> ，<strong>decay-rate</strong>称为<code>衰减率</code>，<strong>global_step</strong>为<code>步数</code>，$\alpha_0$为<code>初始学习率</code>，注意这个衰减率是另一个你需要调整的超参数。[6]</p>
 <p>分段常数衰减就是在定义好的区间上，分别设置不同的常数值，作为学习率的初始值和后续衰减的取值。</p>
 <p>指数衰减的学习速率计算公式为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decayed_learning_rate = learning_rate * decay_rate ^ (global_step / decay_steps)</span><br></pre></td></tr></table></figure>
@@ -505,7 +505,8 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <p><strong>参数cycle目的：防止神经网络训练后期学习率过小导致网络一直在某个局部最小值中振荡；这样，通过增大学习率可以跳出局部极小值．</strong></p>
 <p>红色：下降后不再上升；绿色：下降后重新上升： </p>
 <p><img src="/2019/02/16/网络优化/20180315201648786.png" alt=""></p>
-<h2 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h2><p>如何判断出现梯度爆炸：</p>
+<h2 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h2><p>在深层神经网络或循环神经网络中，除了梯度消失之外，梯度爆炸是影响学习效率的主要因素。在基于梯度下降的优化过程中，如果梯度突然增大，用大的梯度进行更新参数，反而会导致其远离最优点。为了避免这种情况，当梯<br>度的模大于一定阈值时，就对梯度进行截断，称为梯度截断。</p>
+<p>如何判断出现梯度爆炸：</p>
 <ul>
 <li>训练过程中模型梯度快速变大</li>
 <li>训练过程中模型权重变成 NaN 值</li>
