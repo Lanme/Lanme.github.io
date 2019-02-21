@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="RNN基本结构在前馈神经网络中，隐藏层的节点之间是无连接的，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。 RNN本质上是一个递推函数，假设在时刻$t​$，隐藏层的状态为$h_t​$，此时隐藏层不仅和当前时刻的输入$x_t​$有关，还和上一个时刻的隐层状态$h_{t-1}$ 有关。  h_t = f(U x_t+ W h_{t-1}+ b)\\\\ o_t=g(V*h_t)$f(·)​$和$g(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环神经网络">
+<meta property="og:url" content="https://Lanme.github.io/2019/02/19/循环神经网络/index.html">
+<meta property="og:site_name" content="锦鲤木兰">
+<meta property="og:description" content="RNN基本结构在前馈神经网络中，隐藏层的节点之间是无连接的，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。 RNN本质上是一个递推函数，假设在时刻$t​$，隐藏层的状态为$h_t​$，此时隐藏层不仅和当前时刻的输入$x_t​$有关，还和上一个时刻的隐层状态$h_{t-1}$ 有关。  h_t = f(U x_t+ W h_{t-1}+ b)\\\\ o_t=g(V*h_t)$f(·)​$和$g(">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/20190219151815.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/20190219160112.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/20190219160522.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/20190219160713.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/LSTM3-chain.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/LSTM3-SimpleRNN.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/LSTM3-focus-f.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/LSTM3-focus-i.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/LSTM3-focus-C.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/LSTM3-focus-o.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/5878a51ee1a94.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/30_LSTM3-var-peepholes.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/31_LSTM3-var-tied.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/32_LSTM3-var-GRU.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/v2-af6db0674082ccace94429ee79b2adce_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/v2-af48652c21458d04f891284fb54c8582_hd.jpg">
+<meta property="og:updated_time" content="2019-02-20T16:43:45.190Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="循环神经网络">
+<meta name="twitter:description" content="RNN基本结构在前馈神经网络中，隐藏层的节点之间是无连接的，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。 RNN本质上是一个递推函数，假设在时刻$t​$，隐藏层的状态为$h_t​$，此时隐藏层不仅和当前时刻的输入$x_t​$有关，还和上一个时刻的隐层状态$h_{t-1}$ 有关。  h_t = f(U x_t+ W h_{t-1}+ b)\\\\ o_t=g(V*h_t)$f(·)​$和$g(">
+<meta name="twitter:image" content="https://lanme.github.io/2019/02/19/循环神经网络/20190219151815.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Lanme.github.io/2019/02/19/循环神经网络/">
+
+
+
+
+
+  <title>循环神经网络 | 锦鲤木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">锦鲤木兰</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/19/循环神经网络/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">循环神经网络</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-19T09:43:36+08:00">
+                2019-02-19
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-21T00:43:45+08:00">
+                2019-02-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/神经网络/" itemprop="url" rel="index">
+                    <span itemprop="name">神经网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>在前馈神经网络中，隐藏层的节点之间是<strong>无连接的</strong>，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。</p>
+<p>RNN本质上是一个<code>递推函数</code>，假设在时刻$t​$，隐藏层的状态为$h_t​$，此时隐藏层不仅和当前时刻的输入$x_t​$有关，还和上一个时刻的隐层状态<span>$h_{t-1}$</span><!-- Has MathJax --> 有关。</p>
+<script type="math/tex; mode=display">
+h_t = f(U x_t+ W h_{t-1}+ b)\\\\
+o_t=g(V*h_t)</script><p>$f(·)​$和$g(·)​$是非线性激活函数，通常为Tanh函数和Softmax函数。</p>
+<p><img src="/2019/02/19/循环神经网络/20190219151815.png" alt=""></p>
+<p><strong>维度解释</strong></p>
+<ul>
+<li><p>input_dim：输入向量的维度，hidden_dim：隐藏层的维度，output_dim：输出向量的维度</p>
+</li>
+<li><p>$x_t$：max_len，word_dim，U：hidden_dim，word_dim</p>
+</li>
+<li><p>W：hidden_dim，hidden_dim，$h_t$：max_len+1，hidden_dim</p>
+</li>
+<li><p>V：output_dim，hidden_dim，$o_t​$：max_len，output_dim</p>
+</li>
+</ul>
+<h2 id="几种模式"><a href="#几种模式" class="headerlink" title="几种模式"></a>几种模式</h2><h3 id="序列到类别"><a href="#序列到类别" class="headerlink" title="序列到类别"></a>序列到类别</h3><ul>
+<li><p>产生<strong>固定大小的表示</strong>，用于下一步处理</p>
+</li>
+<li><p>主要用于序列数据的<code>分类问题</code>，输入为单词的序列，输出为该文本的类别</p>
+</li>
+<li><script type="math/tex; mode=display">
+\hat{y} = g(h_T)</script></li>
+</ul>
+<p><img src="/2019/02/19/循环神经网络/20190219160112.png" alt=""></p>
+<h3 id="同步的序列到序列"><a href="#同步的序列到序列" class="headerlink" title="同步的序列到序列"></a>同步的序列到序列</h3><ul>
+<li><p>每一刻都有输入和输出，<strong>输入序列和输出序列的长度相同</strong></p>
+</li>
+<li><p>主要用于<code>序列标注任务</code></p>
+</li>
+<li><script type="math/tex; mode=display">
+\hat{y_t} = g(h_t)，\ t∈[1,T]</script></li>
+</ul>
+<p><img src="/2019/02/19/循环神经网络/20190219160522.png" alt=""></p>
+<h3 id="异步的序列到序列"><a href="#异步的序列到序列" class="headerlink" title="异步的序列到序列"></a>异步的序列到序列</h3><ul>
+<li><p><strong>输入序列和输出序列不需要严格的对应关系</strong>，也不需要保持相同的长度</p>
+</li>
+<li><p>也被称为<code>编码器-解码器</code></p>
+</li>
+<li><script type="math/tex; mode=display">
+h_t = f_1(h_{t-1},x_t)， \ t∈[1,T]\\\\
+h_{T+t} = f_2(h_{T+t-1},\hat{y_{t-1}})， \ t∈[1,M] \\\\
+\hat{y_t} = g(h_{T+t})， \ t∈[1,M]</script></li>
+</ul>
+<p><img src="/2019/02/19/循环神经网络/20190219160713.png" alt=""></p>
+<h2 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2><p>反向传播参考链接：<a href="https://github.com/go2carter/nn-learn/blob/master/grad-deriv-tex/rnn-grad-deriv.pdf" target="_blank" rel="noopener">rnn-grad-deriv.pdf</a></p>
+<h2 id="参数共享"><a href="#参数共享" class="headerlink" title="参数共享"></a>参数共享</h2><p>不同时刻t中的参数计算（$U、V、W​$）是一样的，即在序列数据的时刻之间共享参数。<strong>共享参数使得模型的复杂度大大减少，并使RNN可以适应任意长度的序列，带来了更好的可推广性</strong>。但是RNN 因为每一个时间步都共享参数的缘故，容易出现<strong>梯度消失</strong>或者<strong>梯度爆炸</strong>。</p>
+<script type="math/tex; mode=display">
+h_t = f(U x_t+ W h_{t-1}+ b)\\\\
+\frac{\partial h_{k+1}}{\partial h_k} = diag(f'(U x_i + W h_{i-1}))W  \\\\ 
+\frac{\partial h_t}{\partial h_i} = \prod_{k=i}^{t-1}\frac{\partial h_{k+1}}{\partial h_k} \\\\
+\frac{\partial h_k}{\partial h_1} = \prod_i^k diag(f'(U x_i + W h_{i-1}))W</script><p>因为循环神经网络经常使用非线性函数为Tanh或者Sigmoid，$f’(x)​$永远小于1，所以梯度消失的情况更普遍些，所以应当重点关注。</p>
+<h2 id="梯度消失"><a href="#梯度消失" class="headerlink" title="梯度消失"></a>梯度消失</h2><p><strong>原因</strong></p>
+<ul>
+<li>激活函数（Sigmoid，Tanh）</li>
+<li>梯度连乘</li>
+</ul>
+<p><strong>如何解决</strong></p>
+<ul>
+<li>relu</li>
+<li>残差结构</li>
+<li>门控机制（LSTM、GRU）</li>
+<li>矩阵初始化</li>
+</ul>
+<h2 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h2><p><strong>优点</strong>  为处理时序数据提供了短期记忆能力</p>
+<p><strong>缺点</strong>  造成<code>梯度爆炸</code>和<code>梯度消失</code>，如果需要的历史信息距离当前位置很远，则RNN无法学习到过去的信息，于是导致无法<code>长期依赖</code>。</p>
+<h1 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h1><p><strong>LSTM与传统RNN的对比</strong></p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-chain.png" alt=""></p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-SimpleRNN.png" alt=""></p>
+<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><p><strong>几种信息</strong></p>
+<p><strong>输入信息</strong>  $x_t$  当前时刻的输入信息</p>
+<p><strong>隐藏状态信息(短时记忆)</strong>  $h_t​$  对长时记忆进行变换，在简单循环网络中，隐状态每个时刻都会被重写，因此可以看作是一种短期记忆</p>
+<p><strong>长时记忆</strong>  $c_t$  由上一个长时记忆和候选状态(新的记忆信息)联合而成</p>
+<p><strong>候选状态</strong> c˜t 由当前信息和上一个时刻的短时记忆变换而成</p>
+<p><strong>门结构</strong></p>
+<p>LSTM单元中有<strong>三种调节信息流的门结构</strong>：<code>遗忘门</code>、<code>输入门</code>和<code>输出门</code>。</p>
+<p><strong>遗忘门</strong>  $f_t$控制上一个时刻的长时记忆$c  _ { t - 1 }$需要遗忘多少信息</p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-f.png" alt=""></p>
+<p><strong>输入门与候选状态</strong>  $i_t$ 控制当前时刻的候选状态c˜t 有多少信息需要保存（同样的信息，计算Sigmoid是保存比例，计算Tanh是得到新的信息）</p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-i.png" alt=""></p>
+<p><strong>长时记忆</strong>  </p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-C.png" alt=""></p>
+<p><strong>输出门与短时记忆</strong>  $o_t$控制当前长时记忆$c_t$有多少信息需要输出给$h_t$</p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-o.png" alt=""></p>
+<h2 id="LSTM中的Tanh和sigmoid函数"><a href="#LSTM中的Tanh和sigmoid函数" class="headerlink" title="LSTM中的Tanh和sigmoid函数"></a>LSTM中的Tanh和sigmoid函数</h2><p>两种函数的功能并不一样。</p>
+<ol>
+<li>sigmoid 用在了各种<code>gate</code>上，产生0~1之间的值，这个一般只有sigmoid最直接了。通过这样，网络能了解哪些数据不重要需要遗忘，哪些数字很重要需要保留。</li>
+<li>tanh 用在了<code>状态</code>和<code>输出</code>上，是对数据的处理，这个原始论文是使用sigmoid，但是后来换成了Tanh。Tanh函数能让输出位于区间(-1, 1)内，从而调节神经网络输出。<strong>对于LSTM和GRU来说，Tanh函数是对原来的输入信息做了一种变换。</strong></li>
+</ol>
+<h2 id="解决梯度消失的原因"><a href="#解决梯度消失的原因" class="headerlink" title="解决梯度消失的原因"></a>解决梯度消失的原因</h2><p><img src="/2019/02/19/循环神经网络/5878a51ee1a94.jpg" alt=""></p>
+<p>对$c_t = fc_{t-1}+i \tilde{c_t}$ 求梯度$\frac{\partial c_t}{\partial c_{t-1}}$，根据求导法则求解如下：[1]</p>
+<script type="math/tex; mode=display">
+\frac{\partial c_t}{\partial c_{t-1}} = \frac{\partial c_t}{\partial f_t}\frac{\partial f_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} + \frac{\partial c_t}{\partial i_t}\frac{\partial i_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} +\frac{\partial c_t}{\partial \tilde{c_t}}\frac{\partial \tilde{c_t}}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} + \frac{\partial c_t}{\partial c_{t-1}}</script><p>重新整理：</p>
+<script type="math/tex; mode=display">
+\frac{\partial c_t}{\partial c_{t-1}} = c_{t-1} \sigma'(·)W_f*o_{t-1}tanh'(c_{t-1}) \\\\
++\tilde{c_t}\sigma'(·)W_i*o_{t-1}tanh'(c_{t-1}) \\\\
++ i_t tanh'(·)W_c *o_{t-1}tanh'(c_{t-1}) \\\\
++f_t</script><p>注意以上梯度和RNN梯度消失的区别，在RNN中，$\frac{\partial h_t}{\partial h_{t-1}}$的结果<strong>要么全部大于1，要么全部在[0,1]之间</strong>，这是导致梯度消失的原因所在。而$\frac{ \partial c_t}{\partial c_{t-1}}$，<strong>在任何时候都可以大于1或者在[0,1]之间</strong>，因此在多个时刻之后，它不会收敛与0或者无穷大。</p>
+<h2 id="LSTM变体"><a href="#LSTM变体" class="headerlink" title="LSTM变体"></a>LSTM变体</h2><h3 id="无遗忘门的LSTM"><a href="#无遗忘门的LSTM" class="headerlink" title="无遗忘门的LSTM"></a>无遗忘门的LSTM</h3><p>亦被称为Origin LSTM，Hochreiter and Schmidhuber [1997]最早提出的LSTM网络是没有遗忘门的，其内部状态的更新为：</p>
+<script type="math/tex; mode=display">
+c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时，长时记忆c会不断增大，记忆单元的容量会饱和，从而大大降低LSTM模型的性能。</p>
+<h3 id="观察口连接"><a href="#观察口连接" class="headerlink" title="观察口连接"></a>观察口连接</h3><p>观察口连接，把观察到的单元状态也连接sigmoid上。</p>
+<p><img src="/2019/02/19/循环神经网络/30_LSTM3-var-peepholes.png" alt=""></p>
+<h3 id="耦合输入门和遗忘门"><a href="#耦合输入门和遗忘门" class="headerlink" title="耦合输入门和遗忘门"></a>耦合输入门和遗忘门</h3><p>LSTM网络中的输入门和遗忘门有些互补关系，因此同时用两个门比较冗余。为了减少LSTM网络的计算复杂度，将这两门合并为一个门。令$i_t = 1-f_t$，更新如下：</p>
+<p><img src="/2019/02/19/循环神经网络/31_LSTM3-var-tied.png" alt=""></p>
+<h1 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h1><p>GRU网络也是引入门机制来控制信息更新的方式。</p>
+<h2 id="与LSTM比较"><a href="#与LSTM比较" class="headerlink" title="与LSTM比较"></a>与LSTM比较</h2><p>GRU将输入门与和遗忘门合并成一个门：<strong>更新门</strong>。同时，GRU也<strong>不引入额外的记忆单元</strong>，在当前状态信息$h_t$和历史状态信息$h_{t-1}​$ 之间引入线性依赖关系，直接用隐藏状态传递信息。</p>
+<h2 id="网络架构-1"><a href="#网络架构-1" class="headerlink" title="网络架构"></a>网络架构</h2><p><img src="/2019/02/19/循环神经网络/32_LSTM3-var-GRU.png" alt=""></p>
+<p><strong>几种信息</strong></p>
+<p><strong>输入信息</strong>  $x_t​$  当前时刻的输入信息</p>
+<p><strong>当前状态信息 </strong> $h_t$  由历史状态信息和候选状态(新的记忆信息)联合而成</p>
+<p><strong>候选状态 </strong>  $\tilde{h_t}$  由当前状态和历史状态信息变换而成</p>
+<p><strong>历史状态信息</strong>  $h_{t-1}​$  </p>
+<p><strong>门结构</strong></p>
+<p><strong>重置门 </strong> $r_t$ 用于控制<strong>忽略</strong>历史状态信息的程度</p>
+<ul>
+<li><p>r = 0时，候选状态$\tilde{h_t} = tanh(W x_t)$只和当前输入$x_t$ 相关，和历史状态信息无关</p>
+</li>
+<li><p>r = 1时，候选状态$\tilde{h_t}= tanh(W·[x_t,h_{t−1} ])​$和当前输入$x_t​$ 和历史状态信息$h_{t−1}​$ 相关，和简单循环网络一致</p>
+</li>
+</ul>
+<p><strong>更新门</strong>  $z_t$ 用于控制历史状态信息被<strong>融合</strong>到当前状态信息中的程度</p>
+<ul>
+<li>z = 0 时，当前状态 ht 和历史状态信息$h_{t−1}$之间为非线性函数</li>
+</ul>
+<ol>
+<li>同时有z = 0, r = 1时，<strong>GRU网络退化为简单循环网络</strong></li>
+<li>同时有z = 0, r = 0时，当前状态信息$h_t$ 只和当前输入$x_t$ 相关，和历史状态信息$h_{t-1}$ 无关</li>
+</ol>
+<ul>
+<li>z = 1时，当前状态信息$h_t = h_{t−1}$等于历史状态信息$h_{t−1}$，和当前输入$x_t$ 无关</li>
+</ul>
+<h2 id="与RNN比较"><a href="#与RNN比较" class="headerlink" title="与RNN比较"></a>与RNN比较</h2><p>RNN寄存器，读取所有寄存器，运算后存入所有寄存器，没有灵活性。</p>
+<p><img src="/2019/02/19/循环神经网络/v2-af6db0674082ccace94429ee79b2adce_hd.jpg" alt=""></p>
+<p>GRU寄存器，允许你灵活地学习。可以有选择地读取子集，有选择地写入，也就是选择读取部分寄存器，执行运算，写入部分寄存器。这里一个门是选择读取子集的什么内容（Reset Gate），另一个门是去重写哪些部分的隐藏状态（Update Gate）。</p>
+<p><img src="/2019/02/19/循环神经网络/v2-af48652c21458d04f891284fb54c8582_hd.jpg" alt=""></p>
+<p>参考文献：</p>
+<p>[1].  <a href="https://weberna.github.io/blog/2017/11/15/LSTM-Vanishing-Gradients.html" target="_blank" rel="noopener">LSTM与梯度消失</a></p>
+<p>[2].  <a href="https://zhuanlan.zhihu.com/p/30465140" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/30465140</a></p>
+<p>[3]. </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/16/网络优化/" rel="next" title="网络优化">
+                <i class="fa fa-chevron-left"></i> 网络优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">杀死庸碌的时间</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RNN"><span class="nav-number">1.</span> <span class="nav-text">RNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本结构"><span class="nav-number">1.1.</span> <span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几种模式"><span class="nav-number">1.2.</span> <span class="nav-text">几种模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#序列到类别"><span class="nav-number">1.2.1.</span> <span class="nav-text">序列到类别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步的序列到序列"><span class="nav-number">1.2.2.</span> <span class="nav-text">同步的序列到序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步的序列到序列"><span class="nav-number">1.2.3.</span> <span class="nav-text">异步的序列到序列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向传播"><span class="nav-number">1.3.</span> <span class="nav-text">反向传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数共享"><span class="nav-number">1.4.</span> <span class="nav-text">参数共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度消失"><span class="nav-number">1.5.</span> <span class="nav-text">梯度消失</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评价"><span class="nav-number">1.6.</span> <span class="nav-text">评价</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LSTM"><span class="nav-number">2.</span> <span class="nav-text">LSTM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络架构"><span class="nav-number">2.1.</span> <span class="nav-text">网络架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM中的Tanh和sigmoid函数"><span class="nav-number">2.2.</span> <span class="nav-text">LSTM中的Tanh和sigmoid函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决梯度消失的原因"><span class="nav-number">2.3.</span> <span class="nav-text">解决梯度消失的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM变体"><span class="nav-number">2.4.</span> <span class="nav-text">LSTM变体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无遗忘门的LSTM"><span class="nav-number">2.4.1.</span> <span class="nav-text">无遗忘门的LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察口连接"><span class="nav-number">2.4.2.</span> <span class="nav-text">观察口连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#耦合输入门和遗忘门"><span class="nav-number">2.4.3.</span> <span class="nav-text">耦合输入门和遗忘门</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GRU"><span class="nav-number">3.</span> <span class="nav-text">GRU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#与LSTM比较"><span class="nav-number">3.1.</span> <span class="nav-text">与LSTM比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络架构-1"><span class="nav-number">3.2.</span> <span class="nav-text">网络架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与RNN比较"><span class="nav-number">3.3.</span> <span class="nav-text">与RNN比较</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

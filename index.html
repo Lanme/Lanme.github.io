@@ -98,7 +98,7 @@
     root: '/',
     scheme: 'Gemini',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -232,6 +232,331 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/19/循环神经网络/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/19/循环神经网络/" itemprop="url">循环神经网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-19T09:43:36+08:00">
+                2019-02-19
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-21T00:43:45+08:00">
+                2019-02-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/神经网络/" itemprop="url" rel="index">
+                    <span itemprop="name">神经网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>在前馈神经网络中，隐藏层的节点之间是<strong>无连接的</strong>，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。</p>
+<p>RNN本质上是一个<code>递推函数</code>，假设在时刻$t​$，隐藏层的状态为$h_t​$，此时隐藏层不仅和当前时刻的输入$x_t​$有关，还和上一个时刻的隐层状态<span>$h_{t-1}$</span><!-- Has MathJax --> 有关。</p>
+<script type="math/tex; mode=display">
+h_t = f(U x_t+ W h_{t-1}+ b)\\\\
+o_t=g(V*h_t)</script><p>$f(·)​$和$g(·)​$是非线性激活函数，通常为Tanh函数和Softmax函数。</p>
+<p><img src="/2019/02/19/循环神经网络/20190219151815.png" alt=""></p>
+<p><strong>维度解释</strong></p>
+<ul>
+<li><p>input_dim：输入向量的维度，hidden_dim：隐藏层的维度，output_dim：输出向量的维度</p>
+</li>
+<li><p>$x_t$：max_len，word_dim，U：hidden_dim，word_dim</p>
+</li>
+<li><p>W：hidden_dim，hidden_dim，$h_t$：max_len+1，hidden_dim</p>
+</li>
+<li><p>V：output_dim，hidden_dim，$o_t​$：max_len，output_dim</p>
+</li>
+</ul>
+<h2 id="几种模式"><a href="#几种模式" class="headerlink" title="几种模式"></a>几种模式</h2><h3 id="序列到类别"><a href="#序列到类别" class="headerlink" title="序列到类别"></a>序列到类别</h3><ul>
+<li><p>产生<strong>固定大小的表示</strong>，用于下一步处理</p>
+</li>
+<li><p>主要用于序列数据的<code>分类问题</code>，输入为单词的序列，输出为该文本的类别</p>
+</li>
+<li><script type="math/tex; mode=display">
+\hat{y} = g(h_T)</script></li>
+</ul>
+<p><img src="/2019/02/19/循环神经网络/20190219160112.png" alt=""></p>
+<h3 id="同步的序列到序列"><a href="#同步的序列到序列" class="headerlink" title="同步的序列到序列"></a>同步的序列到序列</h3><ul>
+<li><p>每一刻都有输入和输出，<strong>输入序列和输出序列的长度相同</strong></p>
+</li>
+<li><p>主要用于<code>序列标注任务</code></p>
+</li>
+<li><script type="math/tex; mode=display">
+\hat{y_t} = g(h_t)，\ t∈[1,T]</script></li>
+</ul>
+<p><img src="/2019/02/19/循环神经网络/20190219160522.png" alt=""></p>
+<h3 id="异步的序列到序列"><a href="#异步的序列到序列" class="headerlink" title="异步的序列到序列"></a>异步的序列到序列</h3><ul>
+<li><p><strong>输入序列和输出序列不需要严格的对应关系</strong>，也不需要保持相同的长度</p>
+</li>
+<li><p>也被称为<code>编码器-解码器</code></p>
+</li>
+<li><script type="math/tex; mode=display">
+h_t = f_1(h_{t-1},x_t)， \ t∈[1,T]\\\\
+h_{T+t} = f_2(h_{T+t-1},\hat{y_{t-1}})， \ t∈[1,M] \\\\
+\hat{y_t} = g(h_{T+t})， \ t∈[1,M]</script></li>
+</ul>
+<p><img src="/2019/02/19/循环神经网络/20190219160713.png" alt=""></p>
+<h2 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2><p>反向传播参考链接：<a href="https://github.com/go2carter/nn-learn/blob/master/grad-deriv-tex/rnn-grad-deriv.pdf" target="_blank" rel="noopener">rnn-grad-deriv.pdf</a></p>
+<h2 id="参数共享"><a href="#参数共享" class="headerlink" title="参数共享"></a>参数共享</h2><p>不同时刻t中的参数计算（$U、V、W​$）是一样的，即在序列数据的时刻之间共享参数。<strong>共享参数使得模型的复杂度大大减少，并使RNN可以适应任意长度的序列，带来了更好的可推广性</strong>。但是RNN 因为每一个时间步都共享参数的缘故，容易出现<strong>梯度消失</strong>或者<strong>梯度爆炸</strong>。</p>
+<script type="math/tex; mode=display">
+h_t = f(U x_t+ W h_{t-1}+ b)\\\\
+\frac{\partial h_{k+1}}{\partial h_k} = diag(f'(U x_i + W h_{i-1}))W  \\\\ 
+\frac{\partial h_t}{\partial h_i} = \prod_{k=i}^{t-1}\frac{\partial h_{k+1}}{\partial h_k} \\\\
+\frac{\partial h_k}{\partial h_1} = \prod_i^k diag(f'(U x_i + W h_{i-1}))W</script><p>因为循环神经网络经常使用非线性函数为Tanh或者Sigmoid，$f’(x)​$永远小于1，所以梯度消失的情况更普遍些，所以应当重点关注。</p>
+<h2 id="梯度消失"><a href="#梯度消失" class="headerlink" title="梯度消失"></a>梯度消失</h2><p><strong>原因</strong></p>
+<ul>
+<li>激活函数（Sigmoid，Tanh）</li>
+<li>梯度连乘</li>
+</ul>
+<p><strong>如何解决</strong></p>
+<ul>
+<li>relu</li>
+<li>残差结构</li>
+<li>门控机制（LSTM、GRU）</li>
+<li>矩阵初始化</li>
+</ul>
+<h2 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h2><p><strong>优点</strong>  为处理时序数据提供了短期记忆能力</p>
+<p><strong>缺点</strong>  造成<code>梯度爆炸</code>和<code>梯度消失</code>，如果需要的历史信息距离当前位置很远，则RNN无法学习到过去的信息，于是导致无法<code>长期依赖</code>。</p>
+<h1 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h1><p><strong>LSTM与传统RNN的对比</strong></p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-chain.png" alt=""></p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-SimpleRNN.png" alt=""></p>
+<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><p><strong>几种信息</strong></p>
+<p><strong>输入信息</strong>  $x_t$  当前时刻的输入信息</p>
+<p><strong>隐藏状态信息(短时记忆)</strong>  $h_t​$  对长时记忆进行变换，在简单循环网络中，隐状态每个时刻都会被重写，因此可以看作是一种短期记忆</p>
+<p><strong>长时记忆</strong>  $c_t$  由上一个长时记忆和候选状态(新的记忆信息)联合而成</p>
+<p><strong>候选状态</strong> c˜t 由当前信息和上一个时刻的短时记忆变换而成</p>
+<p><strong>门结构</strong></p>
+<p>LSTM单元中有<strong>三种调节信息流的门结构</strong>：<code>遗忘门</code>、<code>输入门</code>和<code>输出门</code>。</p>
+<p><strong>遗忘门</strong>  $f_t$控制上一个时刻的长时记忆$c  _ { t - 1 }$需要遗忘多少信息</p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-f.png" alt=""></p>
+<p><strong>输入门与候选状态</strong>  $i_t$ 控制当前时刻的候选状态c˜t 有多少信息需要保存（同样的信息，计算Sigmoid是保存比例，计算Tanh是得到新的信息）</p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-i.png" alt=""></p>
+<p><strong>长时记忆</strong>  </p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-C.png" alt=""></p>
+<p><strong>输出门与短时记忆</strong>  $o_t$控制当前长时记忆$c_t$有多少信息需要输出给$h_t$</p>
+<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-o.png" alt=""></p>
+<h2 id="LSTM中的Tanh和sigmoid函数"><a href="#LSTM中的Tanh和sigmoid函数" class="headerlink" title="LSTM中的Tanh和sigmoid函数"></a>LSTM中的Tanh和sigmoid函数</h2><p>两种函数的功能并不一样。</p>
+<ol>
+<li>sigmoid 用在了各种<code>gate</code>上，产生0~1之间的值，这个一般只有sigmoid最直接了。通过这样，网络能了解哪些数据不重要需要遗忘，哪些数字很重要需要保留。</li>
+<li>tanh 用在了<code>状态</code>和<code>输出</code>上，是对数据的处理，这个原始论文是使用sigmoid，但是后来换成了Tanh。Tanh函数能让输出位于区间(-1, 1)内，从而调节神经网络输出。<strong>对于LSTM和GRU来说，Tanh函数是对原来的输入信息做了一种变换。</strong></li>
+</ol>
+<h2 id="解决梯度消失的原因"><a href="#解决梯度消失的原因" class="headerlink" title="解决梯度消失的原因"></a>解决梯度消失的原因</h2><p><img src="/2019/02/19/循环神经网络/5878a51ee1a94.jpg" alt=""></p>
+<p>对$c_t = fc_{t-1}+i \tilde{c_t}$ 求梯度$\frac{\partial c_t}{\partial c_{t-1}}$，根据求导法则求解如下：[1]</p>
+<script type="math/tex; mode=display">
+\frac{\partial c_t}{\partial c_{t-1}} = \frac{\partial c_t}{\partial f_t}\frac{\partial f_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} + \frac{\partial c_t}{\partial i_t}\frac{\partial i_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} +\frac{\partial c_t}{\partial \tilde{c_t}}\frac{\partial \tilde{c_t}}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} + \frac{\partial c_t}{\partial c_{t-1}}</script><p>重新整理：</p>
+<script type="math/tex; mode=display">
+\frac{\partial c_t}{\partial c_{t-1}} = c_{t-1} \sigma'(·)W_f*o_{t-1}tanh'(c_{t-1}) \\\\
++\tilde{c_t}\sigma'(·)W_i*o_{t-1}tanh'(c_{t-1}) \\\\
++ i_t tanh'(·)W_c *o_{t-1}tanh'(c_{t-1}) \\\\
++f_t</script><p>注意以上梯度和RNN梯度消失的区别，在RNN中，$\frac{\partial h_t}{\partial h_{t-1}}$的结果<strong>要么全部大于1，要么全部在[0,1]之间</strong>，这是导致梯度消失的原因所在。而$\frac{ \partial c_t}{\partial c_{t-1}}$，<strong>在任何时候都可以大于1或者在[0,1]之间</strong>，因此在多个时刻之后，它不会收敛与0或者无穷大。</p>
+<h2 id="LSTM变体"><a href="#LSTM变体" class="headerlink" title="LSTM变体"></a>LSTM变体</h2><h3 id="无遗忘门的LSTM"><a href="#无遗忘门的LSTM" class="headerlink" title="无遗忘门的LSTM"></a>无遗忘门的LSTM</h3><p>亦被称为Origin LSTM，Hochreiter and Schmidhuber [1997]最早提出的LSTM网络是没有遗忘门的，其内部状态的更新为：</p>
+<script type="math/tex; mode=display">
+c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时，长时记忆c会不断增大，记忆单元的容量会饱和，从而大大降低LSTM模型的性能。</p>
+<h3 id="观察口连接"><a href="#观察口连接" class="headerlink" title="观察口连接"></a>观察口连接</h3><p>观察口连接，把观察到的单元状态也连接sigmoid上。</p>
+<p><img src="/2019/02/19/循环神经网络/30_LSTM3-var-peepholes.png" alt=""></p>
+<h3 id="耦合输入门和遗忘门"><a href="#耦合输入门和遗忘门" class="headerlink" title="耦合输入门和遗忘门"></a>耦合输入门和遗忘门</h3><p>LSTM网络中的输入门和遗忘门有些互补关系，因此同时用两个门比较冗余。为了减少LSTM网络的计算复杂度，将这两门合并为一个门。令$i_t = 1-f_t$，更新如下：</p>
+<p><img src="/2019/02/19/循环神经网络/31_LSTM3-var-tied.png" alt=""></p>
+<h1 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h1><p>GRU网络也是引入门机制来控制信息更新的方式。</p>
+<h2 id="与LSTM比较"><a href="#与LSTM比较" class="headerlink" title="与LSTM比较"></a>与LSTM比较</h2><p>GRU将输入门与和遗忘门合并成一个门：<strong>更新门</strong>。同时，GRU也<strong>不引入额外的记忆单元</strong>，在当前状态信息$h_t$和历史状态信息$h_{t-1}​$ 之间引入线性依赖关系，直接用隐藏状态传递信息。</p>
+<h2 id="网络架构-1"><a href="#网络架构-1" class="headerlink" title="网络架构"></a>网络架构</h2><p><img src="/2019/02/19/循环神经网络/32_LSTM3-var-GRU.png" alt=""></p>
+<p><strong>几种信息</strong></p>
+<p><strong>输入信息</strong>  $x_t​$  当前时刻的输入信息</p>
+<p><strong>当前状态信息 </strong> $h_t$  由历史状态信息和候选状态(新的记忆信息)联合而成</p>
+<p><strong>候选状态 </strong>  $\tilde{h_t}$  由当前状态和历史状态信息变换而成</p>
+<p><strong>历史状态信息</strong>  $h_{t-1}​$  </p>
+<p><strong>门结构</strong></p>
+<p><strong>重置门 </strong> $r_t$ 用于控制<strong>忽略</strong>历史状态信息的程度</p>
+<ul>
+<li><p>r = 0时，候选状态$\tilde{h_t} = tanh(W x_t)$只和当前输入$x_t$ 相关，和历史状态信息无关</p>
+</li>
+<li><p>r = 1时，候选状态$\tilde{h_t}= tanh(W·[x_t,h_{t−1} ])​$和当前输入$x_t​$ 和历史状态信息$h_{t−1}​$ 相关，和简单循环网络一致</p>
+</li>
+</ul>
+<p><strong>更新门</strong>  $z_t$ 用于控制历史状态信息被<strong>融合</strong>到当前状态信息中的程度</p>
+<ul>
+<li>z = 0 时，当前状态 ht 和历史状态信息$h_{t−1}$之间为非线性函数</li>
+</ul>
+<ol>
+<li>同时有z = 0, r = 1时，<strong>GRU网络退化为简单循环网络</strong></li>
+<li>同时有z = 0, r = 0时，当前状态信息$h_t$ 只和当前输入$x_t$ 相关，和历史状态信息$h_{t-1}$ 无关</li>
+</ol>
+<ul>
+<li>z = 1时，当前状态信息$h_t = h_{t−1}$等于历史状态信息$h_{t−1}$，和当前输入$x_t$ 无关</li>
+</ul>
+<h2 id="与RNN比较"><a href="#与RNN比较" class="headerlink" title="与RNN比较"></a>与RNN比较</h2><p>RNN寄存器，读取所有寄存器，运算后存入所有寄存器，没有灵活性。</p>
+<p><img src="/2019/02/19/循环神经网络/v2-af6db0674082ccace94429ee79b2adce_hd.jpg" alt=""></p>
+<p>GRU寄存器，允许你灵活地学习。可以有选择地读取子集，有选择地写入，也就是选择读取部分寄存器，执行运算，写入部分寄存器。这里一个门是选择读取子集的什么内容（Reset Gate），另一个门是去重写哪些部分的隐藏状态（Update Gate）。</p>
+<p><img src="/2019/02/19/循环神经网络/v2-af48652c21458d04f891284fb54c8582_hd.jpg" alt=""></p>
+<p>参考文献：</p>
+<p>[1].  <a href="https://weberna.github.io/blog/2017/11/15/LSTM-Vanishing-Gradients.html" target="_blank" rel="noopener">LSTM与梯度消失</a></p>
+<p>[2].  <a href="https://zhuanlan.zhihu.com/p/30465140" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/30465140</a></p>
+<p>[3]. </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/16/网络优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -279,7 +604,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-19T00:48:40+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-19T10:49:12+08:00">
                 2019-02-19
               </time>
             
@@ -374,7 +699,7 @@
 </li>
 <li><p>对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）</p>
 </li>
-<li><p>深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能</p>
+<li><p>深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能</p>
 </li>
 </ul>
 <h1 id="凸问题"><a href="#凸问题" class="headerlink" title="凸问题"></a>凸问题</h1><h2 id="为什么有凸优化问题"><a href="#为什么有凸优化问题" class="headerlink" title="为什么有凸优化问题"></a>为什么有凸优化问题</h2><p>ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找不到全局最小值。</p>
@@ -399,7 +724,7 @@
 <p><img src="/2019/02/16/网络优化/966e5a9b00687678374b8221fdd33475.jpg" alt=""></p>
 <p>解决的方法是尝试将所有特征的尺度都尽量缩放到-1到1之间。如图：</p>
 <p><img src="/2019/02/16/网络优化/b8167ff0926046e112acf789dba98057.png" alt=""></p>
-<p>最简单的方法是<code>标准化归一</code>，即令：${ {x}<em>{n} }=\frac{ { {x}</em>{n} }-{ {\mu}<em>{n} } }{ { {s}</em>{n} } }$，其中 ${\mu<em>{n}}$是平均值，${s</em>{n}}$是标准差。</p>
+<p>最简单的方法是<code>标准化归一</code>，即令：$s_n = \frac {x_n-\mu_n}{s_n}$，其中$\mu_n$是平均值，$s_n$是标准差。</p>
 <h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当你训练神经网络时，权重随机初始化是很重要的。对于逻辑回归，把权重初始化为0当然也是可以的。但是对于一个神经网络，如果你把权重或者参数都初始化为0，那么梯度下降将不会起作用。具体来说，在连接到相同输入的隐藏层中并排的节点必须有不同的权重，这样才能使学习算法更新权重。 这通常被称为在训练期间需要<code>打破对称性</code>（symmetry）。 </p>
 <h3 id="Glorot-Initialization-glorot-uniform-glorot-normal"><a href="#Glorot-Initialization-glorot-uniform-glorot-normal" class="headerlink" title="Glorot Initialization(glorot_uniform, glorot_normal)"></a>Glorot Initialization(<a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L48" target="_blank" rel="noopener">glorot_uniform</a>, <a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L56" target="_blank" rel="noopener">glorot_normal</a>)</h3><p>Glorot Initialization，或者叫 Xavier Initialization，是Xavier Glorot和Yoshua Bengio于2010年提出的初始化方法，该方法的均匀分布版本(glorot_uniform)是Keras中全连接层、二维卷积/反卷积层等层的默认初始化方式。[3]</p>
 <p>假设给定神经元接收n个输入数据$x =[x_1,x_2,…,x_n]$， 并且输出表示为$y$， 权值表示为$w$ . 则有以下公式： </p>
@@ -481,7 +806,7 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)</span><br></pre></td></tr></table></figure>
 <p>红色：阶梯型；绿色：指数型；蓝色指数型衰减：</p>
 <p><img src="/2019/02/16/网络优化/20180315185333871.png" alt=""></p>
-<p><strong>参数cycle</strong>决定学习率是否在下降后重新上升．若cycle为True，则学习率下降后重新上升；使用decay_steps的倍数，取第一个大于global_steps的结果．</p>
+<p><strong>参数cycle</strong>决定学习率是否在下降后重新上升，若cycle为True，则学习率下降后重新上升；使用decay_steps的倍数，取第一个大于global_steps的结果。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">decay_steps = decay_steps*ceil(global_step/decay_steps)</span><br><span class="line"></span><br><span class="line">decayed_learning_rate = (learning_rate-end_learning_rate)*(1-global_step/decay_steps)^ (power)+end_learning_rate</span><br></pre></td></tr></table></figure>
 <p><strong>参数cycle目的：防止神经网络训练后期学习率过小导致网络一直在某个局部最小值中振荡；这样，通过增大学习率可以跳出局部极小值．</strong></p>
 <p>红色：下降后不再上升；绿色：下降后重新上升： </p>
@@ -493,7 +818,6 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <li>训练过程中模型权重变成 NaN 值</li>
 <li>训练过程中，每个节点和层的误差梯度值持续超过1.0</li>
 </ul>
-<p>为了避免这种情况，当梯度的模大于一定阈值时，就对梯度进行截断，称为梯度截断。</p>
 <p><strong>按值截断</strong> 第t次迭代时，梯度为$g_t$，给定一个区间[a,b]，如果一个参数的梯度小于a，就将其设为a；如果小于b时，就将其设为b。</p>
 <script type="math/tex; mode=display">
 g_t = \max(\min(g_t,b),a)</script><p><strong>按模截断</strong> 将梯度的模截断到一个给定的截断阈值b。</p>
@@ -544,8 +868,8 @@ w :=w-\frac{\eta \lambda }{n}w-\eta \frac{\partial C_0}{\partial w} \\\\
 <p><img src="/2019/02/16/网络优化/20140504123020546.png" alt=""></p>
 <p>我们将模型空间限制在w的一个L1-ball 中。为了便于可视化，我们考虑两维的情况，在($w_1$,$ w_2$)平面上可以画出目标函数的等高线，而约束条件则成为平面上半径为C的一个 norm ball 。等高线与 norm ball 首次相交的地方就是最优解：</p>
 <p>可以看到，L1-ball 与L2-ball 的不同就在于L1在和每个坐标轴相交的地方都有“角”出现，而目标函数的测地线除非位置摆得非常好，大部分时候都会在角的地方相交。注意到在角的位置就会产生<strong>稀疏性</strong>，例如图中的相交点就有$w_1​$=0，而更高维的时候（想象一下三维的L1-ball 是什么样的？）除了角点以外，还有很多边的轮廓也是既有很大的概率成为第一次相交的地方，又会产生稀疏性。</p>
+<p>相比之下，L2-ball 就没有这样的性质，因为没有角，所以<strong>第一次相交的地方出现在具有稀疏性的位置的概率就变得非常小了</strong>。这就从直观上来解释了为什么L1-regularization 能产生稀疏性，而L2-regularization 不行的原因了。</p>
 <blockquote>
-<p>   相比之下，L2-ball 就没有这样的性质，因为没有角，所以<strong>第一次相交的地方出现在具有稀疏性的位置的概率就变得非常小了</strong>。这就从直观上来解释了为什么L1-regularization 能产生稀疏性，而L2-regularization 不行的原因了。</p>
 <p>   因此，一句话总结就是：L1会趋向于产生少量的特征，而其他的特征都是0，而L2会选择更多的特征，这些特征都会接近于0。Lasso在特征选择时候非常有用，而Ridge就只是一种规则化而已。</p>
 </blockquote>
 <h2 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h2><p><strong>Dropout</strong>会遍历网络的每一层，并设置消除神经网络中节点的概率。</p>
@@ -894,8 +1218,8 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-18T23:38:22+08:00">
-                2019-02-18
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-20T10:56:10+08:00">
+                2019-02-20
               </time>
             
           </span>
@@ -983,7 +1307,10 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
       
         
           
-            <h2 id="Sigmoid函数"><a href="#Sigmoid函数" class="headerlink" title="Sigmoid函数"></a>Sigmoid函数</h2><p>Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。</p>
+            <h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用<strong>线性激活函数(恒等激励函数)</strong>或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>Sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的。</p>
+<p> 在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是线性函数，所以除非你引入非线性，否则你无法计算更有趣的函数，即使你的网络层数再多也不行；只有一个地方可以使用线性激活函数———，就是你在做机器学习中的回归问题。 是一个实数，举个例子，比如你想预测房地产价格， 就不是二分类任务0或1，而是一个实数，从0到正无穷。如果是个实数，那么在输出层用线性激活函数也许可行，你的输出也是一个实数，从负无穷到正无穷。</p>
+<p> 总而言之，不能在隐藏层用线性激活函数，可以用<strong>ReLU</strong>或者<strong>tanh</strong>或者<strong>leaky ReLU</strong>或者其他的非线性激活函数，唯一可以用线性激活函数的通常就是输出层；除了这种情况，会在隐层用线性函数的，在这之外，在隐层使用线性激活函数非常少见。</p>
+<h2 id="Sigmoid函数"><a href="#Sigmoid函数" class="headerlink" title="Sigmoid函数"></a>Sigmoid函数</h2><p>Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。</p>
 <h3 id="函数形式"><a href="#函数形式" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 \sigma(x) = \frac{1}{1+e^{-x}}</script><script type="math/tex; mode=display">
 \sigma'(x) = \sigma(x)(1-\sigma(x))</script><p><img src="/2019/02/13/激活函数/激活函数1.png" alt="1"></p>
@@ -1000,15 +1327,11 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
 tanh(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}</script><script type="math/tex; mode=display">
 tanh'(x) = 1-(tanh(x))^2</script><p><img src="/2019/02/13/激活函数/激活函数4.png" alt="1"></p>
 <h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><p>优点：解决了zero-centered的输出问题</p>
-<p>缺点：<code>梯度消失</code>的问题和<code>幂运算</code>的问题仍然存在，其饱和区甚至比 Sigmoid 还要大一些，但不明显</p>
+<p>缺点：<code>梯度消失</code>的问题和<code>幂运算</code>的问题仍然存在，其饱和区甚至比 Sigmoid 还要大一些，但不明显。</p>
+<p><img src="/2019/02/13/激活函数/20190219103103.png" alt=""></p>
 <h3 id="Tanh与Sigmoid"><a href="#Tanh与Sigmoid" class="headerlink" title="Tanh与Sigmoid"></a>Tanh与Sigmoid</h3><p><img src="/2019/02/13/激活函数/激活函数5.png" alt="1"><img src="/2019/02/13/激活函数/激活函数6.png" alt="1"></p>
 <h3 id="RNN中的Tanh函数"><a href="#RNN中的Tanh函数" class="headerlink" title="RNN中的Tanh函数"></a>RNN中的Tanh函数</h3><p>循环神经网络用的激活函数经常是<strong>Tanh</strong>，不过有时候也会用<strong>ReLU</strong>，但是<strong>Tanh</strong>是更通常的选择，我们有其他方法来避免梯度消失问题。 另外，RNN中的激活函数是可以改的，如果采用Relu函数的话，注意梯度爆炸的时候要采用梯度修剪。 </p>
-<p>事实上梯度消失在训练<strong>RNN</strong>时是首要的问题，尽管梯度爆炸也是会出现，但是梯度爆炸很明显，因为指数级大的梯度会让你的参数变得极其大，以至于你的网络参数崩溃。所以梯度爆炸很容易发现，因为参数会大到崩溃，你会看到很多<strong>NaN</strong>，或者不是数字的情况，这意味着你的网络计算出现了数值溢出。如果你发现了梯度爆炸的问题，一个解决方法就是用<code>梯度修剪</code>。梯度修剪的意思就是观察你的梯度向量，如果它大于某个阈值，缩放梯度向量，保证它不会太大，这就是通过一些最大值来修剪的方法。所以如果你遇到了梯度爆炸，如果导数值很大，或者出现了<strong>NaN</strong>，就用梯度修剪，这是相对比较鲁棒的，这是梯度爆炸的解决方法。 </p>
-<h3 id="LSTM中的Tanh和sigmoid函数"><a href="#LSTM中的Tanh和sigmoid函数" class="headerlink" title="LSTM中的Tanh和sigmoid函数"></a>LSTM中的Tanh和sigmoid函数</h3><p>两种函数的功能并不一样。</p>
-<ol>
-<li>sigmoid 用在了各种<code>gate</code>上，产生0~1之间的值，这个一般只有sigmoid最直接了。从第一个图中可以看出，LSTM有三个门，则有三个sigmod，GRU有两个门，则有两个sigmod。</li>
-<li>tanh 用在了<code>状态</code>和<code>输出</code>上，是对数据的处理，这个原始论文是使用sigmoid，但是后来换成了Tanh。Tanh函数能让输出位于区间(-1, 1)内，从而调节神经网络输出。对于LSTM和GRU来说，Tanh函数是对原来的输入信息做了一种变换。</li>
-</ol>
+<p>事实上梯度消失在训练<strong>RNN</strong>时是首要的问题，尽管梯度爆炸也是会出现，但是梯度爆炸很明显，因为指数级大的梯度会让你的参数变得极其大，以至于你的网络参数崩溃。所以梯度爆炸很容易发现，因为参数会大到崩溃，你会看到很多<strong>NaN</strong>，或者不是数字的情况，这意味着你的网络计算出现了数值溢出。如果你发现了梯度爆炸的问题，一个解决方法就是用<code>梯度修剪</code>。梯度修剪的意思就是观察你的梯度向量，如果它大于某个阈值，缩放梯度向量，保证它不会太大，这就是通过一些最大值来修剪的方法。所以如果你遇到了梯度爆炸，如果导数值很大，或者出现了<strong>NaN</strong>，就用梯度修剪，这是相对比较鲁棒的，这是梯度爆炸的解决方法。</p>
 <h2 id="Relu函数"><a href="#Relu函数" class="headerlink" title="Relu函数"></a>Relu函数</h2><p>Relu函数其实就是一个取最大值函数，这并不是全区间可导的。</p>
 <h3 id="函数形式-2"><a href="#函数形式-2" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 Relu = max(0,x)</script><p><img src="/2019/02/13/激活函数/激活函数7.png" alt="1"></p>
@@ -1033,9 +1356,16 @@ W:W-\eta*\frac{dL}{dW}</script><p>当学习率$\eta$大的时候，W会变成负
 </blockquote>
 <p>为什么he或者xavier初始化有效？（参考deeplearning,ai的解释）</p>
 <p>$z = w_1 x_1 +w_2 x_2 +…+ w_n x_n$，暂时忽略$b$，为了预防$z$值过大或过小，可以看到当n越大，你希望$w_i$越小，因为z是$w_i x_i$的和，如果你把很多此类项相加，希望每项值更小，那么最合理的方法就是$w_i = \frac{1}{n}$，n表示神经元的输入特征数量，实际上，你要做的就是设置某层权重矩阵$w^{[l]} = np.random.randn( \text{shape}) * \text{np.}\text{sqrt}(\frac{1}{n^{[l-1]}})$，$n^{[l - 1]}$就是我喂给第$l$层神经单元的数量（即第$l-1$层神经元数量）。</p>
-<h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用<strong>线性激活函数(恒等激励函数)</strong>或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>Sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的。</p>
-<p> 在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是线性函数，所以除非你引入非线性，否则你无法计算更有趣的函数，即使你的网络层数再多也不行；只有一个地方可以使用线性激活函数———，就是你在做机器学习中的回归问题。 是一个实数，举个例子，比如你想预测房地产价格， 就不是二分类任务0或1，而是一个实数，从0到正无穷。如果是个实数，那么在输出层用线性激活函数也许可行，你的输出也是一个实数，从负无穷到正无穷。</p>
-<p> 总而言之，不能在隐藏层用线性激活函数，可以用<strong>ReLU</strong>或者<strong>tanh</strong>或者<strong>leaky ReLU</strong>或者其他的非线性激活函数，唯一可以用线性激活函数的通常就是输出层；除了这种情况，会在隐层用线性函数的，在这之外，在隐层使用线性激活函数非常少见。</p>
+<h2 id="Leaky-Relu函数"><a href="#Leaky-Relu函数" class="headerlink" title="Leaky Relu函数"></a>Leaky Relu函数</h2><p>Leaky Relu在输入x&lt;0时，保持一个很小的梯度$\lambda$。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能激活。</p>
+<script type="math/tex; mode=display">
+Leaky Relu(x) = \left\{
+\begin{aligned}
+x ,if\  x>0 \\
+\gamma x,if \ x\leq0
+\end{aligned}
+\right.
+\\\\=\max(0,x) +\gamma \min (0,x)</script><p>$\gamma$是个很小的参数，比如0.01。</p>
+<p><img src="/2019/02/13/激活函数/1_ypsvQH7kvtI2BhzR2eT_Sw.png" alt=""></p>
 <h2 id="Gelu函数"><a href="#Gelu函数" class="headerlink" title="Gelu函数"></a>Gelu函数</h2><p>GELU高斯误差线性单元bridge确定性激活函数ReLU和随机正则子Dropout之间的gap，也就是希望GELU这种随机性激活函数替代ReLU。</p>
 <h3 id="函数形式-3"><a href="#函数形式-3" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
 Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以依概率随机的概率分布$\Phi(x) = P(X\leq x)$，这里$\Phi(x)$是正太分布的概率函数，可以简单采用正太分布N(0,1)。</p>
@@ -1121,7 +1451,7 @@ Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1159,6 +1489,13 @@ Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以
 
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -1206,11 +1543,6 @@ Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

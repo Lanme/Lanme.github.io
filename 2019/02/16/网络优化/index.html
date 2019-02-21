@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找">
+<meta name="description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络优化">
 <meta property="og:url" content="https://Lanme.github.io/2019/02/16/网络优化/index.html">
 <meta property="og:site_name" content="锦鲤木兰">
-<meta property="og:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找">
+<meta property="og:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/966e5a9b00687678374b8221fdd33475.jpg">
@@ -108,10 +108,10 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20180112195606874.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9d0db64a9c9b050466a039c935f36f93.png">
-<meta property="og:updated_time" content="2019-02-18T16:48:40.674Z">
+<meta property="og:updated_time" content="2019-02-19T02:49:12.951Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络优化">
-<meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找">
+<meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
 <meta name="twitter:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg">
 
 
@@ -122,7 +122,7 @@
     root: '/',
     scheme: 'Gemini',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -300,7 +300,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-19T00:48:40+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-19T10:49:12+08:00">
                 2019-02-19
               </time>
             
@@ -393,7 +393,7 @@
 </li>
 <li><p>对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）</p>
 </li>
-<li><p>深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，当然还有加快性能</p>
+<li><p>深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能</p>
 </li>
 </ul>
 <h1 id="凸问题"><a href="#凸问题" class="headerlink" title="凸问题"></a>凸问题</h1><h2 id="为什么有凸优化问题"><a href="#为什么有凸优化问题" class="headerlink" title="为什么有凸优化问题"></a>为什么有凸优化问题</h2><p>ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找不到全局最小值。</p>
@@ -418,7 +418,7 @@
 <p><img src="/2019/02/16/网络优化/966e5a9b00687678374b8221fdd33475.jpg" alt=""></p>
 <p>解决的方法是尝试将所有特征的尺度都尽量缩放到-1到1之间。如图：</p>
 <p><img src="/2019/02/16/网络优化/b8167ff0926046e112acf789dba98057.png" alt=""></p>
-<p>最简单的方法是<code>标准化归一</code>，即令：${ {x}<em>{n} }=\frac{ { {x}</em>{n} }-{ {\mu}<em>{n} } }{ { {s}</em>{n} } }$，其中 ${\mu<em>{n}}$是平均值，${s</em>{n}}$是标准差。</p>
+<p>最简单的方法是<code>标准化归一</code>，即令：$s_n = \frac {x_n-\mu_n}{s_n}$，其中$\mu_n$是平均值，$s_n$是标准差。</p>
 <h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当你训练神经网络时，权重随机初始化是很重要的。对于逻辑回归，把权重初始化为0当然也是可以的。但是对于一个神经网络，如果你把权重或者参数都初始化为0，那么梯度下降将不会起作用。具体来说，在连接到相同输入的隐藏层中并排的节点必须有不同的权重，这样才能使学习算法更新权重。 这通常被称为在训练期间需要<code>打破对称性</code>（symmetry）。 </p>
 <h3 id="Glorot-Initialization-glorot-uniform-glorot-normal"><a href="#Glorot-Initialization-glorot-uniform-glorot-normal" class="headerlink" title="Glorot Initialization(glorot_uniform, glorot_normal)"></a>Glorot Initialization(<a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L48" target="_blank" rel="noopener">glorot_uniform</a>, <a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L56" target="_blank" rel="noopener">glorot_normal</a>)</h3><p>Glorot Initialization，或者叫 Xavier Initialization，是Xavier Glorot和Yoshua Bengio于2010年提出的初始化方法，该方法的均匀分布版本(glorot_uniform)是Keras中全连接层、二维卷积/反卷积层等层的默认初始化方式。[3]</p>
 <p>假设给定神经元接收n个输入数据$x =[x_1,x_2,…,x_n]$， 并且输出表示为$y$， 权值表示为$w$ . 则有以下公式： </p>
@@ -500,7 +500,7 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)</span><br></pre></td></tr></table></figure>
 <p>红色：阶梯型；绿色：指数型；蓝色指数型衰减：</p>
 <p><img src="/2019/02/16/网络优化/20180315185333871.png" alt=""></p>
-<p><strong>参数cycle</strong>决定学习率是否在下降后重新上升．若cycle为True，则学习率下降后重新上升；使用decay_steps的倍数，取第一个大于global_steps的结果．</p>
+<p><strong>参数cycle</strong>决定学习率是否在下降后重新上升，若cycle为True，则学习率下降后重新上升；使用decay_steps的倍数，取第一个大于global_steps的结果。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">decay_steps = decay_steps*ceil(global_step/decay_steps)</span><br><span class="line"></span><br><span class="line">decayed_learning_rate = (learning_rate-end_learning_rate)*(1-global_step/decay_steps)^ (power)+end_learning_rate</span><br></pre></td></tr></table></figure>
 <p><strong>参数cycle目的：防止神经网络训练后期学习率过小导致网络一直在某个局部最小值中振荡；这样，通过增大学习率可以跳出局部极小值．</strong></p>
 <p>红色：下降后不再上升；绿色：下降后重新上升： </p>
@@ -512,7 +512,6 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <li>训练过程中模型权重变成 NaN 值</li>
 <li>训练过程中，每个节点和层的误差梯度值持续超过1.0</li>
 </ul>
-<p>为了避免这种情况，当梯度的模大于一定阈值时，就对梯度进行截断，称为梯度截断。</p>
 <p><strong>按值截断</strong> 第t次迭代时，梯度为$g_t$，给定一个区间[a,b]，如果一个参数的梯度小于a，就将其设为a；如果小于b时，就将其设为b。</p>
 <script type="math/tex; mode=display">
 g_t = \max(\min(g_t,b),a)</script><p><strong>按模截断</strong> 将梯度的模截断到一个给定的截断阈值b。</p>
@@ -563,8 +562,8 @@ w :=w-\frac{\eta \lambda }{n}w-\eta \frac{\partial C_0}{\partial w} \\\\
 <p><img src="/2019/02/16/网络优化/20140504123020546.png" alt=""></p>
 <p>我们将模型空间限制在w的一个L1-ball 中。为了便于可视化，我们考虑两维的情况，在($w_1$,$ w_2$)平面上可以画出目标函数的等高线，而约束条件则成为平面上半径为C的一个 norm ball 。等高线与 norm ball 首次相交的地方就是最优解：</p>
 <p>可以看到，L1-ball 与L2-ball 的不同就在于L1在和每个坐标轴相交的地方都有“角”出现，而目标函数的测地线除非位置摆得非常好，大部分时候都会在角的地方相交。注意到在角的位置就会产生<strong>稀疏性</strong>，例如图中的相交点就有$w_1​$=0，而更高维的时候（想象一下三维的L1-ball 是什么样的？）除了角点以外，还有很多边的轮廓也是既有很大的概率成为第一次相交的地方，又会产生稀疏性。</p>
+<p>相比之下，L2-ball 就没有这样的性质，因为没有角，所以<strong>第一次相交的地方出现在具有稀疏性的位置的概率就变得非常小了</strong>。这就从直观上来解释了为什么L1-regularization 能产生稀疏性，而L2-regularization 不行的原因了。</p>
 <blockquote>
-<p>   相比之下，L2-ball 就没有这样的性质，因为没有角，所以<strong>第一次相交的地方出现在具有稀疏性的位置的概率就变得非常小了</strong>。这就从直观上来解释了为什么L1-regularization 能产生稀疏性，而L2-regularization 不行的原因了。</p>
 <p>   因此，一句话总结就是：L1会趋向于产生少量的特征，而其他的特征都是0，而L2会选择更多的特征，这些特征都会接近于0。Lasso在特征选择时候非常有用，而Ridge就只是一种规则化而已。</p>
 </blockquote>
 <h2 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h2><p><strong>Dropout</strong>会遍历网络的每一层，并设置消除神经网络中节点的概率。</p>
@@ -668,6 +667,10 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/02/19/循环神经网络/" rel="prev" title="循环神经网络">
+                循环神经网络 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -743,7 +746,7 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -798,6 +801,13 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
       
 
       
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
 
     </div>
   </aside>
@@ -844,11 +854,6 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     
