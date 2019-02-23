@@ -102,7 +102,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/32_LSTM3-var-GRU.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/v2-af6db0674082ccace94429ee79b2adce_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/19/循环神经网络/v2-af48652c21458d04f891284fb54c8582_hd.jpg">
-<meta property="og:updated_time" content="2019-02-20T16:43:45.190Z">
+<meta property="og:updated_time" content="2019-02-21T04:01:06.233Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="循环神经网络">
 <meta name="twitter:description" content="RNN基本结构在前馈神经网络中，隐藏层的节点之间是无连接的，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。 RNN本质上是一个递推函数，假设在时刻$t​$，隐藏层的状态为$h_t​$，此时隐藏层不仅和当前时刻的输入$x_t​$有关，还和上一个时刻的隐层状态$h_{t-1}$ 有关。  h_t = f(U x_t+ W h_{t-1}+ b)\\\\ o_t=g(V*h_t)$f(·)​$和$g(">
@@ -294,7 +294,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-21T00:43:45+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-21T12:01:06+08:00">
                 2019-02-21
               </time>
             
@@ -344,7 +344,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.2k
+                  2.3k
                 </span>
               
 
@@ -360,7 +360,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  9
                 </span>
               
             </div>
@@ -433,7 +433,7 @@ h_{T+t} = f_2(h_{T+t-1},\hat{y_{t-1}})， \ t∈[1,M] \\\\
 h_t = f(U x_t+ W h_{t-1}+ b)\\\\
 \frac{\partial h_{k+1}}{\partial h_k} = diag(f'(U x_i + W h_{i-1}))W  \\\\ 
 \frac{\partial h_t}{\partial h_i} = \prod_{k=i}^{t-1}\frac{\partial h_{k+1}}{\partial h_k} \\\\
-\frac{\partial h_k}{\partial h_1} = \prod_i^k diag(f'(U x_i + W h_{i-1}))W</script><p>因为循环神经网络经常使用非线性函数为Tanh或者Sigmoid，$f’(x)​$永远小于1，所以梯度消失的情况更普遍些，所以应当重点关注。</p>
+\frac{\partial h_k}{\partial h_1} = \prod_i^k diag(f'(U x_i + W h_{i-1}))W</script><p>因为循环神经网络经常使用非线性函数为Tanh或者Sigmoid，$f’(x)$永远小于1，所以梯度消失的情况更普遍些，应当重点关注。</p>
 <h2 id="梯度消失"><a href="#梯度消失" class="headerlink" title="梯度消失"></a>梯度消失</h2><p><strong>原因</strong></p>
 <ul>
 <li>激活函数（Sigmoid，Tanh）</li>
@@ -479,7 +479,14 @@ h_t = f(U x_t+ W h_{t-1}+ b)\\\\
 \frac{\partial c_t}{\partial c_{t-1}} = c_{t-1} \sigma'(·)W_f*o_{t-1}tanh'(c_{t-1}) \\\\
 +\tilde{c_t}\sigma'(·)W_i*o_{t-1}tanh'(c_{t-1}) \\\\
 + i_t tanh'(·)W_c *o_{t-1}tanh'(c_{t-1}) \\\\
-+f_t</script><p>注意以上梯度和RNN梯度消失的区别，在RNN中，$\frac{\partial h_t}{\partial h_{t-1}}$的结果<strong>要么全部大于1，要么全部在[0,1]之间</strong>，这是导致梯度消失的原因所在。而$\frac{ \partial c_t}{\partial c_{t-1}}$，<strong>在任何时候都可以大于1或者在[0,1]之间</strong>，因此在多个时刻之后，它不会收敛与0或者无穷大。</p>
++f_t</script><p>注意以上梯度和RNN梯度消失的区别，在RNN中，$\frac{\partial h_t}{\partial h_{t-1}}$的结果<strong>要么全部大于1，要么全部在[0,1]之间</strong>（will eventually take on a values that are either always above 1 or always in the range [0,1]），这是导致梯度消失的原因所在。而$\frac{ \partial c_t}{\partial c_{t-1}}$，<strong>在任何时候都可以大于1或者在[0,1]之间</strong>（<em>at any time step</em> can take on either values that are greater than 1 or values in the range [0,1]），因此在多个时刻之后，它不会收敛与0或者无穷大。</p>
+<blockquote>
+<p>This might all seem magical, but it really is just the result of two main things:</p>
+<ul>
+<li>The additive update function for the cell state gives a derivative thats much more ‘well behaved’</li>
+<li>The gating functions allow the network to decide how much the gradient vanishes, and can take on different values at each time step. The values that they take on are learned functions of the current input and hidden state.</li>
+</ul>
+</blockquote>
 <h2 id="LSTM变体"><a href="#LSTM变体" class="headerlink" title="LSTM变体"></a>LSTM变体</h2><h3 id="无遗忘门的LSTM"><a href="#无遗忘门的LSTM" class="headerlink" title="无遗忘门的LSTM"></a>无遗忘门的LSTM</h3><p>亦被称为Origin LSTM，Hochreiter and Schmidhuber [1997]最早提出的LSTM网络是没有遗忘门的，其内部状态的更新为：</p>
 <script type="math/tex; mode=display">
 c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时，长时记忆c会不断增大，记忆单元的容量会饱和，从而大大降低LSTM模型的性能。</p>
@@ -555,6 +562,10 @@ c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/21/word2vec/" rel="prev" title="word2vec">
+                word2vec <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>

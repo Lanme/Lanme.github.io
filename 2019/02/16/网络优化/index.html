@@ -103,12 +103,11 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20140504123020546.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/e45f9a948989b365650ddf16f62b097e.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9fa7196adeeaf88eb386fda2e9fa9909.png">
-<meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/2d314293ae9aaa67285299267857632f.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-13bb64b6122e98421ea3528539c1bffc_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20180112195606874.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9d0db64a9c9b050466a039c935f36f93.png">
-<meta property="og:updated_time" content="2019-02-19T02:49:12.951Z">
+<meta property="og:updated_time" content="2019-02-23T09:18:44.673Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络优化">
 <meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
@@ -300,8 +299,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-19T10:49:12+08:00">
-                2019-02-19
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-23T17:18:44+08:00">
+                2019-02-23
               </time>
             
           </span>
@@ -505,7 +504,7 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <p><strong>参数cycle目的：防止神经网络训练后期学习率过小导致网络一直在某个局部最小值中振荡；这样，通过增大学习率可以跳出局部极小值．</strong></p>
 <p>红色：下降后不再上升；绿色：下降后重新上升： </p>
 <p><img src="/2019/02/16/网络优化/20180315201648786.png" alt=""></p>
-<h2 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h2><p>在深层神经网络或循环神经网络中，除了梯度消失之外，梯度爆炸是影响学习效率的主要因素。在基于梯度下降的优化过程中，如果梯度突然增大，用大的梯度进行更新参数，反而会导致其远离最优点。为了避免这种情况，当梯<br>度的模大于一定阈值时，就对梯度进行截断，称为梯度截断。</p>
+<h2 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h2><p>在深层神经网络或循环神经网络中，除了梯度消失之外，梯度爆炸是影响学习效率的主要因素。在基于梯度下降的优化过程中，如果梯度突然增大，用大的梯度进行更新参数，反而会导致其远离最优点。为了避免这种情况，当梯度的模大于一定阈值时，就对梯度进行截断，称为梯度截断。</p>
 <p>如何判断出现梯度爆炸：</p>
 <ul>
 <li>训练过程中模型梯度快速变大</li>
@@ -576,9 +575,8 @@ w :=w-\frac{\eta \lambda }{n}w-\eta \frac{\partial C_0}{\partial w} \\\\
 <li>神经网络学习过程本质就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低</li>
 <li>上层参数需要不断适应新的输入数据分布，降低学习速度。</li>
 <li>下层输入的变化可能趋向于变大或者变小，导致上层落入饱和区，使得学习过早停止</li>
-<li>如果你有sigmoid激活函数，你不想让你的值总是全部集中在这里，你想使它们有更大的方差，或不是0的平均值，以便更好的利用非线性的sigmoid函数</li>
+<li>每层的更新都会影响到其它层，因此每层的参数更新策略需要尽可能的谨慎</li>
 </ul>
-<p><img src="/2019/02/16/网络优化/2d314293ae9aaa67285299267857632f.png" alt=""></p>
 <p>对于深度网络的训练是一个复杂的过程，只要网络的前面几层发生微小的改变，那么后面几层就会被累积放大下去。一旦网络某一层的输入数据的分布发生改变，那么这一层网络就需要去适应学习这个新的数据分布，所以如果训练过程中，<strong>训练数据的分布一直在发生变化，那么将会影响网络的训练速度</strong>。</p>
 <h3 id="BatchNorm"><a href="#BatchNorm" class="headerlink" title="BatchNorm"></a>BatchNorm</h3><p><img src="/2019/02/16/网络优化/v2-13bb64b6122e98421ea3528539c1bffc_hd.jpg" alt=""></p>
 <p>对每一个batch的输入都进行归一化，<strong>把数据转换为均值为0、方差为1的高斯分布</strong>。</p>
@@ -657,8 +655,8 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/14/word2vec/" rel="next" title="word2vec">
-                <i class="fa fa-chevron-left"></i> word2vec
+              <a href="/2019/02/13/激活函数/" rel="next" title="激活函数">
+                <i class="fa fa-chevron-left"></i> 激活函数
               </a>
             
           </div>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="相关知识GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。 独热编码  离散编码，丢失了单词之间的相似性 词向量  分布式表达，能够编码词之间的关系 两种模型SKip-gram 中心词预测上下文词的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="word2vec">
+<meta property="og:url" content="https://Lanme.github.io/2019/02/21/word2vec/index.html">
+<meta property="og:site_name" content="锦鲤木兰">
+<meta property="og:description" content="相关知识GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。 独热编码  离散编码，丢失了单词之间的相似性 词向量  分布式表达，能够编码词之间的关系 两种模型SKip-gram 中心词预测上下文词的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/20190221112748.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-111023@2x.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-142826@2x.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-170735@2x.png">
+<meta property="og:updated_time" content="2019-02-23T10:10:58.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="word2vec">
+<meta name="twitter:description" content="相关知识GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。 独热编码  离散编码，丢失了单词之间的相似性 词向量  分布式表达，能够编码词之间的关系 两种模型SKip-gram 中心词预测上下文词的">
+<meta name="twitter:image" content="https://lanme.github.io/2019/02/21/word2vec/20190221112748.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Lanme.github.io/2019/02/21/word2vec/">
+
+
+
+
+
+  <title>word2vec | 锦鲤木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">锦鲤木兰</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/21/word2vec/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">word2vec</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-21T23:38:07+08:00">
+                2019-02-21
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-23T18:10:58+08:00">
+                2019-02-23
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><p>GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。</p>
+<p><strong>独热编码</strong>  离散编码，丢失了单词之间的相似性</p>
+<p><strong>词向量</strong>  分布式表达，能够编码词之间的关系</p>
+<h1 id="两种模型"><a href="#两种模型" class="headerlink" title="两种模型"></a>两种模型</h1><p><code>SKip-gram</code> 中心词预测上下文词的概率分布</p>
+<p><code>CBOW</code> 上下文词预测中心词的词向量</p>
+<p><img src="/2019/02/21/word2vec/20190221112748.png" alt=""></p>
+<h2 id="CBOW"><a href="#CBOW" class="headerlink" title="CBOW"></a>CBOW</h2><p>假设训练语料为$D​$，选择一个窗口$m​$，根据上下文的单词c预测中心词t，使$P(w_t|w_c)​$最大。[2]</p>
+<p><img src="/2019/02/21/word2vec/QQ20170831-111023@2x.png" alt=""></p>
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
+<li>$w_i​$：词汇表V的单词$i​$，one_hot向量</li>
+<li>$V$：输入词的矩阵(n,|V|)</li>
+<li>$v_i$ ：$V$的第$i$列，单词$w_i$的输入向量</li>
+<li>$U$：输出词的矩阵(|V|,n)</li>
+<li>$u_i$：$U$的第i行，单词$w_i$的输出向量</li>
+</ul>
+<h3 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h3><blockquote>
+<p>注意各个参数维度上的相乘</p>
+</blockquote>
+<p><code>输入层</code> 中心词的上下文单词生成<strong>one_hot词向量</strong>（$x^{t-m} ,…,x^{t-1},x^{t+1},…,x^{t+m}$）</p>
+<p><code>投影层/隐藏层</code> 将输入的上下文单词的向量叠加在一起并取<strong>平均值</strong>，作为最终的结果</p>
+<script type="math/tex; mode=display">
+v_c = V(\frac{x^{t-m} +...+x^{t-1}+x^{t+1},...+x^{t+m}}{2m})</script><p><code>输出层</code> 将投影层的输出乘以$U​$，计算<strong>语义相似度向量</strong>，对其求概率分布</p>
+<script type="math/tex; mode=display">
+z = U·v_c \\\\
+\hat{y} = P(w_t|w_c) = softmax(z) \\\\
+= \frac{exp(u^T_t· v_c)}{\sum_{i=1}^{|V|} exp(u^T_i· v_c)}</script><h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>这里使用<strong>交叉熵</strong>作为中心词的损失函数：</p>
+<script type="math/tex; mode=display">
+J=-\sum_{t=1}^{|V|}y_t log(\hat{y_t})</script><p>y是one_hot向量，所以简化为：</p>
+<script type="math/tex; mode=display">
+J=-log(\hat{y_t})\\\\
+= -log P(w_t|w_c) \\\\
+= -log \frac{exp(u^T_t· v_c)}{\sum_{i=1}^{|V|} exp(u^T_i· v_c)}\\\\
+=-u^T_tv_c +log\sum_{i=1}^{|V|} exp(u^T_i· v_c)</script><p>模型整体的损失函数为：</p>
+<script type="math/tex; mode=display">
+J = - \sum_{w_{t-m}^{t+m}∈D}log(\hat{y_t})</script><p>求导过程参考：[3]</p>
+<h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>CBOW比Skip-gram训练快</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><blockquote>
+<p>The movie is not very good , but i still like it . </p>
+<p>The movie is very good , but i still do not like it .</p>
+<p>I do not like it , but the movie is still very good .</p>
+</blockquote>
+<p>其中第1、3句整体极性是positive，但第2句整体极性就是negative。如果只是通过简单的取平均来作为sentence representation进行分类的话，可能就会很难学出词序对句子语义的影响。</p>
+<p>另外，CBOW会将context word 加起来， 在遇到生僻词时，预测效果将会大大降低。</p>
+<h2 id="Skip-gram"><a href="#Skip-gram" class="headerlink" title="Skip-gram"></a>Skip-gram</h2><p>假设训练语料为$D​$，选择一个窗口$m​$，根据中心词t预测其上下文的单词c，使$P(w_c|w_t)​$最大，其实做法与CBOW大同小异。</p>
+<p><img src="/2019/02/21/word2vec/QQ20170831-142826@2x.png" alt=""></p>
+<h3 id="参数说明-1"><a href="#参数说明-1" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
+<li>$w_i​$：词汇表V的单词$i​$，one_hot向量</li>
+<li>$V$：输入词的矩阵(n,|V|)</li>
+<li>$v_i$ ：$V$的第$i$列，单词$w_i$的输入向量</li>
+<li>$U$：输出词的矩阵(|V|,n)</li>
+<li>$u_i​$：$U​$的第i行，单词$w_i​$的输出向量</li>
+</ul>
+<h3 id="神经网络-1"><a href="#神经网络-1" class="headerlink" title="神经网络"></a>神经网络</h3><p><code>输入层</code> 生成中心词的one_hot词向量$x$</p>
+<p><code>隐藏层/投影层</code> 对中心词计算$v_t = Vx$</p>
+<p><code>输出层</code> 将投影层的输出乘以$U​$，计算<strong>语义相似度向量</strong>，对其求概率分布</p>
+<script type="math/tex; mode=display">
+z = U·v_t \\\\
+\hat{y} = P(w_c|w_t) = softmax(z) \\\\
+= \frac{exp(u^T_c· v_t)}{\sum_{i=1}^{|V|} exp(u^T_i· v_t)}</script><h3 id="损失函数-1"><a href="#损失函数-1" class="headerlink" title="损失函数"></a>损失函数</h3><p>不同于CBOW，由于该模型是预测多个词汇，所以选择引入<strong>朴素贝叶斯假设</strong>来拆分概率。给定中心词，各个输出的词是<code>完全独立</code>的，因此<strong>中心词$t$的损失函数</strong>为：</p>
+<script type="math/tex; mode=display">
+J = -log P(w_{t-m},...,w_{t-1},w_{t+1}...,w_{t+m}|w_t) \\\\
+=-log \prod_{j=0,j≠ m}^{2m} P(w_{t-m+j}|w_t) \\\\
+=-log \prod_{j=0,j≠ m}^{2m} \frac{exp(u^T_{t-m+j}· v_t)}{\sum_{i=1}^{|V|} exp(u^T_i· v_t)} \\\\
+=-\sum_{j=0,j≠ m}^{2m} u^T_{t-m+j}· v_t +2m·log\sum_{i=1}^{|V|} exp(u^T_i· v_t)</script><p><strong>注意对 $|V|​$ 的求和计算量是非常大的！</strong>任何的更新或者对目标函数的评估都要花费 $O(|V|)​$ 的时间复杂度，因此在实际过程中，需要寻找一些加速的技巧。</p>
+<h3 id="评价-1"><a href="#评价-1" class="headerlink" title="评价"></a>评价</h3><h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><p>Skip-gram比CBOW更好地处理生僻字（出现频率低的字）</p>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><p>Skip-gram训练时间更长</p>
+<h1 id="加速方法"><a href="#加速方法" class="headerlink" title="加速方法"></a>加速方法</h1><p><code>分层softmax</code> 构建一棵huffman二叉树，计算所有词的概率来定义损失函数</p>
+<p><code>负采样</code> 抽取负样本来定义损失函数</p>
+<h2 id="负采样"><a href="#负采样" class="headerlink" title="负采样"></a>负采样</h2><p>在每一个训练的时间步，我们不去遍历整个词汇表，而<strong>仅仅是抽取一些负样例</strong>！考虑一堆中心词和上下文词(t,c)，如果这个词对来自语料库D（即c是t的上下文词），那么用$P(D=1|t,c)$表示，如果不是来自语料库，即$\tilde{D}$，用$P(D=0|t,c)$表示，其中$\theta$表示模型参数，即$U$和$V$。</p>
+<script type="math/tex; mode=display">
+P(D=1|t,c,\theta) = \sigma(u^T_tv_c) = \frac{1}{1+e^{-u^T_tv_c}}</script><p>采用<strong>极大似然估计</strong>得到：</p>
+<script type="math/tex; mode=display">
+J =\prod _{(t,c)∈D}P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}P(D=0|t,c,\theta) \\\\
+=\prod _{(t,c)∈D}P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}(1-P(D=1|t,c,\theta))\\\\
+logJ=\sum_{(t,c)∈D}logP(D=1|t,c,\theta)+\sum_{(t,c)∈\tilde{D}}log(1-P(D=1|t,c,\theta)) \\\\
+=\sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1-\frac{1}{1+e^{-u^T_tv_c}}) \\\\
+=\sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p>那么<strong>损失函数</strong>就是：</p>
+<script type="math/tex; mode=display">
+J = - \sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} -\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p><strong>Skip-gram</strong></p>
+<p>我们对给定中心词$t$来观察的上下文单词$c−m+j$的新目标函数为：</p>
+<script type="math/tex; mode=display">
+-log \sigma (u_{t-m+j}^T·v_t)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p><strong>CBOW</strong></p>
+<p>我们对给定上下文向量$v_c = V(\frac{x^{t-m} +…+x^{t-1}+x^{t+1},…+x^{t+m}}{2m})$来观察中心词的新目标函数为：</p>
+<script type="math/tex; mode=display">
+- log \sigma(u_o^T·v_c)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p>在上面的公式中，$\tilde{u_k}∣k=1…K$是从$P(w)$ 中抽样。在Tensorflow中，通常会用到nce_loss或者sample_loss。</p>
+<h2 id="分层softmax"><a href="#分层softmax" class="headerlink" title="分层softmax"></a>分层softmax</h2><p>Hierarchical Softmax相比普通的 Softmax这是一种更有效的替代方法。在实际中，<strong>Hierarchical Softmax 对低频词往往表现得更好，负采样对高频词和较低维度向量表现得更好</strong>。</p>
+<p>Hierarchical Softmax使用一个<strong>二叉树</strong>来表示词表中的所有词。树中的每个叶结点都是一个单词，而且只有一条路径从根结点到叶结点。在这个模型中，没有词的输出表示。相反，<strong>图的每个节点（根节点和叶结点除外）与模型要学习的向量相关联</strong>。</p>
+<p>从根节点出发，到达指定叶子节点的路径是唯一的。Hierarchical Softmax正是利用这条路径来计算指定词的概率，而非用softmax来计算。</p>
+<p><img src="/2019/02/21/word2vec/QQ20170831-170735@2x.png" alt=""></p>
+<p> 从根节点出发，走到指定叶子节点$w$的过程，就是一个<strong>进行</strong> $L(w)−1$<strong>次二分类</strong>的过程，$L(w)$为根节点到该叶子节点的路径长度，如$L(w_2)=4$：路径上的每个非叶子节点都拥有两个孩子节点，从当前节点$ n(w,j)$j) 向下走时共有两种选择，走到左孩子节点$ ch(n(w,j))$ 就定义为分类到了正类，走到右孩子节点就定义为分类到了负类。</p>
+<p><strong>CBOW</strong></p>
+<p>隐藏层的输出为$v_c$，用二项Logistic回归模型对每一次分类过程建模：从当前节点$n(w,j)$走到下一节点，那么走到左孩子节点的概率为：$\sigma(u_{n(w,j)}^T v_c)$，那么走到右孩子节点的概率为：$1-\sigma(u_{n(w,j)}^T v_c) = \sigma(-u_{n(w,j)}^T v_c)$。将上式统一起来就是：</p>
+<script type="math/tex; mode=display">
+\sigma([[n(w,j+1)=ch(n(w,j))]](u_{n(w,j)}^T v_c))</script><p>如果括号为真，则输出1，反之输出-1。那么中心词的概率表示为：</p>
+<script type="math/tex; mode=display">
+P(w_t|w_c)\\\\
+=P(w_t|w_{t-m},...,w_{t-1},w_{t+1},...,w_{t+m}) \\\\
+=\prod_{j=1}^{L(w)-1} \sigma([[n(w,j+1)=ch(n(w,j))]](u_{n(w,j)}^T v_c))</script><p><strong>Skip-gram</strong></p>
+<script type="math/tex; mode=display">
+P（w_c|w_t） \\\\
+=\prod_i \prod_{j=1}^{L(w)-1} \sigma([[n(w,j+1)=ch(n(w,j))]](u_{n(w,j)}^T v_{t+i})) \\\\
+i∈\{-m,...,m\}</script><p>参考文献：</p>
+<p>[1]. <a href="https://blog.csdn.net/itplus/article/details/37969979" target="_blank" rel="noopener">word2vec数学原理</a></p>
+<p>[2]. <a href="https://huangzhanpeng.github.io/2017/12/13/cs224n-lecture1-notes/" target="_blank" rel="noopener">cs224n notes_1</a></p>
+<p>[3]. <a href="https://www.cnblogs.com/Determined22/p/5804455.html" target="_blank" rel="noopener">词表示模型</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/19/循环神经网络/" rel="next" title="循环神经网络">
+                <i class="fa fa-chevron-left"></i> 循环神经网络
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">杀死庸碌的时间</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关知识"><span class="nav-number">1.</span> <span class="nav-text">相关知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#两种模型"><span class="nav-number">2.</span> <span class="nav-text">两种模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW"><span class="nav-number">2.1.</span> <span class="nav-text">CBOW</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数说明"><span class="nav-number">2.1.1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络"><span class="nav-number">2.1.2.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">2.1.3.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价"><span class="nav-number">2.1.4.</span> <span class="nav-text">评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skip-gram"><span class="nav-number">2.2.</span> <span class="nav-text">Skip-gram</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数说明-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点-1"><span class="nav-number">2.2.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#加速方法"><span class="nav-number">3.</span> <span class="nav-text">加速方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#负采样"><span class="nav-number">3.1.</span> <span class="nav-text">负采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分层softmax"><span class="nav-number">3.2.</span> <span class="nav-text">分层softmax</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
