@@ -232,6 +232,454 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/25/Transformer/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/25/Transformer/" itemprop="url">Transformer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-25T00:07:21+08:00">
+                2019-02-25
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T00:24:04+08:00">
+                2019-02-25
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/神经网络/" itemprop="url" rel="index">
+                    <span itemprop="name">神经网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  244
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="自注意力"><a href="#自注意力" class="headerlink" title="自注意力"></a>自注意力</h1><p>Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。</p>
+<ol>
+<li><p>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</p>
+</li>
+<li><p>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</p>
+</li>
+</ol>
+<p>Self attention是Google在<code>Attention is all you need</code>论文中提出的<code>The transformer</code>模型中主要的概念之一。Transformer在计算attention的方式有三种：</p>
+<p><img src="/2019/02/25/Transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg" alt=""></p>
+<ol>
+<li><strong>encoder self attention</strong>，存在于encoder间</li>
+<li><strong>decoder self attention</strong>，存在于decoder间</li>
+<li><strong>encoder-decoder attention</strong>, 这种attention算法和过去的attention model相似</li>
+</ol>
+<p>之前在<a href="/2019/02/23/attention注意力机制/" title="Attention注意力机制">Attention注意力机制</a>提到，$K = V$ 时，键值对模式就等价于普通的注意力机制，此时K=V=word embedding vector。而在self attention中，Q=K=V。同时，self attention采用了内积（缩放点积）运算，如图所示：</p>
+<p><img src="/2019/02/25/Transformer/v2-48d5c89102a38d7c53e6fded06e399c0_r.jpg" alt=""></p>
+<h2 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h2>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/23/attention注意力机制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/23/attention注意力机制/" itemprop="url">Attention注意力机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T18:13:03+08:00">
+                2019-02-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T00:33:16+08:00">
+                2019-02-25
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/神经网络/" itemprop="url" rel="index">
+                    <span itemprop="name">神经网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="为什么需要注意力机制"><a href="#为什么需要注意力机制" class="headerlink" title="为什么需要注意力机制"></a>为什么需要注意力机制</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>一般对于输入输出的不同部分具有不同的重要程度。例如，在翻译任务中，输出的第一个单词是一般是基于输入的前几个词，输出的最后几个词可能基于输入的几个词。例如在阅读理解任务中，编码时还不知道可能会接收到什么样的问句。这些问句可能会涉及到背景文章的所有信息点，因此丢失任何信息都可能导致无法正确回答问题。</p>
+<p>注意力一般分为两种：一种是自上而下的有意识的注意力，称为<strong>聚焦式（focus）注意力</strong>。聚焦式注意力是指有预定目的、依赖任务的、主动有意识地聚焦于某一对象的注意力；另一种是自下而上的无意识的注意力，称为基于<strong>显著性（saliency-based）的注意力</strong>。基于显著性的注意力是由外界刺激驱动的注意，不需要主动干预，也和任务无关。</p>
+<p>在目前的神经网络注意力机制也可称为注意力络模型中，我们可以将max pooling、gating机制来近似地看作是自下而上的基于显著性的注意力机制。除此之外，自上而下的会聚式注意力也是一种有效的信息选择方式。</p>
+<h2 id="普通注意力机制"><a href="#普通注意力机制" class="headerlink" title="普通注意力机制"></a>普通注意力机制</h2><p><strong>结构</strong></p>
+<p>用$X = [x_1,…, x_N ]​$表示$N​$个输入信息，为了节省计算资源，不需要将所有的$N​$个输入信息都输入到神经网络进行计算，只需要从$X​$中选择一些和任务相关的信息输入给神经网络。给定一个和任务相关的查询向量$q​$，我们用注意力变量$z ∈ [1, N]​$来表示被选择信息的索引位置，即$z = i​$表示选择了第$i​$个输入信息。为了方便计算，我们采用一种<strong>软性</strong>的信息选择机制，首先计算在给定$q​$ 和$X​$ 下，选择第$i​$个输入信息的概率$α_i​$：</p>
+<script type="math/tex; mode=display">
+\alpha_i = p(z=i|X,q)\\\\
+=softmax(s(x_i,q)) \\\\
+=\frac{exp(s(x_i,q))}{\sum_{j=1}^N exp(s(x_j,q))}</script><p>其中$α_i$ 称为注意力分布（attention distribution），$s(x_i, q)$为注意力打分函数，可以使用以下几种方式来计算：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+加性模型 \ \ \ s(x_i,q)=v^Ttanh(Wx_i+Uq)\\\\
+点积模型 \ \ \ s(x_i,q)=x_i^Tq \\\\
+缩放点积模型 \ \ \ s(x_i,q) = \frac{x_i^Tq}{\sqrt{d}} \\\\
+双线性模型 \ \ \ s(x_i,q)=x_i^TWq
+\end{align}</script><p>其中$W, U, v​$为可学习的网络参数，$d​$为输入信息的维度。理论上，加性模型和点积模型的复杂度差不多，但是点积模型在实现上可以更好地利用矩阵乘积，从而计算效率更高。但当输入信息的维度d比较高，点积模型的值通常有比较大方差，从而导致softmax函数的梯度会比较小。因此，缩放点积模型可以较好地解决这个问题。相比点积模型，双线性模型在计算相似度时引入了非对称性。<br>注意力分布$α_i​$可以解释为在上下文查询$q​$时，第$i​$个信息受关注的程度。我们采用一种<strong>软性</strong>的信息选择机制对输入信息进行编码为:</p>
+<script type="math/tex; mode=display">
+attn(X,q) = \sum_{i=1}^N\alpha_ix_i</script><p><img src="/2019/02/23/attention注意力机制/20190224160525.png" alt=""></p>
+<p><strong>代码</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#keras版本</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Attention</span><span class="params">(Layer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, attention_size, **kwargs)</span>:</span></span><br><span class="line">        self.attention_size = attention_size</span><br><span class="line">        super(Attention, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(self, input_shape)</span>:</span></span><br><span class="line">        <span class="comment"># W: (EMBED_SIZE, ATTENTION_SIZE)</span></span><br><span class="line">        <span class="comment"># b: (ATTENTION_SIZE, 1)</span></span><br><span class="line">        <span class="comment"># u: (ATTENTION_SIZE, 1)</span></span><br><span class="line">        self.W = self.add_weight(name=<span class="string">"W_&#123;:s&#125;"</span>.format(self.name),</span><br><span class="line">                                 shape=(input_shape[<span class="number">-1</span>], self.attention_size),</span><br><span class="line">                                 initializer=<span class="string">"glorot_normal"</span>,</span><br><span class="line">                                 trainable=<span class="keyword">True</span>)</span><br><span class="line">        self.b = self.add_weight(name=<span class="string">"b_&#123;:s&#125;"</span>.format(self.name),</span><br><span class="line">                                 shape=(input_shape[<span class="number">1</span>], <span class="number">1</span>),</span><br><span class="line">                                 initializer=<span class="string">"zeros"</span>,</span><br><span class="line">                                 trainable=<span class="keyword">True</span>)</span><br><span class="line">        self.u = self.add_weight(name=<span class="string">"u_&#123;:s&#125;"</span>.format(self.name),</span><br><span class="line">                                 shape=(self.attention_size, <span class="number">1</span>),</span><br><span class="line">                                 initializer=<span class="string">"glorot_normal"</span>,</span><br><span class="line">                                 trainable=<span class="keyword">True</span>)</span><br><span class="line">        super(Attention, self).build(input_shape)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, mask=None)</span>:</span></span><br><span class="line">        <span class="comment"># input: (BATCH_SIZE, MAX_TIMESTEPS, EMBED_SIZE)</span></span><br><span class="line">        <span class="comment"># et: (BATCH_SIZE, MAX_TIMESTEPS, ATTENTION_SIZE)</span></span><br><span class="line">        et = K.tanh(K.dot(x, self.W) + self.b)</span><br><span class="line">        <span class="comment"># at: (BATCH_SIZE, MAX_TIMESTEPS)</span></span><br><span class="line">        at = K.softmax(K.squeeze(K.dot(et, self.u), axis=<span class="number">-1</span>))</span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            at *= K.cast(mask, K.floatx())</span><br><span class="line">        <span class="comment"># ot: (BATCH_SIZE, MAX_TIMESTEPS, EMBED_SIZE)</span></span><br><span class="line">        atx = K.expand_dims(at, axis=<span class="number">-1</span>)</span><br><span class="line">        ot = atx * x</span><br><span class="line">        <span class="comment"># output: (BATCH_SIZE, EMBED_SIZE)</span></span><br><span class="line">        output = K.sum(ot, axis=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compute_mask</span><span class="params">(self, input, input_mask=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compute_output_shape</span><span class="params">(self, input_shape)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (input_shape[<span class="number">0</span>], input_shape[<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<h1 id="S2S注意力机制"><a href="#S2S注意力机制" class="headerlink" title="S2S注意力机制"></a>S2S注意力机制</h1><p><img src="/2019/02/23/attention注意力机制/0_VwQyyHLPDgEWSD-2_.png" alt=""></p>
+<p>Seq2seq包含Encoder和Decoder，将句子输入至Encoder，即可从Decoder获得目标句。Encoder就是个单纯的RNN/LSTM/GRU（一般为双向结构），而Decoder比Encoder多了一个<strong>context vector，也就是Encoder当中，最后一个hidden state</strong>。然而，对于长句子的翻译，将输入句压缩成固定长度的context vector，当然效果不好。这个时候就需要注意力机制了。</p>
+<p><img src="/2019/02/23/attention注意力机制/v2-bdf257055df55c4cc08bff527519f8cc_hd.jpg" alt=""></p>
+<p>(1) $h_t = RNN_{enc}(x_t,h_{t-1})​$，Encoder方面接受的是每一个单词word embedding，和上一个时间点的hidden state。输出的是这个时间点的hidden state。[6]</p>
+<p>(2) $s_t= RNN_{dec}(\hat{y_{t-1}},s_{t-1})$ ， Decoder方面接受的是目标句子里单词的word embedding，和上一个时间点的hidden state。</p>
+<p>(3) $c_i =\sum_{k=1}^{T_{x}} a_{ij}h_j​$， context vector是一个对于encoder输出的hidden states的一个加权平均。</p>
+<p>(4) $a_{ij} = \frac{exp(e_{ij})}{\sum_{k=1}^{T_{x}}exp(e_{ik})}$，每一个encoder的hidden states对应的权重。</p>
+<p>(5) $e_{ij} = score(s_i,h_j)$，通过decoder的hidden states加上encoder的hidden states来计算一个分数，用于计算权重(4)。</p>
+<p><img src="/2019/02/23/attention注意力机制/v2-129287642af2e34d7e9e0afea9ae766e_hd.jpg" alt=""></p>
+<p>(6) $\hat{s_t} = tanh(W_c[c_t;s_t])​$，将context vector 和 decoder的hidden states 串起来。</p>
+<p>(7) $p(y_t|y_{&lt;t},x)=softmax(W_s \hat{s_t})$，计算最后的输出概率。</p>
+<blockquote>
+<p>(6)：being the transformation function that outputs a vocabulary-sized vector</p>
+<p>与普通注意力机制相比的话，后者的$x_i$即前者的Encoder输出$h_j$，后者的$q$即前者的Decoder输出$s_i$。</p>
+</blockquote>
+<p><img src="/2019/02/23/attention注意力机制/v2-8bb86e339d355020a9334c6a89a4b90d_hd.jpg" alt=""></p>
+<h1 id="注意力机制变体"><a href="#注意力机制变体" class="headerlink" title="注意力机制变体"></a>注意力机制变体</h1><h2 id="Hard-attention-与-Soft-attention"><a href="#Hard-attention-与-Soft-attention" class="headerlink" title="Hard attention 与 Soft attention"></a>Hard attention 与 Soft attention</h2><p><strong>soft attention</strong></p>
+<p>普通注意力其实是软性注意力，其选择的信息是所有输入信息在注意力分布下的期望。</p>
+<p><img src="/2019/02/23/attention注意力机制/2018082211021619.png" alt=""></p>
+<p><strong>Hard attention</strong></p>
+<p>只关注到某一个位置上的信息，叫做硬性注意力。</p>
+<p><img src="/2019/02/23/attention注意力机制/20180822114615980.png" alt=""></p>
+<h2 id="键值对Attention-Model"><a href="#键值对Attention-Model" class="headerlink" title="键值对Attention Model"></a>键值对Attention Model</h2><p><code>键</code>用来计算注意力分布$α_i$，<code>值</code>用来计算聚合信息。</p>
+<div class="note warning"><p>输入句中的每个文字是由一系列成对的 &lt;地址Key, 元素Value&gt;所构成，而目标中的每个文字是Query，那么就可以用Key, Value, Query去重新解释如何计算context vector，透过计算Query和各个Key的相似性，得到每个Key对应Value的权重系数，权重系数代表讯息的重要性，亦即attention score；Value则是对应的讯息，再对Value进行加权求和，得到最终的Attention/context vector。</p></div>
+<p>用$(K, V ) = [(k_1, v_1), …,(k_N , v_N )]$表示$N$个输入信息，给定任务相关的查询向量$q$时，注意力函数为：</p>
+<script type="math/tex; mode=display">
+att((K,V),q) = \sum_{i=1}^N \alpha_i v_i \\\\
+=\sum_{i=1}^N\frac{exp(s(k_i,q))}{\sum_{j=1}exp(s(k_j,q))}v_i</script><p>$s(k_i, q)$为打分函数。<strong>当$K = V$ 时，键值对模式就等价于普通的注意力机制。</strong>注意有些写法把QK的位置互换：</p>
+<p><img src="/2019/02/23/attention注意力机制/20180614214547645.png" alt=""></p>
+<h2 id="多头注意力"><a href="#多头注意力" class="headerlink" title="多头注意力"></a>多头注意力</h2><p>是利用<strong>多个查询</strong>$Q = [q_1, … , q_M]​$，来平行地计算从输入信息中选取多个信息。每个注意力关注输入信息的不同部分。</p>
+<p><img src="/2019/02/23/attention注意力机制/20190224230541.png" alt=""></p>
+<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><p>Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。</p>
+<ol>
+<li><p>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</p>
+</li>
+<li><p>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</p>
+</li>
+</ol>
+<p>参考文献：</p>
+<p>[1]. <a href="https://nndl.github.io/chap-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%A4%96%E9%83%A8%E8%AE%B0%E5%BF%86.pdf" target="_blank" rel="noopener">注意力机制与外部记忆</a></p>
+<p>[2]. <a href="https://zhuanlan.zhihu.com/p/46250529" target="_blank" rel="noopener">从Seq2seq到Attention模型到Self Attention</a></p>
+<p>[4]. <a href="https://arxiv.org/pdf/1409.0473.pdf" target="_blank" rel="noopener">tf.contrib.seq2seq.BahdanauAttention</a></p>
+<p>[5]. <a href="https://arxiv.org/pdf/1508.04025.pdf" target="_blank" rel="noopener">tf.contrib.seq2seq.LuongAttention</a></p>
+<p>[6]. <a href="https://zhuanlan.zhihu.com/p/40920384" target="_blank" rel="noopener">图解seq2seq attention</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/21/word2vec/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1562,7 +2010,7 @@ Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
