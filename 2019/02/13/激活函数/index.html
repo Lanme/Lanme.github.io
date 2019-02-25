@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数7.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/1_ypsvQH7kvtI2BhzR2eT_Sw.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数8.png">
-<meta property="og:updated_time" content="2019-02-20T02:56:10.044Z">
+<meta property="og:updated_time" content="2019-02-25T02:10:46.509Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="激活函数">
 <meta name="twitter:description" content="使用激活函数的目的事实证明，如果你使用线性激活函数(恒等激励函数)或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用Sigmoid函数，那么这个模型的复杂度和没有任何隐藏层的标准Logistic回归是一样的。  在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是">
@@ -288,8 +288,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-20T10:56:10+08:00">
-                2019-02-20
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T10:10:46+08:00">
+                2019-02-25
               </time>
             
           </span>
@@ -377,6 +377,7 @@
       
         <h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用<strong>线性激活函数(恒等激励函数)</strong>或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>Sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的。</p>
 <p> 在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是线性函数，所以除非你引入非线性，否则你无法计算更有趣的函数，即使你的网络层数再多也不行；只有一个地方可以使用线性激活函数———，就是你在做机器学习中的回归问题。 是一个实数，举个例子，比如你想预测房地产价格， 就不是二分类任务0或1，而是一个实数，从0到正无穷。如果是个实数，那么在输出层用线性激活函数也许可行，你的输出也是一个实数，从负无穷到正无穷。</p>
+<a id="more"></a>
 <p> 总而言之，不能在隐藏层用线性激活函数，可以用<strong>ReLU</strong>或者<strong>tanh</strong>或者<strong>leaky ReLU</strong>或者其他的非线性激活函数，唯一可以用线性激活函数的通常就是输出层；除了这种情况，会在隐层用线性函数的，在这之外，在隐层使用线性激活函数非常少见。</p>
 <h2 id="Sigmoid函数"><a href="#Sigmoid函数" class="headerlink" title="Sigmoid函数"></a>Sigmoid函数</h2><p>Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。</p>
 <h3 id="函数形式"><a href="#函数形式" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">

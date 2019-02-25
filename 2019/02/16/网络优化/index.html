@@ -107,7 +107,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20180112195606874.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9d0db64a9c9b050466a039c935f36f93.png">
-<meta property="og:updated_time" content="2019-02-23T09:18:44.673Z">
+<meta property="og:updated_time" content="2019-02-25T02:11:13.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络优化">
 <meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
@@ -299,8 +299,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-23T17:18:44+08:00">
-                2019-02-23
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T10:11:13+08:00">
+                2019-02-25
               </time>
             
           </span>
@@ -397,6 +397,7 @@
 </ul>
 <h1 id="凸问题"><a href="#凸问题" class="headerlink" title="凸问题"></a>凸问题</h1><h2 id="为什么有凸优化问题"><a href="#为什么有凸优化问题" class="headerlink" title="为什么有凸优化问题"></a>为什么有凸优化问题</h2><p>ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找不到全局最小值。</p>
 <p>大多数DL中损失函数都是非凸的[2]，其非凸为什么很难优化？[1]</p>
+<a id="more"></a>
 <p>持续好多年，学术界认为DL在优化的时候包含很多局部极小值，使得优化算法容易陷入到这些局部极小值点中，难以自拔。2014年NIPS的文章《Identifying and attacking the saddle point problem in high-dimensional non-convex optimization》中提出，高维非凸优化的困难之处在于存在大量<code>鞍点</code>（ 鞍点是梯度为0，但一些维度是最高点，另一些维度是最低点）而非局部极小值。</p>
 <p><img src="/2019/02/16/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg" alt=""></p>
 <p>梯度优化算法在鞍点附近，梯度很小，Loss变化很小，形成“卡住了”的现象（而且针对高维情形，鞍点附近的平坦区域可能非常大）。这种现象和局部极小值处的现象一致，或许这就是导致学术界很长一段时间认为高维非凸优化困难的原因是存在大量局部极小值的原因。<strong>二者的区别在于，虽然“卡住了”，但是还是可以从鞍点出走出来（加扰动），有可能进入另一个鞍点附近，但是局部极小值不可以</strong>！</p>

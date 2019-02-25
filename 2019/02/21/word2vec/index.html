@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-111023@2x.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-142826@2x.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-170735@2x.png">
-<meta property="og:updated_time" content="2019-02-23T10:10:58.539Z">
+<meta property="og:updated_time" content="2019-02-25T03:54:23.241Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="word2vec">
 <meta name="twitter:description" content="相关知识GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。 独热编码  离散编码，丢失了单词之间的相似性 词向量  分布式表达，能够编码词之间的关系 两种模型SKip-gram 中心词预测上下文词的">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-23T18:10:58+08:00">
-                2019-02-23
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:54:23+08:00">
+                2019-02-25
               </time>
             
           </span>
@@ -374,6 +374,7 @@
 <p><strong>词向量</strong>  分布式表达，能够编码词之间的关系</p>
 <h1 id="两种模型"><a href="#两种模型" class="headerlink" title="两种模型"></a>两种模型</h1><p><code>SKip-gram</code> 中心词预测上下文词的概率分布</p>
 <p><code>CBOW</code> 上下文词预测中心词的词向量</p>
+<a id="more"></a>
 <p><img src="/2019/02/21/word2vec/20190221112748.png" alt=""></p>
 <h2 id="CBOW"><a href="#CBOW" class="headerlink" title="CBOW"></a>CBOW</h2><p>假设训练语料为$D​$，选择一个窗口$m​$，根据上下文的单词c预测中心词t，使$P(w_t|w_c)​$最大。[2]</p>
 <p><img src="/2019/02/21/word2vec/QQ20170831-111023@2x.png" alt=""></p>
@@ -390,7 +391,7 @@
 <p><code>输入层</code> 中心词的上下文单词生成<strong>one_hot词向量</strong>（$x^{t-m} ,…,x^{t-1},x^{t+1},…,x^{t+m}$）</p>
 <p><code>投影层/隐藏层</code> 将输入的上下文单词的向量叠加在一起并取<strong>平均值</strong>，作为最终的结果</p>
 <script type="math/tex; mode=display">
-v_c = V(\frac{x^{t-m} +...+x^{t-1}+x^{t+1},...+x^{t+m}}{2m})</script><p><code>输出层</code> 将投影层的输出乘以$U​$，计算<strong>语义相似度向量</strong>，对其求概率分布</p>
+v_c = V(\frac{x^{t-m} +...+x^{t-1}+x^{t+1}...+x^{t+m}}{2m})</script><p><code>输出层</code> 将投影层的输出乘以$U​$，计算<strong>语义相似度向量</strong>，对其求概率分布</p>
 <script type="math/tex; mode=display">
 z = U·v_c \\\\
 \hat{y} = P(w_t|w_c) = softmax(z) \\\\
@@ -451,7 +452,7 @@ J = - \sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} -\sum_{(t,c)∈\tilde{D}}lo
 <p>我们对给定中心词$t$来观察的上下文单词$c−m+j$的新目标函数为：</p>
 <script type="math/tex; mode=display">
 -log \sigma (u_{t-m+j}^T·v_t)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p><strong>CBOW</strong></p>
-<p>我们对给定上下文向量$v_c = V(\frac{x^{t-m} +…+x^{t-1}+x^{t+1},…+x^{t+m}}{2m})$来观察中心词的新目标函数为：</p>
+<p>我们对给定上下文向量$v_c = V(\frac{x^{t-m} +…+x^{t-1}+x^{t+1}…+x^{t+m}}{2m})$来观察中心词的新目标函数为：</p>
 <script type="math/tex; mode=display">
 - log \sigma(u_o^T·v_c)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p>在上面的公式中，$\tilde{u_k}∣k=1…K$是从$P(w)$ 中抽样。在Tensorflow中，通常会用到nce_loss或者sample_loss。</p>
 <h2 id="分层softmax"><a href="#分层softmax" class="headerlink" title="分层softmax"></a>分层softmax</h2><p>Hierarchical Softmax相比普通的 Softmax这是一种更有效的替代方法。在实际中，<strong>Hierarchical Softmax 对低频词往往表现得更好，负采样对高频词和较低维度向量表现得更好</strong>。</p>

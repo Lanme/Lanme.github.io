@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/25/Transformer/">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/25/selfattention/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/25/Transformer/" itemprop="url">Transformer</a></h1>
+                <a class="post-title-link" href="/2019/02/25/selfattention/" itemprop="url">Self-attention</a></h1>
         
 
         <div class="post-meta">
@@ -279,7 +279,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T00:24:04+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:57:33+08:00">
                 2019-02-25
               </time>
             
@@ -329,7 +329,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  244
+                  248
                 </span>
               
 
@@ -367,25 +367,19 @@
 
       
         
-          
-            <h1 id="自注意力"><a href="#自注意力" class="headerlink" title="自注意力"></a>自注意力</h1><p>Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。</p>
+          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。</p>
 <ol>
-<li><p>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</p>
-</li>
-<li><p>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</p>
-</li>
+<li>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</li>
+<li>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</li>
 </ol>
 <p>Self attention是Google在<code>Attention is all you need</code>论文中提出的<code>The transformer</code>模型中主要的概念之一。Transformer在计算attention的方式有三种：</p>
-<p><img src="/2019/02/25/Transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg" alt=""></p>
-<ol>
-<li><strong>encoder self attention</strong>，存在于encoder间</li>
-<li><strong>decoder self attention</strong>，存在于decoder间</li>
-<li><strong>encoder-decoder attention</strong>, 这种attention算法和过去的attention model相似</li>
-</ol>
-<p>之前在<a href="/2019/02/23/attention注意力机制/" title="Attention注意力机制">Attention注意力机制</a>提到，$K = V$ 时，键值对模式就等价于普通的注意力机制，此时K=V=word embedding vector。而在self attention中，Q=K=V。同时，self attention采用了内积（缩放点积）运算，如图所示：</p>
-<p><img src="/2019/02/25/Transformer/v2-48d5c89102a38d7c53e6fded06e399c0_r.jpg" alt=""></p>
-<h2 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h2>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/25/selfattention/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -479,7 +473,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T00:33:16+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:56:59+08:00">
                 2019-02-25
               </time>
             
@@ -567,73 +561,15 @@
 
       
         
-          
-            <h1 id="为什么需要注意力机制"><a href="#为什么需要注意力机制" class="headerlink" title="为什么需要注意力机制"></a>为什么需要注意力机制</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>一般对于输入输出的不同部分具有不同的重要程度。例如，在翻译任务中，输出的第一个单词是一般是基于输入的前几个词，输出的最后几个词可能基于输入的几个词。例如在阅读理解任务中，编码时还不知道可能会接收到什么样的问句。这些问句可能会涉及到背景文章的所有信息点，因此丢失任何信息都可能导致无法正确回答问题。</p>
+          <h1 id="为什么需要注意力机制"><a href="#为什么需要注意力机制" class="headerlink" title="为什么需要注意力机制"></a>为什么需要注意力机制</h1><p>一般对于输入输出的不同部分具有不同的重要程度。例如，在翻译任务中，输出的第一个单词是一般是基于输入的前几个词，输出的最后几个词可能基于输入的几个词。例如在阅读理解任务中，编码时还不知道可能会接收到什么样的问句。这些问句可能会涉及到背景文章的所有信息点，因此丢失任何信息都可能导致无法正确回答问题。</p>
 <p>注意力一般分为两种：一种是自上而下的有意识的注意力，称为<strong>聚焦式（focus）注意力</strong>。聚焦式注意力是指有预定目的、依赖任务的、主动有意识地聚焦于某一对象的注意力；另一种是自下而上的无意识的注意力，称为基于<strong>显著性（saliency-based）的注意力</strong>。基于显著性的注意力是由外界刺激驱动的注意，不需要主动干预，也和任务无关。</p>
-<p>在目前的神经网络注意力机制也可称为注意力络模型中，我们可以将max pooling、gating机制来近似地看作是自下而上的基于显著性的注意力机制。除此之外，自上而下的会聚式注意力也是一种有效的信息选择方式。</p>
-<h2 id="普通注意力机制"><a href="#普通注意力机制" class="headerlink" title="普通注意力机制"></a>普通注意力机制</h2><p><strong>结构</strong></p>
-<p>用$X = [x_1,…, x_N ]​$表示$N​$个输入信息，为了节省计算资源，不需要将所有的$N​$个输入信息都输入到神经网络进行计算，只需要从$X​$中选择一些和任务相关的信息输入给神经网络。给定一个和任务相关的查询向量$q​$，我们用注意力变量$z ∈ [1, N]​$来表示被选择信息的索引位置，即$z = i​$表示选择了第$i​$个输入信息。为了方便计算，我们采用一种<strong>软性</strong>的信息选择机制，首先计算在给定$q​$ 和$X​$ 下，选择第$i​$个输入信息的概率$α_i​$：</p>
-<script type="math/tex; mode=display">
-\alpha_i = p(z=i|X,q)\\\\
-=softmax(s(x_i,q)) \\\\
-=\frac{exp(s(x_i,q))}{\sum_{j=1}^N exp(s(x_j,q))}</script><p>其中$α_i$ 称为注意力分布（attention distribution），$s(x_i, q)$为注意力打分函数，可以使用以下几种方式来计算：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-加性模型 \ \ \ s(x_i,q)=v^Ttanh(Wx_i+Uq)\\\\
-点积模型 \ \ \ s(x_i,q)=x_i^Tq \\\\
-缩放点积模型 \ \ \ s(x_i,q) = \frac{x_i^Tq}{\sqrt{d}} \\\\
-双线性模型 \ \ \ s(x_i,q)=x_i^TWq
-\end{align}</script><p>其中$W, U, v​$为可学习的网络参数，$d​$为输入信息的维度。理论上，加性模型和点积模型的复杂度差不多，但是点积模型在实现上可以更好地利用矩阵乘积，从而计算效率更高。但当输入信息的维度d比较高，点积模型的值通常有比较大方差，从而导致softmax函数的梯度会比较小。因此，缩放点积模型可以较好地解决这个问题。相比点积模型，双线性模型在计算相似度时引入了非对称性。<br>注意力分布$α_i​$可以解释为在上下文查询$q​$时，第$i​$个信息受关注的程度。我们采用一种<strong>软性</strong>的信息选择机制对输入信息进行编码为:</p>
-<script type="math/tex; mode=display">
-attn(X,q) = \sum_{i=1}^N\alpha_ix_i</script><p><img src="/2019/02/23/attention注意力机制/20190224160525.png" alt=""></p>
-<p><strong>代码</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#keras版本</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Attention</span><span class="params">(Layer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, attention_size, **kwargs)</span>:</span></span><br><span class="line">        self.attention_size = attention_size</span><br><span class="line">        super(Attention, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(self, input_shape)</span>:</span></span><br><span class="line">        <span class="comment"># W: (EMBED_SIZE, ATTENTION_SIZE)</span></span><br><span class="line">        <span class="comment"># b: (ATTENTION_SIZE, 1)</span></span><br><span class="line">        <span class="comment"># u: (ATTENTION_SIZE, 1)</span></span><br><span class="line">        self.W = self.add_weight(name=<span class="string">"W_&#123;:s&#125;"</span>.format(self.name),</span><br><span class="line">                                 shape=(input_shape[<span class="number">-1</span>], self.attention_size),</span><br><span class="line">                                 initializer=<span class="string">"glorot_normal"</span>,</span><br><span class="line">                                 trainable=<span class="keyword">True</span>)</span><br><span class="line">        self.b = self.add_weight(name=<span class="string">"b_&#123;:s&#125;"</span>.format(self.name),</span><br><span class="line">                                 shape=(input_shape[<span class="number">1</span>], <span class="number">1</span>),</span><br><span class="line">                                 initializer=<span class="string">"zeros"</span>,</span><br><span class="line">                                 trainable=<span class="keyword">True</span>)</span><br><span class="line">        self.u = self.add_weight(name=<span class="string">"u_&#123;:s&#125;"</span>.format(self.name),</span><br><span class="line">                                 shape=(self.attention_size, <span class="number">1</span>),</span><br><span class="line">                                 initializer=<span class="string">"glorot_normal"</span>,</span><br><span class="line">                                 trainable=<span class="keyword">True</span>)</span><br><span class="line">        super(Attention, self).build(input_shape)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, mask=None)</span>:</span></span><br><span class="line">        <span class="comment"># input: (BATCH_SIZE, MAX_TIMESTEPS, EMBED_SIZE)</span></span><br><span class="line">        <span class="comment"># et: (BATCH_SIZE, MAX_TIMESTEPS, ATTENTION_SIZE)</span></span><br><span class="line">        et = K.tanh(K.dot(x, self.W) + self.b)</span><br><span class="line">        <span class="comment"># at: (BATCH_SIZE, MAX_TIMESTEPS)</span></span><br><span class="line">        at = K.softmax(K.squeeze(K.dot(et, self.u), axis=<span class="number">-1</span>))</span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            at *= K.cast(mask, K.floatx())</span><br><span class="line">        <span class="comment"># ot: (BATCH_SIZE, MAX_TIMESTEPS, EMBED_SIZE)</span></span><br><span class="line">        atx = K.expand_dims(at, axis=<span class="number">-1</span>)</span><br><span class="line">        ot = atx * x</span><br><span class="line">        <span class="comment"># output: (BATCH_SIZE, EMBED_SIZE)</span></span><br><span class="line">        output = K.sum(ot, axis=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compute_mask</span><span class="params">(self, input, input_mask=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compute_output_shape</span><span class="params">(self, input_shape)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (input_shape[<span class="number">0</span>], input_shape[<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
-<h1 id="S2S注意力机制"><a href="#S2S注意力机制" class="headerlink" title="S2S注意力机制"></a>S2S注意力机制</h1><p><img src="/2019/02/23/attention注意力机制/0_VwQyyHLPDgEWSD-2_.png" alt=""></p>
-<p>Seq2seq包含Encoder和Decoder，将句子输入至Encoder，即可从Decoder获得目标句。Encoder就是个单纯的RNN/LSTM/GRU（一般为双向结构），而Decoder比Encoder多了一个<strong>context vector，也就是Encoder当中，最后一个hidden state</strong>。然而，对于长句子的翻译，将输入句压缩成固定长度的context vector，当然效果不好。这个时候就需要注意力机制了。</p>
-<p><img src="/2019/02/23/attention注意力机制/v2-bdf257055df55c4cc08bff527519f8cc_hd.jpg" alt=""></p>
-<p>(1) $h_t = RNN_{enc}(x_t,h_{t-1})​$，Encoder方面接受的是每一个单词word embedding，和上一个时间点的hidden state。输出的是这个时间点的hidden state。[6]</p>
-<p>(2) $s_t= RNN_{dec}(\hat{y_{t-1}},s_{t-1})$ ， Decoder方面接受的是目标句子里单词的word embedding，和上一个时间点的hidden state。</p>
-<p>(3) $c_i =\sum_{k=1}^{T_{x}} a_{ij}h_j​$， context vector是一个对于encoder输出的hidden states的一个加权平均。</p>
-<p>(4) $a_{ij} = \frac{exp(e_{ij})}{\sum_{k=1}^{T_{x}}exp(e_{ik})}$，每一个encoder的hidden states对应的权重。</p>
-<p>(5) $e_{ij} = score(s_i,h_j)$，通过decoder的hidden states加上encoder的hidden states来计算一个分数，用于计算权重(4)。</p>
-<p><img src="/2019/02/23/attention注意力机制/v2-129287642af2e34d7e9e0afea9ae766e_hd.jpg" alt=""></p>
-<p>(6) $\hat{s_t} = tanh(W_c[c_t;s_t])​$，将context vector 和 decoder的hidden states 串起来。</p>
-<p>(7) $p(y_t|y_{&lt;t},x)=softmax(W_s \hat{s_t})$，计算最后的输出概率。</p>
-<blockquote>
-<p>(6)：being the transformation function that outputs a vocabulary-sized vector</p>
-<p>与普通注意力机制相比的话，后者的$x_i$即前者的Encoder输出$h_j$，后者的$q$即前者的Decoder输出$s_i$。</p>
-</blockquote>
-<p><img src="/2019/02/23/attention注意力机制/v2-8bb86e339d355020a9334c6a89a4b90d_hd.jpg" alt=""></p>
-<h1 id="注意力机制变体"><a href="#注意力机制变体" class="headerlink" title="注意力机制变体"></a>注意力机制变体</h1><h2 id="Hard-attention-与-Soft-attention"><a href="#Hard-attention-与-Soft-attention" class="headerlink" title="Hard attention 与 Soft attention"></a>Hard attention 与 Soft attention</h2><p><strong>soft attention</strong></p>
-<p>普通注意力其实是软性注意力，其选择的信息是所有输入信息在注意力分布下的期望。</p>
-<p><img src="/2019/02/23/attention注意力机制/2018082211021619.png" alt=""></p>
-<p><strong>Hard attention</strong></p>
-<p>只关注到某一个位置上的信息，叫做硬性注意力。</p>
-<p><img src="/2019/02/23/attention注意力机制/20180822114615980.png" alt=""></p>
-<h2 id="键值对Attention-Model"><a href="#键值对Attention-Model" class="headerlink" title="键值对Attention Model"></a>键值对Attention Model</h2><p><code>键</code>用来计算注意力分布$α_i$，<code>值</code>用来计算聚合信息。</p>
-<div class="note warning"><p>输入句中的每个文字是由一系列成对的 &lt;地址Key, 元素Value&gt;所构成，而目标中的每个文字是Query，那么就可以用Key, Value, Query去重新解释如何计算context vector，透过计算Query和各个Key的相似性，得到每个Key对应Value的权重系数，权重系数代表讯息的重要性，亦即attention score；Value则是对应的讯息，再对Value进行加权求和，得到最终的Attention/context vector。</p></div>
-<p>用$(K, V ) = [(k_1, v_1), …,(k_N , v_N )]$表示$N$个输入信息，给定任务相关的查询向量$q$时，注意力函数为：</p>
-<script type="math/tex; mode=display">
-att((K,V),q) = \sum_{i=1}^N \alpha_i v_i \\\\
-=\sum_{i=1}^N\frac{exp(s(k_i,q))}{\sum_{j=1}exp(s(k_j,q))}v_i</script><p>$s(k_i, q)$为打分函数。<strong>当$K = V$ 时，键值对模式就等价于普通的注意力机制。</strong>注意有些写法把QK的位置互换：</p>
-<p><img src="/2019/02/23/attention注意力机制/20180614214547645.png" alt=""></p>
-<h2 id="多头注意力"><a href="#多头注意力" class="headerlink" title="多头注意力"></a>多头注意力</h2><p>是利用<strong>多个查询</strong>$Q = [q_1, … , q_M]​$，来平行地计算从输入信息中选取多个信息。每个注意力关注输入信息的不同部分。</p>
-<p><img src="/2019/02/23/attention注意力机制/20190224230541.png" alt=""></p>
-<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><p>Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。</p>
-<ol>
-<li><p>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</p>
-</li>
-<li><p>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</p>
-</li>
-</ol>
-<p>参考文献：</p>
-<p>[1]. <a href="https://nndl.github.io/chap-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%A4%96%E9%83%A8%E8%AE%B0%E5%BF%86.pdf" target="_blank" rel="noopener">注意力机制与外部记忆</a></p>
-<p>[2]. <a href="https://zhuanlan.zhihu.com/p/46250529" target="_blank" rel="noopener">从Seq2seq到Attention模型到Self Attention</a></p>
-<p>[4]. <a href="https://arxiv.org/pdf/1409.0473.pdf" target="_blank" rel="noopener">tf.contrib.seq2seq.BahdanauAttention</a></p>
-<p>[5]. <a href="https://arxiv.org/pdf/1508.04025.pdf" target="_blank" rel="noopener">tf.contrib.seq2seq.LuongAttention</a></p>
-<p>[6]. <a href="https://zhuanlan.zhihu.com/p/40920384" target="_blank" rel="noopener">图解seq2seq attention</a></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/23/attention注意力机制/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -727,8 +663,8 @@ att((K,V),q) = \sum_{i=1}^N \alpha_i v_i \\\\
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-23T18:10:58+08:00">
-                2019-02-23
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:54:23+08:00">
+                2019-02-25
               </time>
             
           </span>
@@ -815,114 +751,18 @@ att((K,V),q) = \sum_{i=1}^N \alpha_i v_i \\\\
 
       
         
-          
-            <h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><p>GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。</p>
+          <h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><p>GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。</p>
 <p><strong>独热编码</strong>  离散编码，丢失了单词之间的相似性</p>
 <p><strong>词向量</strong>  分布式表达，能够编码词之间的关系</p>
 <h1 id="两种模型"><a href="#两种模型" class="headerlink" title="两种模型"></a>两种模型</h1><p><code>SKip-gram</code> 中心词预测上下文词的概率分布</p>
 <p><code>CBOW</code> 上下文词预测中心词的词向量</p>
-<p><img src="/2019/02/21/word2vec/20190221112748.png" alt=""></p>
-<h2 id="CBOW"><a href="#CBOW" class="headerlink" title="CBOW"></a>CBOW</h2><p>假设训练语料为$D​$，选择一个窗口$m​$，根据上下文的单词c预测中心词t，使$P(w_t|w_c)​$最大。[2]</p>
-<p><img src="/2019/02/21/word2vec/QQ20170831-111023@2x.png" alt=""></p>
-<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
-<li>$w_i​$：词汇表V的单词$i​$，one_hot向量</li>
-<li>$V$：输入词的矩阵(n,|V|)</li>
-<li>$v_i$ ：$V$的第$i$列，单词$w_i$的输入向量</li>
-<li>$U$：输出词的矩阵(|V|,n)</li>
-<li>$u_i$：$U$的第i行，单词$w_i$的输出向量</li>
-</ul>
-<h3 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h3><blockquote>
-<p>注意各个参数维度上的相乘</p>
-</blockquote>
-<p><code>输入层</code> 中心词的上下文单词生成<strong>one_hot词向量</strong>（$x^{t-m} ,…,x^{t-1},x^{t+1},…,x^{t+m}$）</p>
-<p><code>投影层/隐藏层</code> 将输入的上下文单词的向量叠加在一起并取<strong>平均值</strong>，作为最终的结果</p>
-<script type="math/tex; mode=display">
-v_c = V(\frac{x^{t-m} +...+x^{t-1}+x^{t+1},...+x^{t+m}}{2m})</script><p><code>输出层</code> 将投影层的输出乘以$U​$，计算<strong>语义相似度向量</strong>，对其求概率分布</p>
-<script type="math/tex; mode=display">
-z = U·v_c \\\\
-\hat{y} = P(w_t|w_c) = softmax(z) \\\\
-= \frac{exp(u^T_t· v_c)}{\sum_{i=1}^{|V|} exp(u^T_i· v_c)}</script><h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>这里使用<strong>交叉熵</strong>作为中心词的损失函数：</p>
-<script type="math/tex; mode=display">
-J=-\sum_{t=1}^{|V|}y_t log(\hat{y_t})</script><p>y是one_hot向量，所以简化为：</p>
-<script type="math/tex; mode=display">
-J=-log(\hat{y_t})\\\\
-= -log P(w_t|w_c) \\\\
-= -log \frac{exp(u^T_t· v_c)}{\sum_{i=1}^{|V|} exp(u^T_i· v_c)}\\\\
-=-u^T_tv_c +log\sum_{i=1}^{|V|} exp(u^T_i· v_c)</script><p>模型整体的损失函数为：</p>
-<script type="math/tex; mode=display">
-J = - \sum_{w_{t-m}^{t+m}∈D}log(\hat{y_t})</script><p>求导过程参考：[3]</p>
-<h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>CBOW比Skip-gram训练快</p>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><blockquote>
-<p>The movie is not very good , but i still like it . </p>
-<p>The movie is very good , but i still do not like it .</p>
-<p>I do not like it , but the movie is still very good .</p>
-</blockquote>
-<p>其中第1、3句整体极性是positive，但第2句整体极性就是negative。如果只是通过简单的取平均来作为sentence representation进行分类的话，可能就会很难学出词序对句子语义的影响。</p>
-<p>另外，CBOW会将context word 加起来， 在遇到生僻词时，预测效果将会大大降低。</p>
-<h2 id="Skip-gram"><a href="#Skip-gram" class="headerlink" title="Skip-gram"></a>Skip-gram</h2><p>假设训练语料为$D​$，选择一个窗口$m​$，根据中心词t预测其上下文的单词c，使$P(w_c|w_t)​$最大，其实做法与CBOW大同小异。</p>
-<p><img src="/2019/02/21/word2vec/QQ20170831-142826@2x.png" alt=""></p>
-<h3 id="参数说明-1"><a href="#参数说明-1" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
-<li>$w_i​$：词汇表V的单词$i​$，one_hot向量</li>
-<li>$V$：输入词的矩阵(n,|V|)</li>
-<li>$v_i$ ：$V$的第$i$列，单词$w_i$的输入向量</li>
-<li>$U$：输出词的矩阵(|V|,n)</li>
-<li>$u_i​$：$U​$的第i行，单词$w_i​$的输出向量</li>
-</ul>
-<h3 id="神经网络-1"><a href="#神经网络-1" class="headerlink" title="神经网络"></a>神经网络</h3><p><code>输入层</code> 生成中心词的one_hot词向量$x$</p>
-<p><code>隐藏层/投影层</code> 对中心词计算$v_t = Vx$</p>
-<p><code>输出层</code> 将投影层的输出乘以$U​$，计算<strong>语义相似度向量</strong>，对其求概率分布</p>
-<script type="math/tex; mode=display">
-z = U·v_t \\\\
-\hat{y} = P(w_c|w_t) = softmax(z) \\\\
-= \frac{exp(u^T_c· v_t)}{\sum_{i=1}^{|V|} exp(u^T_i· v_t)}</script><h3 id="损失函数-1"><a href="#损失函数-1" class="headerlink" title="损失函数"></a>损失函数</h3><p>不同于CBOW，由于该模型是预测多个词汇，所以选择引入<strong>朴素贝叶斯假设</strong>来拆分概率。给定中心词，各个输出的词是<code>完全独立</code>的，因此<strong>中心词$t$的损失函数</strong>为：</p>
-<script type="math/tex; mode=display">
-J = -log P(w_{t-m},...,w_{t-1},w_{t+1}...,w_{t+m}|w_t) \\\\
-=-log \prod_{j=0,j≠ m}^{2m} P(w_{t-m+j}|w_t) \\\\
-=-log \prod_{j=0,j≠ m}^{2m} \frac{exp(u^T_{t-m+j}· v_t)}{\sum_{i=1}^{|V|} exp(u^T_i· v_t)} \\\\
-=-\sum_{j=0,j≠ m}^{2m} u^T_{t-m+j}· v_t +2m·log\sum_{i=1}^{|V|} exp(u^T_i· v_t)</script><p><strong>注意对 $|V|​$ 的求和计算量是非常大的！</strong>任何的更新或者对目标函数的评估都要花费 $O(|V|)​$ 的时间复杂度，因此在实际过程中，需要寻找一些加速的技巧。</p>
-<h3 id="评价-1"><a href="#评价-1" class="headerlink" title="评价"></a>评价</h3><h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><p>Skip-gram比CBOW更好地处理生僻字（出现频率低的字）</p>
-<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><p>Skip-gram训练时间更长</p>
-<h1 id="加速方法"><a href="#加速方法" class="headerlink" title="加速方法"></a>加速方法</h1><p><code>分层softmax</code> 构建一棵huffman二叉树，计算所有词的概率来定义损失函数</p>
-<p><code>负采样</code> 抽取负样本来定义损失函数</p>
-<h2 id="负采样"><a href="#负采样" class="headerlink" title="负采样"></a>负采样</h2><p>在每一个训练的时间步，我们不去遍历整个词汇表，而<strong>仅仅是抽取一些负样例</strong>！考虑一堆中心词和上下文词(t,c)，如果这个词对来自语料库D（即c是t的上下文词），那么用$P(D=1|t,c)$表示，如果不是来自语料库，即$\tilde{D}$，用$P(D=0|t,c)$表示，其中$\theta$表示模型参数，即$U$和$V$。</p>
-<script type="math/tex; mode=display">
-P(D=1|t,c,\theta) = \sigma(u^T_tv_c) = \frac{1}{1+e^{-u^T_tv_c}}</script><p>采用<strong>极大似然估计</strong>得到：</p>
-<script type="math/tex; mode=display">
-J =\prod _{(t,c)∈D}P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}P(D=0|t,c,\theta) \\\\
-=\prod _{(t,c)∈D}P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}(1-P(D=1|t,c,\theta))\\\\
-logJ=\sum_{(t,c)∈D}logP(D=1|t,c,\theta)+\sum_{(t,c)∈\tilde{D}}log(1-P(D=1|t,c,\theta)) \\\\
-=\sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1-\frac{1}{1+e^{-u^T_tv_c}}) \\\\
-=\sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p>那么<strong>损失函数</strong>就是：</p>
-<script type="math/tex; mode=display">
-J = - \sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} -\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p><strong>Skip-gram</strong></p>
-<p>我们对给定中心词$t$来观察的上下文单词$c−m+j$的新目标函数为：</p>
-<script type="math/tex; mode=display">
--log \sigma (u_{t-m+j}^T·v_t)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p><strong>CBOW</strong></p>
-<p>我们对给定上下文向量$v_c = V(\frac{x^{t-m} +…+x^{t-1}+x^{t+1},…+x^{t+m}}{2m})$来观察中心词的新目标函数为：</p>
-<script type="math/tex; mode=display">
-- log \sigma(u_o^T·v_c)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p>在上面的公式中，$\tilde{u_k}∣k=1…K$是从$P(w)$ 中抽样。在Tensorflow中，通常会用到nce_loss或者sample_loss。</p>
-<h2 id="分层softmax"><a href="#分层softmax" class="headerlink" title="分层softmax"></a>分层softmax</h2><p>Hierarchical Softmax相比普通的 Softmax这是一种更有效的替代方法。在实际中，<strong>Hierarchical Softmax 对低频词往往表现得更好，负采样对高频词和较低维度向量表现得更好</strong>。</p>
-<p>Hierarchical Softmax使用一个<strong>二叉树</strong>来表示词表中的所有词。树中的每个叶结点都是一个单词，而且只有一条路径从根结点到叶结点。在这个模型中，没有词的输出表示。相反，<strong>图的每个节点（根节点和叶结点除外）与模型要学习的向量相关联</strong>。</p>
-<p>从根节点出发，到达指定叶子节点的路径是唯一的。Hierarchical Softmax正是利用这条路径来计算指定词的概率，而非用softmax来计算。</p>
-<p><img src="/2019/02/21/word2vec/QQ20170831-170735@2x.png" alt=""></p>
-<p> 从根节点出发，走到指定叶子节点$w$的过程，就是一个<strong>进行</strong> $L(w)−1$<strong>次二分类</strong>的过程，$L(w)$为根节点到该叶子节点的路径长度，如$L(w_2)=4$：路径上的每个非叶子节点都拥有两个孩子节点，从当前节点$ n(w,j)$j) 向下走时共有两种选择，走到左孩子节点$ ch(n(w,j))$ 就定义为分类到了正类，走到右孩子节点就定义为分类到了负类。</p>
-<p><strong>CBOW</strong></p>
-<p>隐藏层的输出为$v_c$，用二项Logistic回归模型对每一次分类过程建模：从当前节点$n(w,j)$走到下一节点，那么走到左孩子节点的概率为：$\sigma(u_{n(w,j)}^T v_c)$，那么走到右孩子节点的概率为：$1-\sigma(u_{n(w,j)}^T v_c) = \sigma(-u_{n(w,j)}^T v_c)$。将上式统一起来就是：</p>
-<script type="math/tex; mode=display">
-\sigma([[n(w,j+1)=ch(n(w,j))]](u_{n(w,j)}^T v_c))</script><p>如果括号为真，则输出1，反之输出-1。那么中心词的概率表示为：</p>
-<script type="math/tex; mode=display">
-P(w_t|w_c)\\\\
-=P(w_t|w_{t-m},...,w_{t-1},w_{t+1},...,w_{t+m}) \\\\
-=\prod_{j=1}^{L(w)-1} \sigma([[n(w,j+1)=ch(n(w,j))]](u_{n(w,j)}^T v_c))</script><p><strong>Skip-gram</strong></p>
-<script type="math/tex; mode=display">
-P（w_c|w_t） \\\\
-=\prod_i \prod_{j=1}^{L(w)-1} \sigma([[n(w,j+1)=ch(n(w,j))]](u_{n(w,j)}^T v_{t+i})) \\\\
-i∈\{-m,...,m\}</script><p>参考文献：</p>
-<p>[1]. <a href="https://blog.csdn.net/itplus/article/details/37969979" target="_blank" rel="noopener">word2vec数学原理</a></p>
-<p>[2]. <a href="https://huangzhanpeng.github.io/2017/12/13/cs224n-lecture1-notes/" target="_blank" rel="noopener">cs224n notes_1</a></p>
-<p>[3]. <a href="https://www.cnblogs.com/Determined22/p/5804455.html" target="_blank" rel="noopener">词表示模型</a></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/21/word2vec/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1016,8 +856,8 @@ i∈\{-m,...,m\}</script><p>参考文献：</p>
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-21T12:01:06+08:00">
-                2019-02-21
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T10:11:34+08:00">
+                2019-02-25
               </time>
             
           </span>
@@ -1104,157 +944,15 @@ i∈\{-m,...,m\}</script><p>参考文献：</p>
 
       
         
-          
-            <h1 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>在前馈神经网络中，隐藏层的节点之间是<strong>无连接的</strong>，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。</p>
-<p>RNN本质上是一个<code>递推函数</code>，假设在时刻$t​$，隐藏层的状态为$h_t​$，此时隐藏层不仅和当前时刻的输入$x_t​$有关，还和上一个时刻的隐层状态<span>$h_{t-1}$</span><!-- Has MathJax --> 有关。</p>
-<script type="math/tex; mode=display">
-h_t = f(U x_t+ W h_{t-1}+ b)\\\\
-o_t=g(V*h_t)</script><p>$f(·)​$和$g(·)​$是非线性激活函数，通常为Tanh函数和Softmax函数。</p>
-<p><img src="/2019/02/19/循环神经网络/20190219151815.png" alt=""></p>
-<p><strong>维度解释</strong></p>
-<ul>
-<li><p>input_dim：输入向量的维度，hidden_dim：隐藏层的维度，output_dim：输出向量的维度</p>
-</li>
-<li><p>$x_t$：max_len，word_dim，U：hidden_dim，word_dim</p>
-</li>
-<li><p>W：hidden_dim，hidden_dim，$h_t$：max_len+1，hidden_dim</p>
-</li>
-<li><p>V：output_dim，hidden_dim，$o_t​$：max_len，output_dim</p>
-</li>
-</ul>
-<h2 id="几种模式"><a href="#几种模式" class="headerlink" title="几种模式"></a>几种模式</h2><h3 id="序列到类别"><a href="#序列到类别" class="headerlink" title="序列到类别"></a>序列到类别</h3><ul>
-<li><p>产生<strong>固定大小的表示</strong>，用于下一步处理</p>
-</li>
-<li><p>主要用于序列数据的<code>分类问题</code>，输入为单词的序列，输出为该文本的类别</p>
-</li>
-<li><script type="math/tex; mode=display">
-\hat{y} = g(h_T)</script></li>
-</ul>
-<p><img src="/2019/02/19/循环神经网络/20190219160112.png" alt=""></p>
-<h3 id="同步的序列到序列"><a href="#同步的序列到序列" class="headerlink" title="同步的序列到序列"></a>同步的序列到序列</h3><ul>
-<li><p>每一刻都有输入和输出，<strong>输入序列和输出序列的长度相同</strong></p>
-</li>
-<li><p>主要用于<code>序列标注任务</code></p>
-</li>
-<li><script type="math/tex; mode=display">
-\hat{y_t} = g(h_t)，\ t∈[1,T]</script></li>
-</ul>
-<p><img src="/2019/02/19/循环神经网络/20190219160522.png" alt=""></p>
-<h3 id="异步的序列到序列"><a href="#异步的序列到序列" class="headerlink" title="异步的序列到序列"></a>异步的序列到序列</h3><ul>
-<li><p><strong>输入序列和输出序列不需要严格的对应关系</strong>，也不需要保持相同的长度</p>
-</li>
-<li><p>也被称为<code>编码器-解码器</code></p>
-</li>
-<li><script type="math/tex; mode=display">
-h_t = f_1(h_{t-1},x_t)， \ t∈[1,T]\\\\
-h_{T+t} = f_2(h_{T+t-1},\hat{y_{t-1}})， \ t∈[1,M] \\\\
-\hat{y_t} = g(h_{T+t})， \ t∈[1,M]</script></li>
-</ul>
-<p><img src="/2019/02/19/循环神经网络/20190219160713.png" alt=""></p>
-<h2 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2><p>反向传播参考链接：<a href="https://github.com/go2carter/nn-learn/blob/master/grad-deriv-tex/rnn-grad-deriv.pdf" target="_blank" rel="noopener">rnn-grad-deriv.pdf</a></p>
-<h2 id="参数共享"><a href="#参数共享" class="headerlink" title="参数共享"></a>参数共享</h2><p>不同时刻t中的参数计算（$U、V、W​$）是一样的，即在序列数据的时刻之间共享参数。<strong>共享参数使得模型的复杂度大大减少，并使RNN可以适应任意长度的序列，带来了更好的可推广性</strong>。但是RNN 因为每一个时间步都共享参数的缘故，容易出现<strong>梯度消失</strong>或者<strong>梯度爆炸</strong>。</p>
-<script type="math/tex; mode=display">
-h_t = f(U x_t+ W h_{t-1}+ b)\\\\
-\frac{\partial h_{k+1}}{\partial h_k} = diag(f'(U x_i + W h_{i-1}))W  \\\\ 
-\frac{\partial h_t}{\partial h_i} = \prod_{k=i}^{t-1}\frac{\partial h_{k+1}}{\partial h_k} \\\\
-\frac{\partial h_k}{\partial h_1} = \prod_i^k diag(f'(U x_i + W h_{i-1}))W</script><p>因为循环神经网络经常使用非线性函数为Tanh或者Sigmoid，$f’(x)$永远小于1，所以梯度消失的情况更普遍些，应当重点关注。</p>
-<h2 id="梯度消失"><a href="#梯度消失" class="headerlink" title="梯度消失"></a>梯度消失</h2><p><strong>原因</strong></p>
-<ul>
-<li>激活函数（Sigmoid，Tanh）</li>
-<li>梯度连乘</li>
-</ul>
-<p><strong>如何解决</strong></p>
-<ul>
-<li>relu</li>
-<li>残差结构</li>
-<li>门控机制（LSTM、GRU）</li>
-<li>矩阵初始化</li>
-</ul>
-<h2 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h2><p><strong>优点</strong>  为处理时序数据提供了短期记忆能力</p>
-<p><strong>缺点</strong>  造成<code>梯度爆炸</code>和<code>梯度消失</code>，如果需要的历史信息距离当前位置很远，则RNN无法学习到过去的信息，于是导致无法<code>长期依赖</code>。</p>
-<h1 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h1><p><strong>LSTM与传统RNN的对比</strong></p>
-<p><img src="/2019/02/19/循环神经网络/LSTM3-chain.png" alt=""></p>
-<p><img src="/2019/02/19/循环神经网络/LSTM3-SimpleRNN.png" alt=""></p>
-<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><p><strong>几种信息</strong></p>
-<p><strong>输入信息</strong>  $x_t$  当前时刻的输入信息</p>
-<p><strong>隐藏状态信息(短时记忆)</strong>  $h_t​$  对长时记忆进行变换，在简单循环网络中，隐状态每个时刻都会被重写，因此可以看作是一种短期记忆</p>
-<p><strong>长时记忆</strong>  $c_t$  由上一个长时记忆和候选状态(新的记忆信息)联合而成</p>
-<p><strong>候选状态</strong> c˜t 由当前信息和上一个时刻的短时记忆变换而成</p>
-<p><strong>门结构</strong></p>
-<p>LSTM单元中有<strong>三种调节信息流的门结构</strong>：<code>遗忘门</code>、<code>输入门</code>和<code>输出门</code>。</p>
-<p><strong>遗忘门</strong>  $f_t$控制上一个时刻的长时记忆$c  _ { t - 1 }$需要遗忘多少信息</p>
-<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-f.png" alt=""></p>
-<p><strong>输入门与候选状态</strong>  $i_t$ 控制当前时刻的候选状态c˜t 有多少信息需要保存（同样的信息，计算Sigmoid是保存比例，计算Tanh是得到新的信息）</p>
-<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-i.png" alt=""></p>
-<p><strong>长时记忆</strong>  </p>
-<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-C.png" alt=""></p>
-<p><strong>输出门与短时记忆</strong>  $o_t$控制当前长时记忆$c_t$有多少信息需要输出给$h_t$</p>
-<p><img src="/2019/02/19/循环神经网络/LSTM3-focus-o.png" alt=""></p>
-<h2 id="LSTM中的Tanh和sigmoid函数"><a href="#LSTM中的Tanh和sigmoid函数" class="headerlink" title="LSTM中的Tanh和sigmoid函数"></a>LSTM中的Tanh和sigmoid函数</h2><p>两种函数的功能并不一样。</p>
-<ol>
-<li>sigmoid 用在了各种<code>gate</code>上，产生0~1之间的值，这个一般只有sigmoid最直接了。通过这样，网络能了解哪些数据不重要需要遗忘，哪些数字很重要需要保留。</li>
-<li>tanh 用在了<code>状态</code>和<code>输出</code>上，是对数据的处理，这个原始论文是使用sigmoid，但是后来换成了Tanh。Tanh函数能让输出位于区间(-1, 1)内，从而调节神经网络输出。<strong>对于LSTM和GRU来说，Tanh函数是对原来的输入信息做了一种变换。</strong></li>
-</ol>
-<h2 id="解决梯度消失的原因"><a href="#解决梯度消失的原因" class="headerlink" title="解决梯度消失的原因"></a>解决梯度消失的原因</h2><p><img src="/2019/02/19/循环神经网络/5878a51ee1a94.jpg" alt=""></p>
-<p>对$c_t = fc_{t-1}+i \tilde{c_t}$ 求梯度$\frac{\partial c_t}{\partial c_{t-1}}$，根据求导法则求解如下：[1]</p>
-<script type="math/tex; mode=display">
-\frac{\partial c_t}{\partial c_{t-1}} = \frac{\partial c_t}{\partial f_t}\frac{\partial f_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} + \frac{\partial c_t}{\partial i_t}\frac{\partial i_t}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} +\frac{\partial c_t}{\partial \tilde{c_t}}\frac{\partial \tilde{c_t}}{\partial h_{t-1}}\frac{\partial h_{t-1}}{\partial c_{t-1}} + \frac{\partial c_t}{\partial c_{t-1}}</script><p>重新整理：</p>
-<script type="math/tex; mode=display">
-\frac{\partial c_t}{\partial c_{t-1}} = c_{t-1} \sigma'(·)W_f*o_{t-1}tanh'(c_{t-1}) \\\\
-+\tilde{c_t}\sigma'(·)W_i*o_{t-1}tanh'(c_{t-1}) \\\\
-+ i_t tanh'(·)W_c *o_{t-1}tanh'(c_{t-1}) \\\\
-+f_t</script><p>注意以上梯度和RNN梯度消失的区别，在RNN中，$\frac{\partial h_t}{\partial h_{t-1}}$的结果<strong>要么全部大于1，要么全部在[0,1]之间</strong>（will eventually take on a values that are either always above 1 or always in the range [0,1]），这是导致梯度消失的原因所在。而$\frac{ \partial c_t}{\partial c_{t-1}}$，<strong>在任何时候都可以大于1或者在[0,1]之间</strong>（<em>at any time step</em> can take on either values that are greater than 1 or values in the range [0,1]），因此在多个时刻之后，它不会收敛与0或者无穷大。</p>
-<blockquote>
-<p>This might all seem magical, but it really is just the result of two main things:</p>
-<ul>
-<li>The additive update function for the cell state gives a derivative thats much more ‘well behaved’</li>
-<li>The gating functions allow the network to decide how much the gradient vanishes, and can take on different values at each time step. The values that they take on are learned functions of the current input and hidden state.</li>
-</ul>
-</blockquote>
-<h2 id="LSTM变体"><a href="#LSTM变体" class="headerlink" title="LSTM变体"></a>LSTM变体</h2><h3 id="无遗忘门的LSTM"><a href="#无遗忘门的LSTM" class="headerlink" title="无遗忘门的LSTM"></a>无遗忘门的LSTM</h3><p>亦被称为Origin LSTM，Hochreiter and Schmidhuber [1997]最早提出的LSTM网络是没有遗忘门的，其内部状态的更新为：</p>
-<script type="math/tex; mode=display">
-c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时，长时记忆c会不断增大，记忆单元的容量会饱和，从而大大降低LSTM模型的性能。</p>
-<h3 id="观察口连接"><a href="#观察口连接" class="headerlink" title="观察口连接"></a>观察口连接</h3><p>观察口连接，把观察到的单元状态也连接sigmoid上。</p>
-<p><img src="/2019/02/19/循环神经网络/30_LSTM3-var-peepholes.png" alt=""></p>
-<h3 id="耦合输入门和遗忘门"><a href="#耦合输入门和遗忘门" class="headerlink" title="耦合输入门和遗忘门"></a>耦合输入门和遗忘门</h3><p>LSTM网络中的输入门和遗忘门有些互补关系，因此同时用两个门比较冗余。为了减少LSTM网络的计算复杂度，将这两门合并为一个门。令$i_t = 1-f_t$，更新如下：</p>
-<p><img src="/2019/02/19/循环神经网络/31_LSTM3-var-tied.png" alt=""></p>
-<h1 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h1><p>GRU网络也是引入门机制来控制信息更新的方式。</p>
-<h2 id="与LSTM比较"><a href="#与LSTM比较" class="headerlink" title="与LSTM比较"></a>与LSTM比较</h2><p>GRU将输入门与和遗忘门合并成一个门：<strong>更新门</strong>。同时，GRU也<strong>不引入额外的记忆单元</strong>，在当前状态信息$h_t$和历史状态信息$h_{t-1}​$ 之间引入线性依赖关系，直接用隐藏状态传递信息。</p>
-<h2 id="网络架构-1"><a href="#网络架构-1" class="headerlink" title="网络架构"></a>网络架构</h2><p><img src="/2019/02/19/循环神经网络/32_LSTM3-var-GRU.png" alt=""></p>
-<p><strong>几种信息</strong></p>
-<p><strong>输入信息</strong>  $x_t​$  当前时刻的输入信息</p>
-<p><strong>当前状态信息 </strong> $h_t$  由历史状态信息和候选状态(新的记忆信息)联合而成</p>
-<p><strong>候选状态 </strong>  $\tilde{h_t}$  由当前状态和历史状态信息变换而成</p>
-<p><strong>历史状态信息</strong>  $h_{t-1}​$  </p>
-<p><strong>门结构</strong></p>
-<p><strong>重置门 </strong> $r_t$ 用于控制<strong>忽略</strong>历史状态信息的程度</p>
-<ul>
-<li><p>r = 0时，候选状态$\tilde{h_t} = tanh(W x_t)$只和当前输入$x_t$ 相关，和历史状态信息无关</p>
-</li>
-<li><p>r = 1时，候选状态$\tilde{h_t}= tanh(W·[x_t,h_{t−1} ])​$和当前输入$x_t​$ 和历史状态信息$h_{t−1}​$ 相关，和简单循环网络一致</p>
-</li>
-</ul>
-<p><strong>更新门</strong>  $z_t$ 用于控制历史状态信息被<strong>融合</strong>到当前状态信息中的程度</p>
-<ul>
-<li>z = 0 时，当前状态 ht 和历史状态信息$h_{t−1}$之间为非线性函数</li>
-</ul>
-<ol>
-<li>同时有z = 0, r = 1时，<strong>GRU网络退化为简单循环网络</strong></li>
-<li>同时有z = 0, r = 0时，当前状态信息$h_t$ 只和当前输入$x_t$ 相关，和历史状态信息$h_{t-1}$ 无关</li>
-</ol>
-<ul>
-<li>z = 1时，当前状态信息$h_t = h_{t−1}$等于历史状态信息$h_{t−1}$，和当前输入$x_t$ 无关</li>
-</ul>
-<h2 id="与RNN比较"><a href="#与RNN比较" class="headerlink" title="与RNN比较"></a>与RNN比较</h2><p>RNN寄存器，读取所有寄存器，运算后存入所有寄存器，没有灵活性。</p>
-<p><img src="/2019/02/19/循环神经网络/v2-af6db0674082ccace94429ee79b2adce_hd.jpg" alt=""></p>
-<p>GRU寄存器，允许你灵活地学习。可以有选择地读取子集，有选择地写入，也就是选择读取部分寄存器，执行运算，写入部分寄存器。这里一个门是选择读取子集的什么内容（Reset Gate），另一个门是去重写哪些部分的隐藏状态（Update Gate）。</p>
-<p><img src="/2019/02/19/循环神经网络/v2-af48652c21458d04f891284fb54c8582_hd.jpg" alt=""></p>
-<p>参考文献：</p>
-<p>[1].  <a href="https://weberna.github.io/blog/2017/11/15/LSTM-Vanishing-Gradients.html" target="_blank" rel="noopener">LSTM与梯度消失</a></p>
-<p>[2].  <a href="https://zhuanlan.zhihu.com/p/30465140" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/30465140</a></p>
-<p>[3]. </p>
-
-          
+          <h1 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>在前馈神经网络中，隐藏层的节点之间是<strong>无连接的</strong>，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。</p>
+<p>RNN本质上是一个<code>递推函数</code>，假设在时刻$t$，隐藏层的状态为$h_t$，此时隐藏层不仅和当前时刻的输入$x_t$有关，还和上一个时刻的隐层状态<span>$h_{t-1}$</span><!-- Has MathJax --> 有关。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/19/循环神经网络/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1348,8 +1046,8 @@ c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时�
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-23T17:18:44+08:00">
-                2019-02-23
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T10:11:13+08:00">
+                2019-02-25
               </time>
             
           </span>
@@ -1436,8 +1134,7 @@ c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时�
 
       
         
-          
-            <p>神经网络会遇到许多困难：</p>
+          <p>神经网络会遇到许多困难：</p>
 <ul>
 <li><p>数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）</p>
 </li>
@@ -1448,242 +1145,13 @@ c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时�
 </ul>
 <h1 id="凸问题"><a href="#凸问题" class="headerlink" title="凸问题"></a>凸问题</h1><h2 id="为什么有凸优化问题"><a href="#为什么有凸优化问题" class="headerlink" title="为什么有凸优化问题"></a>为什么有凸优化问题</h2><p>ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找不到全局最小值。</p>
 <p>大多数DL中损失函数都是非凸的[2]，其非凸为什么很难优化？[1]</p>
-<p>持续好多年，学术界认为DL在优化的时候包含很多局部极小值，使得优化算法容易陷入到这些局部极小值点中，难以自拔。2014年NIPS的文章《Identifying and attacking the saddle point problem in high-dimensional non-convex optimization》中提出，高维非凸优化的困难之处在于存在大量<code>鞍点</code>（ 鞍点是梯度为0，但一些维度是最高点，另一些维度是最低点）而非局部极小值。</p>
-<p><img src="/2019/02/16/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg" alt=""></p>
-<p>梯度优化算法在鞍点附近，梯度很小，Loss变化很小，形成“卡住了”的现象（而且针对高维情形，鞍点附近的平坦区域可能非常大）。这种现象和局部极小值处的现象一致，或许这就是导致学术界很长一段时间认为高维非凸优化困难的原因是存在大量局部极小值的原因。<strong>二者的区别在于，虽然“卡住了”，但是还是可以从鞍点出走出来（加扰动），有可能进入另一个鞍点附近，但是局部极小值不可以</strong>！</p>
-<p>在机器学习领域中，非凸优化中的一个核心问题是鞍点的逃逸问题，研究表明，梯度下降法一般可以渐近地逃离鞍点。<strong>梯度下降法</strong>（Gradient descent）是一个一阶最优化算法， 要使用梯度下降法找到一个函数的<strong>局部极小值</strong>，必须向函数上当前点对应梯度的<strong>反方向</strong>的规定步长距离点进行迭代搜索。如果相反地向梯度<strong>正方向</strong>迭代进行搜索，则会接近函数的<strong>局部极大值</strong>点；这个过程则被称为<strong>梯度上升法</strong>。</p>
-<p>梯度下降法如何处理：</p>
-<ul>
-<li><p>预处理</p>
-</li>
-<li><p>初始化</p>
-</li>
-<li><p>学习率</p>
-</li>
-<li><p>梯度下降法的变种</p>
-</li>
-</ul>
-<h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><p>在我们面对多维特征问题的时候，我们要保证这些特征都具有相近的尺度，这将帮助梯度下降算法更快地收敛。</p>
-<p>以房价问题为例，假设我们使用两个特征，房屋的尺寸和房间的数量，尺寸的值为 0-2000平方英尺，而房间数量的值则是0-5，以两个参数分别为横纵坐标，绘制代价函数的等高线图能，看出图像会显得很扁，<strong>取值范围大的特征会占主导作用</strong>，梯度下降算法需要非常多次的迭代才能收敛。</p>
-<p><img src="/2019/02/16/网络优化/966e5a9b00687678374b8221fdd33475.jpg" alt=""></p>
-<p>解决的方法是尝试将所有特征的尺度都尽量缩放到-1到1之间。如图：</p>
-<p><img src="/2019/02/16/网络优化/b8167ff0926046e112acf789dba98057.png" alt=""></p>
-<p>最简单的方法是<code>标准化归一</code>，即令：$s_n = \frac {x_n-\mu_n}{s_n}$，其中$\mu_n$是平均值，$s_n$是标准差。</p>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当你训练神经网络时，权重随机初始化是很重要的。对于逻辑回归，把权重初始化为0当然也是可以的。但是对于一个神经网络，如果你把权重或者参数都初始化为0，那么梯度下降将不会起作用。具体来说，在连接到相同输入的隐藏层中并排的节点必须有不同的权重，这样才能使学习算法更新权重。 这通常被称为在训练期间需要<code>打破对称性</code>（symmetry）。 </p>
-<h3 id="Glorot-Initialization-glorot-uniform-glorot-normal"><a href="#Glorot-Initialization-glorot-uniform-glorot-normal" class="headerlink" title="Glorot Initialization(glorot_uniform, glorot_normal)"></a>Glorot Initialization(<a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L48" target="_blank" rel="noopener">glorot_uniform</a>, <a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L56" target="_blank" rel="noopener">glorot_normal</a>)</h3><p>Glorot Initialization，或者叫 Xavier Initialization，是Xavier Glorot和Yoshua Bengio于2010年提出的初始化方法，该方法的均匀分布版本(glorot_uniform)是Keras中全连接层、二维卷积/反卷积层等层的默认初始化方式。[3]</p>
-<p>假设给定神经元接收n个输入数据$x =[x_1,x_2,…,x_n]$， 并且输出表示为$y$， 权值表示为$w$ . 则有以下公式： </p>
-<script type="math/tex; mode=display">
-y = w_1 x_1 + w_2 x_2 +...+ w_n x_n + b</script><p>其中$b$表示神经元的偏置（bias），由于这里输入数据$x$与权值$w$相互独立，因此对于以上公式中任意一项$w_i x_i$，其方差$Var(w_i x_i)$可表示为：</p>
-<script type="math/tex; mode=display">
-Var(w_i x_i) = E[x_i]^2Var(w_i) + E[w_i]^2Var(x_i) +Var(x_i)Var(w_i)</script><p>这里，如果输入数据已经进行预处理从而使其具有0均值，而且假设权向量的均值也为0，那么以上公式将简化为：</p>
-<script type="math/tex; mode=display">
-Var(w_i x_i) = Var(x_i)Var(w_i)</script><p>如果更进一步，假设$x_i$与$w_i$独立同分布，那么由以上公式可计算出神经元输出$y$的方差为：</p>
-<script type="math/tex; mode=display">
-Var(y) = Var(w_1 x_1 +w_2 x_2 +...+w_n x_n + b) \\\\
- = Var(w_1 x_1) + ... + Var(b) \\\\
- = nVar(x_i)Var(w_i)</script><p>在这里, 我们用$y^{(l)}$来表示第l 层的输出, $n^{(l)}$ 表示该层的输入数据维度，并且使用 $w^{(l)}$表示该层的神经元权值。那么，最后一层（表示为$L^{th}$）的输出方差将可以通过以下方式计算： </p>
-<script type="math/tex; mode=display">
-Var(y^{(L)})  = n^{(L)}Var(y^{(L-1)})Var(w^{(L)}) \\\\
-=  n^{(L)}[n^{(L-1)}Var(y^{(L-2)})Var(w^{(L-1)})]Var(w^{(L)}) \\\\
-=....\\\\
-=Var(x)\prod ^L_{l=1} [n^{(l)}Var(w^{(l)})]</script><p>在以上公式中，中间的连乘项，$\prod ^L_{l=1} [n^{(l)}Var(w^{(l)})]$，是导致深层网络难以优化的一个重要原因。如果其中的每项都小于1，那么一定深度后将会无限趋近于零。另一方面，如果每项都大于1的话，用不了几层就会大到可能越界。因此，为了使得x与y具有相同均值和方差，$n^{(l)}Var(w^{(l)})=1$，权值矩阵的方差则要求$Var(w^{(l)}) = \frac {1}{n^{(l)}}$，类似的，以相同的方式考虑反向传播过程，应当保持$Var(w^{(l)}) = \frac {1}{n^{(l+1)}}$，其中n(l+1)表示该层的输出（即下一层网络的输入）维度。为了综合考虑输入与输出，对正向与反向过程提取调和平均数，即 </p>
-<script type="math/tex; mode=display">
-Var(w^{(l)}) = \frac {2}{n^{(l)} + n^{(l+1)}}</script><p>因此对于正态分布，当输入数据具有0均值与单位方差时只需要按照以上公式调整方差即可。对于均匀分布X∼U[a,b]，其方差计算方式为</p>
-<script type="math/tex; mode=display">
-Var(x) = \frac {(b-a)^2} {12}</script><p>因此，为保证0均值与单位方差，权值$w$的分布应满足：$w^{(l)}$~ $U[- \frac { \sqrt 6}{n^{(l)} + n^{(l+1)}},\frac { \sqrt 6}{n^{(l)} + n^{(l+1)}}]$</p>
-<h3 id="He-Initialization-he-normal-he-uniform"><a href="#He-Initialization-he-normal-he-uniform" class="headerlink" title="He Initialization(he_normal, he_uniform)"></a>He Initialization(<a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L62" target="_blank" rel="noopener">he_normal</a>, <a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L70" target="_blank" rel="noopener">he_uniform</a>)</h3><p>这两种初始化策略由微软亚洲研究院的何凯明等人于2015年正式发表，其基本思路与Glorot方法一致，即通过对权值进行缩放以完成normalization，与Glorot方法不同的是，该方法只考虑前向过程，因此对于正态分布和均匀分布，其公式分别为：</p>
-<p>$w^{(l)}$ ~$N(0,\frac{2}{n^{(l)}})$ （1）   $w^{(l)}$~  $U[- \frac { \sqrt 6}{n^{(l)}},\frac { \sqrt 6}{n^{(l)}}]$（2）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_fans</span><span class="params">(shape)</span>:</span></span><br><span class="line">    fan_in = shape[<span class="number">0</span>] <span class="keyword">if</span> len(shape) == <span class="number">2</span> <span class="keyword">else</span> np.prod(shape[<span class="number">1</span>:])</span><br><span class="line">    fan_out = shape[<span class="number">1</span>] <span class="keyword">if</span> len(shape) == <span class="number">2</span> <span class="keyword">else</span> shape[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">return</span> fan_in, fan_out</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">he_normal</span><span class="params">(shape, name=None)</span>:</span></span><br><span class="line">    fan_in, fan_out = get_fans(shape)</span><br><span class="line">    s = np.sqrt(<span class="number">2.</span> / fan_in)</span><br><span class="line">    <span class="keyword">return</span> normal(shape, s, name=name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">he_uniform</span><span class="params">(shape, name=None)</span>:</span></span><br><span class="line">    fan_in, fan_out = get_fans(shape)</span><br><span class="line">    s = np.sqrt(<span class="number">6.</span> / fan_in)</span><br><span class="line"><span class="keyword">return</span> uniform(shape, s, name=name)</span><br></pre></td></tr></table></figure>
-<h3 id="Orthogonal-Initialization"><a href="#Orthogonal-Initialization" class="headerlink" title="Orthogonal Initialization"></a>Orthogonal Initialization</h3><p>Orthogonal初始化，又称为<strong>正交矩阵初始化</strong>。[4]</p>
-<p>在反向传播的过程中要进行重复的矩阵乘法，而在对其<code>SVD分解</code>过程中，发现随着矩阵乘法次数N的逐渐增大：</p>
-<ul>
-<li>如果所有的特征值的绝对值都小于1，那么矩阵F会逐渐消失。</li>
-<li>如果所有的特征值的绝对值都等于1，那么矩阵F会保持在相应的常数范围内。</li>
-<li>如果所有的特征值的绝对值都大于1，那么矩阵F会逐渐爆炸。</li>
-</ul>
-<p>正交矩阵有许多有意思的特性，最重要的就是正交矩阵的特征值绝对值等于1。这意味着，无论我们重复多少次矩阵乘法，矩阵的结果既不会爆炸也不会消失。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">orthogonal</span><span class="params">(shape)</span>:</span></span><br><span class="line"> </span><br><span class="line">    flat_shape = (shape[<span class="number">0</span>], np.prod(shape[<span class="number">1</span>:]))</span><br><span class="line"> </span><br><span class="line">    a = np.random.normal(<span class="number">0.0</span>, <span class="number">1.0</span>, flat_shape)</span><br><span class="line"> </span><br><span class="line">    u, _, v = np.linalg.svd(a, full_matrices=<span class="keyword">False</span>)</span><br><span class="line"> </span><br><span class="line">    q = u <span class="keyword">if</span> u.shape == flat_shape <span class="keyword">else</span> v</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> q.reshape(shape)</span><br></pre></td></tr></table></figure>
-<h2 id="梯度下降法的变种"><a href="#梯度下降法的变种" class="headerlink" title="梯度下降法的变种"></a>梯度下降法的变种</h2><p>在求解无约束优化问题时，梯度下降是最常采用的方法之一。如果损失函数是凸函数，梯度下降法得到的解就一定是全局最优解，反之如果是非凸函数也可以保证得到局部最优解。</p>
-<h3 id="Mini-batch"><a href="#Mini-batch" class="headerlink" title="Mini-batch"></a>Mini-batch</h3><p>在第e个epoch时，在全部样本N中选取m个训练样本，计算梯度：</p>
-<script type="math/tex; mode=display">
-g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
-\theta_t:=\theta_{t-1} - \alpha·g_t</script><p>其中，$\alpha$为学习率（$\alpha \geq 0$），$1 \leq m \leq N$。</p>
-<p>BGD（m=N）</p>
-<ul>
-<li>每一轮都用所有的样本去更新参数，降低计算效率</li>
-<li>一旦跳入局部最优就无法跳出</li>
-</ul>
-<p>SGD（m=1）</p>
-<ul>
-<li>有一定几率跳出局部最优，到达更好的局部最优或者全局最优</li>
-<li>引入噪声，具有正则化的效果</li>
-<li>批量太小无法充分利用多核架构</li>
-</ul>
-<p><strong>合适的batch_size</strong></p>
-<p>深度学习中存在的一个问题：<em>使用大的batchsize训练网络会导致网络的泛化性能下降</em>（Generalization Gap）。<a href="https://openreview.net/pdf?id=H1oyRlYgg" target="_blank" rel="noopener">文中</a>给出了Generalization Gap现象的解释：大的batchsize训练使得目标函数倾向于收敛到sharp minima（类似于local minima），<code>sharp minima</code>导致了网络的泛化性能下降，同时文中给出了直观的数据支持。而小的batchsize则倾向于收敛到一个<code>flat minima</code>，这个现象支持了大家普遍认为的一个观点：小的batchsize存在固有噪声，这些噪声影响了梯度的变化。[5]</p>
-<p><img src="/2019/02/16/网络优化/20190217221130.png" alt=""></p>
-<p>batchsize设置的不能太大也不能太小，GPU对2的幂次的batch可以发挥更佳的性能，因此设置成16、32、64、128…时往往要比设置为整10、整100的倍数时表现更优。（以下来自deeplearning.ai）首先，如果训练集较小，直接使用<strong>batch</strong>梯度下降法，样本集较小就没必要使用<strong>mini-batch</strong>梯度下降法，你可以快速处理整个训练集，所以使用<strong>batch</strong>梯度下降法也很好，这里的少是说小于<code>2000</code>个样本，这样比较适合使用<strong>batch</strong>梯度下降法。不然，样本数目较大的话，一般的<strong>mini-batch</strong>大小为64到512，考虑到电脑内存设置和使用的方式，如果<strong>mini-batch</strong>大小是2的$n$次方，代码会运行地快一些。</p>
-<h3 id="动量梯度下降法（Momentum）"><a href="#动量梯度下降法（Momentum）" class="headerlink" title="动量梯度下降法（Momentum）"></a>动量梯度下降法（Momentum）</h3><p><img src="/2019/02/16/网络优化/cc2d415b8ccda9fdaba12c575d4d3c4b.png" alt=""></p>
-<p>这种上下波动减慢了梯度下降法的速度，你就无法使用更大的学习率，如果你要用较大的学习率（紫色箭头），结果可能会偏离函数的范围，<strong>为了避免摆动过大，你要用一个较小的学习率</strong>。</p>
-<p>下图的前两行公式为指数加权平均，此时的梯度不再只是现在的数据的梯度，而是有<strong>一定权重的之前的梯度</strong>。就像是把原本的梯度压缩一点，并且补上一个之前就已经存在的<code>动量</code>。每一次梯度下降都会有一个之前的速度的作用，如果我这次的方向与之前相同，则会因为之前的速度继续加速；如果这次的方向与之前相反，则会由于之前存在速度的作用不会产生一个急转弯，而是尽量把路线向一条直线拉过去。</p>
-<p>$v_{dw}​$ 、$v_{db}​$的初始值为0，$\alpha​$、$\beta​$是超参数，$\beta​$通常取为0.9。</p>
-<p><img src="/2019/02/16/网络优化/image1.png" alt=""></p>
-<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>RMSprop 是 Geoff Hinton 提出的一种<code>自适应学习率方法</code>，根据历史梯度累积量来改变学习率。和动量梯度下降法一样，都解决了相同的问题，使梯度下降时的<code>折返情况</code>减轻，从而加快训练速度。因为下降的路线更接近同一个方向，因此也可以将学习率增大来加快训练速度。</p>
-<p><img src="/2019/02/16/网络优化/20190217233658.png" alt=""></p>
-<h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><p><code>RMSProp</code> + <code>Momentum</code></p>
-<p>初始化：$V_{dw}=0，S_{dw}=0，V_{db}=0，S_{db}=0​$</p>
-<p><img src="/2019/02/16/网络优化/9ca9bfc160d53b23ea0d1164e6accffe.png" alt=""></p>
-<p><img src="/2019/02/16/网络优化/e9858303cd62eacc21759b16a121ff58.png" alt=""></p>
-<ul>
-<li>加速收敛</li>
-<li>适合处理稀疏数据</li>
-<li>自适应学习率</li>
-<li>对大多数凸问题的优化有效</li>
-</ul>
-<h3 id="各种优化算法的对比"><a href="#各种优化算法的对比" class="headerlink" title="各种优化算法的对比"></a>各种优化算法的对比</h3><p><img src="/2019/02/16/网络优化/optimizer-1.gif" alt=""></p>
-<p><img src="/2019/02/16/网络优化/optimizer-2.gif" alt=""></p>
-<h2 id="学习率衰减"><a href="#学习率衰减" class="headerlink" title="学习率衰减"></a>学习率衰减</h2><p>将$a$学习率设为<span>$\alpha= f({decay-rate,global-step}) * \alpha_0$</span><!-- Has MathJax --> ，<strong>decay-rate</strong>称为<code>衰减率</code>，<strong>global_step</strong>为<code>步数</code>，$\alpha_0$为<code>初始学习率</code>，注意这个衰减率是另一个你需要调整的超参数。[6]</p>
-<p>分段常数衰减就是在定义好的区间上，分别设置不同的常数值，作为学习率的初始值和后续衰减的取值。</p>
-<p>指数衰减的学习速率计算公式为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decayed_learning_rate = learning_rate * decay_rate ^ (global_step / decay_steps)</span><br></pre></td></tr></table></figure>
-<p>自然指数衰减的学习率计算公式为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)</span><br></pre></td></tr></table></figure>
-<p>红色：阶梯型；绿色：指数型；蓝色指数型衰减：</p>
-<p><img src="/2019/02/16/网络优化/20180315185333871.png" alt=""></p>
-<p><strong>参数cycle</strong>决定学习率是否在下降后重新上升，若cycle为True，则学习率下降后重新上升；使用decay_steps的倍数，取第一个大于global_steps的结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">decay_steps = decay_steps*ceil(global_step/decay_steps)</span><br><span class="line"></span><br><span class="line">decayed_learning_rate = (learning_rate-end_learning_rate)*(1-global_step/decay_steps)^ (power)+end_learning_rate</span><br></pre></td></tr></table></figure>
-<p><strong>参数cycle目的：防止神经网络训练后期学习率过小导致网络一直在某个局部最小值中振荡；这样，通过增大学习率可以跳出局部极小值．</strong></p>
-<p>红色：下降后不再上升；绿色：下降后重新上升： </p>
-<p><img src="/2019/02/16/网络优化/20180315201648786.png" alt=""></p>
-<h2 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h2><p>在深层神经网络或循环神经网络中，除了梯度消失之外，梯度爆炸是影响学习效率的主要因素。在基于梯度下降的优化过程中，如果梯度突然增大，用大的梯度进行更新参数，反而会导致其远离最优点。为了避免这种情况，当梯度的模大于一定阈值时，就对梯度进行截断，称为梯度截断。</p>
-<p>如何判断出现梯度爆炸：</p>
-<ul>
-<li>训练过程中模型梯度快速变大</li>
-<li>训练过程中模型权重变成 NaN 值</li>
-<li>训练过程中，每个节点和层的误差梯度值持续超过1.0</li>
-</ul>
-<p><strong>按值截断</strong> 第t次迭代时，梯度为$g_t$，给定一个区间[a,b]，如果一个参数的梯度小于a，就将其设为a；如果小于b时，就将其设为b。</p>
-<script type="math/tex; mode=display">
-g_t = \max(\min(g_t,b),a)</script><p><strong>按模截断</strong> 将梯度的模截断到一个给定的截断阈值b。</p>
-<p>如果$||g_t||^2 \leq b$，保持$g_t$不变。如果$||g_t||^2 &gt; b$，令</p>
-<script type="math/tex; mode=display">
-g_t = \frac{b}{||g_t||}g_t</script><p>在训练循环神经网络时，按模截断是避免梯度爆炸问题的有效方法。在 Keras 深度学习库中，你可以在训练之前设置优化器上的 clipnorm 或 clipvalue 参数，来使用梯度截断。</p>
-<h1 id="泛化问题"><a href="#泛化问题" class="headerlink" title="泛化问题"></a>泛化问题</h1><h2 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h2><p>图片处理：</p>
-<ul>
-<li>Color Jittering：对颜色的数据增强：图像亮度、饱和度、锐度、变焦；[7]</li>
-<li>PCA  Jittering：首先按照RGB三个颜色通道计算均值和标准差，再在整个训练集上计算协方差矩阵，进行特征分解，得到特征向量和特征值，用来做PCA Jittering；</li>
-<li>Random Scale：尺度变换；</li>
-<li>Random Crop：采用随机图像差值方式，对图像进行裁剪、缩放；包括Scale Jittering方法（VGG及ResNet模型使用）或者尺度和长宽比增强变换；</li>
-<li>Horizontal/Vertical Flip：水平/垂直翻转；</li>
-<li>Shift：平移变换；</li>
-<li>Rotation/Reflection：旋转/仿射变换；</li>
-<li>Noise：高斯噪声、模糊处理</li>
-</ul>
-<p>文本处理：</p>
-<ul>
-<li>clip|pad：对过长或过短的文本进行裁剪或者填充</li>
-<li>随机dropout|替换：给定一个比例随机抽选文本dropout、或者替换成其他单词</li>
-<li>shuffle：打乱文本</li>
-<li>Noise：高斯噪音</li>
-</ul>
-<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p><img src="/2019/02/16/网络优化/f5f9e03bf245e71f5538e12d06a83ea0_hd.jpg" alt=""></p>
-<h3 id="正则项的作用"><a href="#正则项的作用" class="headerlink" title="正则项的作用"></a>正则项的作用</h3><p>（1）实现参数的稀疏，这样可以简化模型，避免过拟合。在一个模型中重要的特征并不是很多，如果考虑所有的特征都是有作用的，那么就会对训练集进行充分的拟合，导致在测试集的表现并不是很好，所以我们需要稀疏参数，简化模型。[8]<br> （2）尽可能保证参数小一些，这又是为啥呢？因为越是复杂的模型，它会对所有的样本点进行拟合，如果在这里包含异常的样本，就会在小区间内产生很大的波动，不同于平均水平的高点或者低点，这样的话，会导致其导数很大，我们知道在多项式导数中，只有参数非常大的时候，才会产生较大的导数，所以<strong>模型越复杂，参数值也就越大</strong>。为了避免这种过度的拟合，需要控制参数值的大小。</p>
-<h3 id="L1正则"><a href="#L1正则" class="headerlink" title="L1正则"></a>L1正则</h3><script type="math/tex; mode=display">
-C=C_0 +\frac{\lambda}{n}\sum_w|w| \\\\
-\frac{\partial C}{\partial w} = \frac{\partial C_0}{\partial w} + \frac{\lambda}{n} sgn(w) \\\\
-w :=w-\frac{\eta \lambda }{n}sgn(w)-\eta \frac{\partial C_0}{\partial w}</script><ul>
-<li>当w为正时，更新后的w变小；当w为负时，更新后的w变大。<strong>因此它的效果就是让w往0靠，使网络中的权重尽可能为0，也就相当于减小了网络复杂度，防止过拟合。</strong></li>
-<li>w等于0时，|w|是不可导，可以规定$sgn(0)=0$，这样就把w=0的情况也统一进来了。</li>
-</ul>
-<h3 id="L2正则"><a href="#L2正则" class="headerlink" title="L2正则"></a>L2正则</h3><p>L2范数是各参数的平方和再求平方根。对于L2的每个元素都很小，但是不会为0，只是接近0，参数越小说明模型越简单，也就越不容易产生过拟合。</p>
-<script type="math/tex; mode=display">
-J(\theta) = \frac{1}{2m}[\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2 + \lambda\sum_{j=1}^n \theta_j^2]</script><p>λ 要做的就是控制惩罚项与均方差之间的平衡关系。 </p>
-<p>λ越大说明，参数被打压得越厉害，θ值也就越小</p>
-<script type="math/tex; mode=display">
-C=C_0 +\frac{\lambda}{2n}\sum_w w^2 \\\
-\frac{\partial C}{\partial w} = \frac{\partial C_0}{\partial w} + \frac{\lambda}{n} w \\\\
-w :=w-\frac{\eta \lambda }{n}w-\eta \frac{\partial C_0}{\partial w} \\\\
-=(1-\frac{\eta \lambda}{n})w - \eta\frac{\partial C_0}{\partial w}</script><ul>
-<li><p>在不使用L2正则化时，求导结果中w前系数为1，现在w前面系数为 1-ηλ/n ，因为η、λ、n都是正的，在样本量充足的时候，1-ηλ/n小于1，它的效果是减小w，这也就是权重衰减的由来。</p>
-</li>
-<li><p>考虑到后面的导数项，w最终的值可能增大也可能减小</p>
-</li>
-</ul>
-<p><img src="/2019/02/16/网络优化/20140504123020546.png" alt=""></p>
-<p>我们将模型空间限制在w的一个L1-ball 中。为了便于可视化，我们考虑两维的情况，在($w_1$,$ w_2$)平面上可以画出目标函数的等高线，而约束条件则成为平面上半径为C的一个 norm ball 。等高线与 norm ball 首次相交的地方就是最优解：</p>
-<p>可以看到，L1-ball 与L2-ball 的不同就在于L1在和每个坐标轴相交的地方都有“角”出现，而目标函数的测地线除非位置摆得非常好，大部分时候都会在角的地方相交。注意到在角的位置就会产生<strong>稀疏性</strong>，例如图中的相交点就有$w_1​$=0，而更高维的时候（想象一下三维的L1-ball 是什么样的？）除了角点以外，还有很多边的轮廓也是既有很大的概率成为第一次相交的地方，又会产生稀疏性。</p>
-<p>相比之下，L2-ball 就没有这样的性质，因为没有角，所以<strong>第一次相交的地方出现在具有稀疏性的位置的概率就变得非常小了</strong>。这就从直观上来解释了为什么L1-regularization 能产生稀疏性，而L2-regularization 不行的原因了。</p>
-<blockquote>
-<p>   因此，一句话总结就是：L1会趋向于产生少量的特征，而其他的特征都是0，而L2会选择更多的特征，这些特征都会接近于0。Lasso在特征选择时候非常有用，而Ridge就只是一种规则化而已。</p>
-</blockquote>
-<h2 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h2><p><strong>Dropout</strong>会遍历网络的每一层，并设置消除神经网络中节点的概率。</p>
-<p>假设网络中的每一层，每个节点都以抛硬币的方式设置概率，每个节点得以<code>保留</code>和<code>消除</code>的概率是<code>p</code>和<code>1-p</code>，设置完节点概率，我们会消除一些节点，然后删除掉从该节点进出的连线，最后得到一个节点更少，规模更小的网络，然后用<strong>backprop</strong>方法进行训练。</p>
-<p>反向传播的时候，<strong>0的神经元的参数就不再更新。</strong></p>
-<p>预测的时候，要<strong>保留</strong>所有的神经元，即不使用Dropout。</p>
-<p><img src="/2019/02/16/网络优化/e45f9a948989b365650ddf16f62b097e.png" alt=""></p>
-<p><img src="/2019/02/16/网络优化/9fa7196adeeaf88eb386fda2e9fa9909.png" alt=""></p>
-<h2 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h2><h3 id="为什么需要归一化"><a href="#为什么需要归一化" class="headerlink" title="为什么需要归一化"></a>为什么需要归一化</h3><ul>
-<li>神经网络学习过程本质就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低</li>
-<li>上层参数需要不断适应新的输入数据分布，降低学习速度。</li>
-<li>下层输入的变化可能趋向于变大或者变小，导致上层落入饱和区，使得学习过早停止</li>
-<li>每层的更新都会影响到其它层，因此每层的参数更新策略需要尽可能的谨慎</li>
-</ul>
-<p>对于深度网络的训练是一个复杂的过程，只要网络的前面几层发生微小的改变，那么后面几层就会被累积放大下去。一旦网络某一层的输入数据的分布发生改变，那么这一层网络就需要去适应学习这个新的数据分布，所以如果训练过程中，<strong>训练数据的分布一直在发生变化，那么将会影响网络的训练速度</strong>。</p>
-<h3 id="BatchNorm"><a href="#BatchNorm" class="headerlink" title="BatchNorm"></a>BatchNorm</h3><p><img src="/2019/02/16/网络优化/v2-13bb64b6122e98421ea3528539c1bffc_hd.jpg" alt=""></p>
-<p>对每一个batch的输入都进行归一化，<strong>把数据转换为均值为0、方差为1的高斯分布</strong>。</p>
-<script type="math/tex; mode=display">
-\hat{x} = \frac{x-E(x)}{\sqrt{Var(x)+\epsilon}}</script><p>但是，<strong>强行归一化会破坏掉刚刚学习到的特征</strong> ，把每层的数据分布都固定了，但不一定是前面一层学习到的数据分布。因此，设置两个可以学习的变量<code>扩展参数</code>$γ$ ，和<code>平移参数</code> $β$ ，<strong>用这两个变量去还原上一层应该学习到的数据分布</strong>。[9]</p>
-<script type="math/tex; mode=display">
-y^{(k)} = \gamma^{(k)}\hat{x}^{(k)}+\beta^{(k)} \\\\</script><p>引入了这个可学习重构参数$γ、β$，让我们的网络可以学习恢复出原始网络所要学习的特征分布。最后Batch Normalization网络层的前向传导过程公式就是：</p>
-<p><img src="/2019/02/16/网络优化/20180112195606874.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Batchnorm_simple_for_train</span><span class="params">(x, gamma, beta, bn_param)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">param:x    : 输入数据，设shape(B,L)</span></span><br><span class="line"><span class="string">param:gama : 缩放因子  γ</span></span><br><span class="line"><span class="string">param:beta : 平移因子  β</span></span><br><span class="line"><span class="string">param:bn_param   : batchnorm所需要的一些参数</span></span><br><span class="line"><span class="string">	eps      : 接近0的数，防止分母出现0</span></span><br><span class="line"><span class="string">	momentum : 动量参数，一般为0.9， 0.99， 0.999</span></span><br><span class="line"><span class="string">	running_mean ：滑动平均的方式计算新的均值，训练时计算，为测试数据做准备</span></span><br><span class="line"><span class="string">	running_var  : 滑动平均的方式计算新的方差，训练时计算，为测试数据做准备</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">	running_mean = bn_param[<span class="string">'running_mean'</span>]  <span class="comment">#shape = [B]</span></span><br><span class="line">    running_var = bn_param[<span class="string">'running_var'</span>]    <span class="comment">#shape = [B]</span></span><br><span class="line">	results = <span class="number">0.</span> <span class="comment"># 建立一个新的变量</span></span><br><span class="line">    </span><br><span class="line">	x_mean=x.mean(axis=<span class="number">0</span>)  <span class="comment"># 计算x的均值</span></span><br><span class="line">    x_var=x.var(axis=<span class="number">0</span>)    <span class="comment"># 计算方差</span></span><br><span class="line">    x_normalized=(x-x_mean)/np.sqrt(x_var+eps)       <span class="comment"># 归一化</span></span><br><span class="line">    results = gamma * x_normalized + beta            <span class="comment"># 缩放平移</span></span><br><span class="line"></span><br><span class="line">    running_mean = momentum * running_mean + (<span class="number">1</span> - momentum) * x_mean</span><br><span class="line">    running_var = momentum * running_var + (<span class="number">1</span> - momentum) * x_var</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#记录新的值</span></span><br><span class="line">    bn_param[<span class="string">'running_mean'</span>] = running_mean</span><br><span class="line">    bn_param[<span class="string">'running_var'</span>] = running_var </span><br><span class="line">    </span><br><span class="line">	<span class="keyword">return</span> results , bn_param</span><br></pre></td></tr></table></figure>
-<p><strong>优点</strong></p>
-<ul>
-<li>Batchnorm本身上也是一种正则的方式，可以代替其他正则方式如dropout等</li>
-<li>没有它之前，需要小心的调整学习率和权重初始化，但是有了BN可以放心的使用大学习率，但是使用了BN，就不用小心的调参了，较大的学习率极大的提高了学习速度</li>
-</ul>
-<p><strong>缺点</strong></p>
-<ul>
-<li><p>批量归一化是对一个中间层的单个神经元进行归一化操作，因此要求<strong>小批量样本的数量不能太小</strong>，否则难以计算单个神经元的统计信息</p>
-</li>
-<li><p>由于 BN 需要在运行过程中统计每个 mini-batch 的一阶统计量和二阶统计量，如果一个神经元的净输入的分布在神经网络中是<strong>动态变化</strong>的，比如循环神经网络，那么就无法应用批量归一化操作</p>
-</li>
-</ul>
-<p><strong>位置</strong></p>
-<p>一般<strong>在全连接层和激活函数之间</strong>添加BN层</p>
-<p><strong>适用</strong></p>
-<p>每个 mini-batch 比较大，数据分布比较接近。在进行训练之前，要做好充分的 shuffle，否则效果会差很多。</p>
-<h3 id="LayerNorm"><a href="#LayerNorm" class="headerlink" title="LayerNorm"></a>LayerNorm</h3><p>与 BN 不同，LN 是一种横向的规范化。</p>
-<p><img src="/2019/02/16/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg" alt=""></p>
-<p>它综合考虑一层所有维度的输入，计算该层的平均输入值和输入方差，然后用同一个规范化操作来转换各个维度的输入。</p>
-<p>对于一个深层神经网络中，令第$l$层神经的净输入为$z^{(l)}$，其均值和方差为：</p>
-<script type="math/tex; mode=display">
-\mu^{(l)} = \frac{1}{n^l}\sum_{i=1}^{n^l} z_i^{(l)} \\\\
-\sigma^{(l)^2} = \frac{1}{n^l}\sum_{k=1}^{n^l} (z_i^{(l)}-\mu^{(l)})^2</script><p>其中$n^{l}​$为第l层神经元的数量。</p>
-<p>层归一化的定义为：</p>
-<script type="math/tex; mode=display">
-\hat{z}^{(l)} = \frac{z^{(l)} - \mu^{(l)}}{\sqrt{\sigma^{(l)^2} + \epsilon}} \odot \gamma + \beta \\\\
-=LayerNorm_{\gamma,\beta}(z^{l})</script><p>其中$\gamma$和$\beta$分别代表缩放和平移的参数向量。对循环神经层进行归一化操作。假设在时刻t，循环神经网络的隐藏层为$h_t$，其层归一化的更新为：</p>
-<script type="math/tex; mode=display">
-z_t = Uh_{t-1}+Wx_t \\\\
-h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻的输入，U、W为网络参数。</p>
-<h2 id="Early-Stop"><a href="#Early-Stop" class="headerlink" title="Early Stop"></a>Early Stop</h2><p><img src="/2019/02/16/网络优化/9d0db64a9c9b050466a039c935f36f93.png" alt=""></p>
-<p>当你还未在神经网络上运行太多迭代过程的时候，参数$w$接近0，因为随机初始化$w$值时，它的值可能都是较小的随机值，所以在你长期训练神经网络之前$w$依然很小，在迭代过程和训练过程中<strong>$w$的值会变得越来越大</strong>，比如在这儿，神经网络中参数$w$的值已经非常大了，所以<strong>early stopping</strong>要做就是在中间点停止迭代过程。</p>
-<p><strong>early stopping</strong>的主要缺点就是你不能独立地处理这两个问题，因为提早停止梯度下降，也就是停止了优化代价函数$J$，因为现在你不再尝试降低代价函数$J$，所以<strong>代价函数$J$的值可能不够小，同时你又希望不出现过拟合</strong>，你没有采取不同的方式来解决这两个问题，而是用一种方法同时解决两个问题，这样做的结果是我要考虑的东西变得更复杂。</p>
-<p><strong>Early stopping</strong>的优点是，只运行一次梯度下降，你可以找出$w$的较小值，中间值和较大值，而无需尝试$L2$正则化超级参数$\lambda$的很多值。</p>
-<p>参考资料：</p>
-<p>[1].  <a href="https://zhpmatrix.github.io/2017/12/31/neural-networks-theory/" target="_blank" rel="noopener">[DL]扯扯神经网络的优化理论</a></p>
-<p>[2].  <a href="https://www.zhihu.com/question/265516791" target="_blank" rel="noopener">为什么损失函数是非凸的</a></p>
-<p>[3].  <a href="http://www.yanglajiao.com/article/QiaXi/52632935" target="_blank" rel="noopener">初始化方法</a></p>
-<p>[4].  <a href="https://zhuanlan.zhihu.com/p/28981495" target="_blank" rel="noopener">正交矩阵初始化1</a> <a href="https://zhuanlan.zhihu.com/p/28981495" target="_blank" rel="noopener">正交矩阵初始化2</a></p>
-<p>[5].  <a href="https://www.jianshu.com/p/8e96667fc996" target="_blank" rel="noopener">batch_size</a></p>
-<p>[6].  <a href="https://blog.csdn.net/akadiao/article/details/79560731" target="_blank" rel="noopener">学习率衰减</a></p>
-<p>[7].  <a href="https://zhuanlan.zhihu.com/p/23249000" target="_blank" rel="noopener">图片数据增强</a></p>
-<p>[8].  <a href="https://www.jianshu.com/p/70487abdf96b" target="_blank" rel="noopener">正则项</a></p>
-<p>[9].  <a href="https://blog.csdn.net/qq_25737169/article/details/79048516" target="_blank" rel="noopener">批归一化</a></p>
-<p>[n].  deeplearning.ai</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/16/网络优化/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1777,8 +1245,8 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-20T10:56:10+08:00">
-                2019-02-20
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T10:10:46+08:00">
+                2019-02-25
               </time>
             
           </span>
@@ -1865,72 +1333,15 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
 
       
         
-          
-            <h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用<strong>线性激活函数(恒等激励函数)</strong>或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>Sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的。</p>
+          <h2 id="使用激活函数的目的"><a href="#使用激活函数的目的" class="headerlink" title="使用激活函数的目的"></a>使用激活函数的目的</h2><p>事实证明，如果你使用<strong>线性激活函数(恒等激励函数)</strong>或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用<strong>Sigmoid</strong>函数，那么这个模型的复杂度和没有任何隐藏层的标准<strong>Logistic</strong>回归是一样的。</p>
 <p> 在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是线性函数，所以除非你引入非线性，否则你无法计算更有趣的函数，即使你的网络层数再多也不行；只有一个地方可以使用线性激活函数———，就是你在做机器学习中的回归问题。 是一个实数，举个例子，比如你想预测房地产价格， 就不是二分类任务0或1，而是一个实数，从0到正无穷。如果是个实数，那么在输出层用线性激活函数也许可行，你的输出也是一个实数，从负无穷到正无穷。</p>
-<p> 总而言之，不能在隐藏层用线性激活函数，可以用<strong>ReLU</strong>或者<strong>tanh</strong>或者<strong>leaky ReLU</strong>或者其他的非线性激活函数，唯一可以用线性激活函数的通常就是输出层；除了这种情况，会在隐层用线性函数的，在这之外，在隐层使用线性激活函数非常少见。</p>
-<h2 id="Sigmoid函数"><a href="#Sigmoid函数" class="headerlink" title="Sigmoid函数"></a>Sigmoid函数</h2><p>Sigmoid函数是深度学习领域开始时使用频率最高的激活函数。</p>
-<h3 id="函数形式"><a href="#函数形式" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
-\sigma(x) = \frac{1}{1+e^{-x}}</script><script type="math/tex; mode=display">
-\sigma'(x) = \sigma(x)(1-\sigma(x))</script><p><img src="/2019/02/13/激活函数/激活函数1.png" alt="1"></p>
-<h3 id="Sigmoid梯度消失的原因"><a href="#Sigmoid梯度消失的原因" class="headerlink" title="Sigmoid梯度消失的原因"></a>Sigmoid梯度消失的原因</h3><p><img src="/2019/02/13/激活函数/激活函数2.png" alt="1"></p>
-<p>首先看一个简单的深度神经网络，每一层都只有一个简单的神经元，那么关于$b_1$的梯度，根据链式求导法则为：</p>
-<script type="math/tex; mode=display">
-\frac{\partial C}{\partial b_1} = \sigma'(z_1)w_2\sigma'(z_2)w_3\sigma'(z_3)w_4\sigma'(z_4)
-\frac{\partial C}{\partial a_4}</script><p>根据上图的Sigmoid函数求导的曲线，该导数在$\sigma’(0) = \frac{1}{4}​$时达到最高。如果我们初始化网络中的权重，假设初始化方法为均值为0方差为1的正态分布，那么所有的权重都会满足$w&lt;1​$。那么参数求导的过程中，$\sigma’(z_j)w_j&lt;\frac{1}{4}​$，并且随着参数项的叠加，乘积也在不断下降，最终$\frac{\partial C}{\partial b_1}​$要远远小于1/4。</p>
-<h3 id="zero-centered"><a href="#zero-centered" class="headerlink" title="zero-centered"></a>zero-centered</h3><p>Sigmoid函数的输出值恒大于0，会导致模型训练的收敛速度变慢。比如下图所示，显然并非一个好的优化路径。</p>
-<p><img src="/2019/02/13/激活函数/激活函数3.png" alt="1"></p>
-<p>Sigmoid 函数包含 <code>exp 指数运算</code>，运算成本也比较大。</p>
-<h2 id="Tanh函数"><a href="#Tanh函数" class="headerlink" title="Tanh函数"></a>Tanh函数</h2><p>Tanh函数即双曲正切函数。</p>
-<h3 id="函数形式-1"><a href="#函数形式-1" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
-tanh(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}</script><script type="math/tex; mode=display">
-tanh'(x) = 1-(tanh(x))^2</script><p><img src="/2019/02/13/激活函数/激活函数4.png" alt="1"></p>
-<h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><p>优点：解决了zero-centered的输出问题</p>
-<p>缺点：<code>梯度消失</code>的问题和<code>幂运算</code>的问题仍然存在，其饱和区甚至比 Sigmoid 还要大一些，但不明显。</p>
-<p><img src="/2019/02/13/激活函数/20190219103103.png" alt=""></p>
-<h3 id="Tanh与Sigmoid"><a href="#Tanh与Sigmoid" class="headerlink" title="Tanh与Sigmoid"></a>Tanh与Sigmoid</h3><p><img src="/2019/02/13/激活函数/激活函数5.png" alt="1"><img src="/2019/02/13/激活函数/激活函数6.png" alt="1"></p>
-<h3 id="RNN中的Tanh函数"><a href="#RNN中的Tanh函数" class="headerlink" title="RNN中的Tanh函数"></a>RNN中的Tanh函数</h3><p>循环神经网络用的激活函数经常是<strong>Tanh</strong>，不过有时候也会用<strong>ReLU</strong>，但是<strong>Tanh</strong>是更通常的选择，我们有其他方法来避免梯度消失问题。 另外，RNN中的激活函数是可以改的，如果采用Relu函数的话，注意梯度爆炸的时候要采用梯度修剪。 </p>
-<p>事实上梯度消失在训练<strong>RNN</strong>时是首要的问题，尽管梯度爆炸也是会出现，但是梯度爆炸很明显，因为指数级大的梯度会让你的参数变得极其大，以至于你的网络参数崩溃。所以梯度爆炸很容易发现，因为参数会大到崩溃，你会看到很多<strong>NaN</strong>，或者不是数字的情况，这意味着你的网络计算出现了数值溢出。如果你发现了梯度爆炸的问题，一个解决方法就是用<code>梯度修剪</code>。梯度修剪的意思就是观察你的梯度向量，如果它大于某个阈值，缩放梯度向量，保证它不会太大，这就是通过一些最大值来修剪的方法。所以如果你遇到了梯度爆炸，如果导数值很大，或者出现了<strong>NaN</strong>，就用梯度修剪，这是相对比较鲁棒的，这是梯度爆炸的解决方法。</p>
-<h2 id="Relu函数"><a href="#Relu函数" class="headerlink" title="Relu函数"></a>Relu函数</h2><p>Relu函数其实就是一个取最大值函数，这并不是全区间可导的。</p>
-<h3 id="函数形式-2"><a href="#函数形式-2" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
-Relu = max(0,x)</script><p><img src="/2019/02/13/激活函数/激活函数7.png" alt="1"></p>
-<h3 id="评价-1"><a href="#评价-1" class="headerlink" title="评价"></a>评价</h3><p>优点：</p>
-<ul>
-<li>解决了梯度消失的问题（正区间）</li>
-<li>计算简单，速度非常快</li>
-<li>收敛速度远快于Sigmoid和Tanh</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>输出不是zero-centered</li>
-<li>Dead Relu Problem</li>
-</ul>
-<p><code>Dead Relu Problem</code>是指某些神经元可能永远都不会被激活，导致相应的参数永远都不能被更新。有主要两个原因可能导致：1、非常不幸的参数初始化 2、学习速率太高导致。</p>
-<script type="math/tex; mode=display">
-y = Wx+b \\
-W:W-\eta*\frac{dL}{dW}</script><p>当学习率$\eta$大的时候，W会变成负数，导致relu(y)=0。解决方法是采用HE初始化方法，以及避免将学习速率设置太大。如果不好解决，可以试试 Leaky ReLU、PReLU 或者 Maxout。</p>
-<blockquote>
-<p>xavier初始化对Tanh有效</p>
-<p> he初始化对Relu 有效</p>
-</blockquote>
-<p>为什么he或者xavier初始化有效？（参考deeplearning,ai的解释）</p>
-<p>$z = w_1 x_1 +w_2 x_2 +…+ w_n x_n$，暂时忽略$b$，为了预防$z$值过大或过小，可以看到当n越大，你希望$w_i$越小，因为z是$w_i x_i$的和，如果你把很多此类项相加，希望每项值更小，那么最合理的方法就是$w_i = \frac{1}{n}$，n表示神经元的输入特征数量，实际上，你要做的就是设置某层权重矩阵$w^{[l]} = np.random.randn( \text{shape}) * \text{np.}\text{sqrt}(\frac{1}{n^{[l-1]}})$，$n^{[l - 1]}$就是我喂给第$l$层神经单元的数量（即第$l-1$层神经元数量）。</p>
-<h2 id="Leaky-Relu函数"><a href="#Leaky-Relu函数" class="headerlink" title="Leaky Relu函数"></a>Leaky Relu函数</h2><p>Leaky Relu在输入x&lt;0时，保持一个很小的梯度$\lambda$。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能激活。</p>
-<script type="math/tex; mode=display">
-Leaky Relu(x) = \left\{
-\begin{aligned}
-x ,if\  x>0 \\
-\gamma x,if \ x\leq0
-\end{aligned}
-\right.
-\\\\=\max(0,x) +\gamma \min (0,x)</script><p>$\gamma$是个很小的参数，比如0.01。</p>
-<p><img src="/2019/02/13/激活函数/1_ypsvQH7kvtI2BhzR2eT_Sw.png" alt=""></p>
-<h2 id="Gelu函数"><a href="#Gelu函数" class="headerlink" title="Gelu函数"></a>Gelu函数</h2><p>GELU高斯误差线性单元bridge确定性激活函数ReLU和随机正则子Dropout之间的gap，也就是希望GELU这种随机性激活函数替代ReLU。</p>
-<h3 id="函数形式-3"><a href="#函数形式-3" class="headerlink" title="函数形式"></a>函数形式</h3><script type="math/tex; mode=display">
-Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以依概率随机的概率分布$\Phi(x) = P(X\leq x)$，这里$\Phi(x)$是正太分布的概率函数，可以简单采用正太分布N(0,1)。</p>
-<p><img src="/2019/02/13/激活函数/激活函数8.png" alt="1"></p>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#tensorflow</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gelu</span><span class="params">(input_tensor)</span>:</span></span><br><span class="line">	cdf = <span class="number">0.5</span> * (<span class="number">1.0</span> + tf.erf(input_tensor / tf.sqrt(<span class="number">2.0</span>)))</span><br><span class="line">	<span class="keyword">return</span> input_tesnsor*cdf</span><br></pre></td></tr></table></figure>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/13/激活函数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
