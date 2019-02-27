@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/25/selfattention/">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/25/transformer/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/25/selfattention/" itemprop="url">Self-attention</a></h1>
+                <a class="post-title-link" href="/2019/02/25/transformer/" itemprop="url">Transformer</a></h1>
         
 
         <div class="post-meta">
@@ -279,8 +279,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:57:33+08:00">
-                2019-02-25
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-28T00:28:37+08:00">
+                2019-02-28
               </time>
             
           </span>
@@ -329,7 +329,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  248
+                  1.7k
                 </span>
               
 
@@ -345,7 +345,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  6
                 </span>
               
             </div>
@@ -372,10 +372,11 @@
 <li>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</li>
 <li>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</li>
 </ol>
-<p>Self attention是Google在<code>Attention is all you need</code>论文中提出的<code>The transformer</code>模型中主要的概念之一。Transformer在计算attention的方式有三种：</p>
+<p>Self attention是Google在<code>Attention is all you need</code>论文中提出的<code>The transformer</code>模型中主要的概念之一。<strong>Transformer中抛弃了传统的CNN和RNN，整个网络结构完全是由Attention机制组成。更准确地讲，Transformer由且仅由self-Attenion和Feed Forward Neural Network组成。</strong></p>
+<p>Transformer在计算attention的方式有三种：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/02/25/selfattention/#more" rel="contents">
+            <a class="btn" href="/2019/02/25/transformer/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -473,7 +474,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:56:59+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T12:01:48+08:00">
                 2019-02-25
               </time>
             

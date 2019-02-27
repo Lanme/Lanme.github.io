@@ -79,20 +79,32 @@
 
 
 
-<meta name="description" content="自注意力Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。  context vector计算的是输入句、目标句间的关联，却忽略了输入句中文字间的关联，和目标句中文字间的关联性。  不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是无法平行化处理，导致模型训练的时间很长。   Self atte">
+<meta name="description" content="背景Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。  context vector计算的是输入句、目标句间的关联，却忽略了输入句中文字间的关联，和目标句中文字间的关联性。 不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是无法平行化处理，导致模型训练的时间很长。  Self attentio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Transformer">
-<meta property="og:url" content="https://Lanme.github.io/2019/02/25/Transformer/index.html">
+<meta property="og:url" content="https://Lanme.github.io/2019/02/25/transformer/index.html">
 <meta property="og:site_name" content="锦鲤木兰">
-<meta property="og:description" content="自注意力Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。  context vector计算的是输入句、目标句间的关联，却忽略了输入句中文字间的关联，和目标句中文字间的关联性。  不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是无法平行化处理，导致模型训练的时间很长。   Self atte">
+<meta property="og:description" content="背景Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。  context vector计算的是输入句、目标句间的关联，却忽略了输入句中文字间的关联，和目标句中文字间的关联性。 不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是无法平行化处理，导致模型训练的时间很长。  Self attentio">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://lanme.github.io/2019/02/25/Transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg">
-<meta property="og:image" content="https://lanme.github.io/2019/02/25/Transformer/v2-48d5c89102a38d7c53e6fded06e399c0_r.jpg">
-<meta property="og:updated_time" content="2019-02-24T16:24:04.099Z">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/transformer_resideual_layer_norm.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/The_transformer_encoder_decoder_stack.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/self-attention-output.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/v2-48d5c89102a38d7c53e6fded06e399c0_r.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/v2-c2a91ac08b34e73c7f4b415ce823840e_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/v2-8c9e1320f67fde9fbca8c687d23e0ce3_r.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/v2-7991cc25cd59a66dc986fccc5c439175_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/1_i4k32A-DJhdrtuB4Ty76Wg.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/v2-7c7fe7a87f6b1ef0343eb933fbdff13e_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/transformer_positional_encoding_vectors.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/transformer_resideual_layer_norm_3.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/transformer_decoder_output_softmax.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/25/transformer/transformer_decoding_2.gif">
+<meta property="og:updated_time" content="2019-02-27T16:28:37.311Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transformer">
-<meta name="twitter:description" content="自注意力Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。  context vector计算的是输入句、目标句间的关联，却忽略了输入句中文字间的关联，和目标句中文字间的关联性。  不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是无法平行化处理，导致模型训练的时间很长。   Self atte">
-<meta name="twitter:image" content="https://lanme.github.io/2019/02/25/Transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg">
+<meta name="twitter:description" content="背景Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。  context vector计算的是输入句、目标句间的关联，却忽略了输入句中文字间的关联，和目标句中文字间的关联性。 不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是无法平行化处理，导致模型训练的时间很长。  Self attentio">
+<meta name="twitter:image" content="https://lanme.github.io/2019/02/25/transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg">
 
 
 
@@ -122,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://Lanme.github.io/2019/02/25/Transformer/">
+  <link rel="canonical" href="https://Lanme.github.io/2019/02/25/transformer/">
 
 
 
@@ -235,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/25/Transformer/">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/25/transformer/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -280,8 +292,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T00:24:04+08:00">
-                2019-02-25
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-28T00:28:37+08:00">
+                2019-02-28
               </time>
             
           </span>
@@ -330,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  244
+                  1.7k
                 </span>
               
 
@@ -346,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  6
                 </span>
               
             </div>
@@ -367,23 +379,91 @@
       
 
       
-        <h1 id="自注意力"><a href="#自注意力" class="headerlink" title="自注意力"></a>自注意力</h1><p>Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。</p>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。</p>
 <ol>
-<li><p>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</p>
-</li>
-<li><p>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</p>
-</li>
+<li>context vector计算的是输入句、目标句间的关联，却<strong>忽略了输入句中文字间的关联</strong>，和目标句中文字间的关联性。</li>
+<li>不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是<strong>无法平行化处理</strong>，导致模型训练的时间很长。</li>
 </ol>
-<p>Self attention是Google在<code>Attention is all you need</code>论文中提出的<code>The transformer</code>模型中主要的概念之一。Transformer在计算attention的方式有三种：</p>
-<p><img src="/2019/02/25/Transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg" alt=""></p>
+<p>Self attention是Google在<code>Attention is all you need</code>论文中提出的<code>The transformer</code>模型中主要的概念之一。<strong>Transformer中抛弃了传统的CNN和RNN，整个网络结构完全是由Attention机制组成。更准确地讲，Transformer由且仅由self-Attenion和Feed Forward Neural Network组成。</strong></p>
+<p>Transformer在计算attention的方式有三种：</p>
+<a id="more"></a>
+<p><img src="/2019/02/25/transformer/v2-ff4f81601c0191724016f56281ce54f6_hd.jpg" alt=""></p>
 <ol>
 <li><strong>encoder self attention</strong>，存在于encoder间</li>
 <li><strong>decoder self attention</strong>，存在于decoder间</li>
 <li><strong>encoder-decoder attention</strong>, 这种attention算法和过去的attention model相似</li>
 </ol>
-<p>之前在<a href="/2019/02/23/attention注意力机制/" title="Attention注意力机制">Attention注意力机制</a>提到，$K = V$ 时，键值对模式就等价于普通的注意力机制，此时K=V=word embedding vector。而在self attention中，Q=K=V。同时，self attention采用了内积（缩放点积）运算，如图所示：</p>
-<p><img src="/2019/02/25/Transformer/v2-48d5c89102a38d7c53e6fded06e399c0_r.jpg" alt=""></p>
-<h2 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h2>
+<h1 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h1><p>Encoder的基本结构如下：</p>
+<p><img src="/2019/02/25/transformer/transformer_resideual_layer_norm.png" alt=""></p>
+<p>Encoder部分是由<strong>6个</strong>如图所示的encoder堆积而成的，其中的6并不是什么神奇的数字，你也可以更换成其他的。同样，Decoder部分是由<strong>6个</strong>的decoder堆积而成的。</p>
+<p><img src="/2019/02/25/transformer/The_transformer_encoder_decoder_stack.png" alt=""></p>
+<h2 id="Encoder-Self-Attention"><a href="#Encoder-Self-Attention" class="headerlink" title="Encoder Self Attention"></a>Encoder Self Attention</h2><p>之前在<a href="/2019/02/23/attention注意力机制/" title="Attention注意力机制">Attention注意力机制</a>提到，$K = V​$ 时，键值对模式就等价于普通的注意力机制，此时K=V=word embedding vector。而在self attention中，<strong>Q=K=V=word embedding vector</strong>，即每个序列中的单词和该序列中所有单词进行attention计算。</p>
+<p><strong>计算流程</strong></p>
+<ol>
+<li>对word embedding vector（即图片中的X，$d_{model}$=512），接著我们会乘上一个初始化矩阵（512x64），得到$QKV$（$d_k=f_q=d_v=64$）</li>
+<li>计算score，即q·k</li>
+<li>score归一化，除以$\sqrt{d_k}$</li>
+<li>softmax计算</li>
+<li>点乘Value值$v$ ，得到加权的每个输入向量的评分$v​$</li>
+<li>相加之后得到最终的输出结果：$\sum v$</li>
+</ol>
+<p><img src="/2019/02/25/transformer/self-attention-output.png" alt=""></p>
+<h3 id="Scaled-Dot-Product-Attention"><a href="#Scaled-Dot-Product-Attention" class="headerlink" title="Scaled Dot-Product Attention"></a>Scaled Dot-Product Attention</h3><p>Self Attention采用了内积（缩放点积）运算，如图所示：</p>
+<p><img src="/2019/02/25/transformer/v2-48d5c89102a38d7c53e6fded06e399c0_r.jpg" alt=""></p>
+<h3 id="自注意力优点"><a href="#自注意力优点" class="headerlink" title="自注意力优点"></a>自注意力优点</h3><ul>
+<li><code>每一层的复杂度</code>：如果输入序列n小于表示维度d的话，每一层的时间复杂度Self-Attention是比较有优势的。<br>当n比较大时，作者也给出了一种解决方案Self-Attention(restricted)即每个词不是和所有词计算Attention，而是只与限制的r个词去计算Attention。</li>
+<li><code>是否可以并行</code>: multi-head Attention和CNN一样不依赖于前一时刻的计算，可以很好的并行，优于 RNN。</li>
+<li><code>长距离依赖</code>: 由于Self-Attention是每个词和所有词都要计算Attention，所以不管他们中间有多长距离，最大的路径长度也都只是 1。可以捕获长距离依赖关系。</li>
+</ul>
+<h2 id="Multi-head-attention"><a href="#Multi-head-attention" class="headerlink" title="Multi-head attention"></a>Multi-head attention</h2><p>为了捕捉输入句中所有空间的讯息，把key、value,、query们线性投射到不同空间h次，h=8，对h个不同的self-attention的集成。</p>
+<ol>
+<li>将word embedding vector（X）分别输入到图中所示的8个self-attention中，得到8个加权后的特征矩阵$z_i,i∈\{1,2,…,8\}​$。</li>
+<li>将8个$Z_i$按列拼成一个大的特征矩阵；</li>
+<li>特征矩阵经过一层全连接后（图中的$W_O$）得到输出$z$</li>
+</ol>
+<p><img src="/2019/02/25/transformer/v2-c2a91ac08b34e73c7f4b415ce823840e_hd.jpg" alt=""></p>
+<h2 id="Residual-Connection-amp-Layer-Normalization"><a href="#Residual-Connection-amp-Layer-Normalization" class="headerlink" title="Residual Connection &amp; Layer Normalization"></a>Residual Connection &amp; Layer Normalization</h2><p>Multihead-attention完再接到feed-forward layer之前，还有一个sub-layer，需要经过residual connection和layer normalization。</p>
+<p>Residual connection 就是构建一种新的残差结构，将输出改写成和输入的残差，使得模型在训练时，微小的变化可以被注意到，这种架构很常用在电脑视觉(computer vision)。</p>
+<p>Layer normalization是在深度学习领域中的一种正规化方法，计算可以参考：<a href="/2019/02/16/网络优化/" title="网络优化">网络优化</a></p>
+<p><img src="/2019/02/25/transformer/v2-8c9e1320f67fde9fbca8c687d23e0ce3_r.jpg" alt=""></p>
+<h2 id="Feed-Forward-Networks"><a href="#Feed-Forward-Networks" class="headerlink" title="Feed-Forward Networks"></a>Feed-Forward Networks</h2><p>Encoder/Decoder中的attention sublayers都会接到一层feed-forward networks(FFN)：<strong>两层线性转换和一个RELU</strong>，论文中是根据<strong>各个位置(输入句中的每个文字)</strong>分别做FFN。</p>
+<p>其中，每个位置进行相同的线性转换，这边使用的是<strong>convolution1D</strong>（TF官网的是dense layer），也就是kernel size=1，原因是convolution1D才能保持位置的完整性，可参考CNN，模型的输入/输出维度$d_{model}=512$，但中间层的维度是2048，目的是为了减少计算量。</p>
+<p><img src="/2019/02/25/transformer/v2-7991cc25cd59a66dc986fccc5c439175_hd.jpg" alt=""></p>
+<h1 id="Positional-Encoding"><a href="#Positional-Encoding" class="headerlink" title="Positional Encoding"></a>Positional Encoding</h1><p><strong>和RNN不同的是，multi-head attention不能<code>学到输入句中每个文字的位置</code>（这里暗示说了RNN可以学习相对位置）。</strong>举例来说，“Are you very big?” and “Are big very you?”，对multi-head而言，是一样的语句。因此，Transformer透过positional encoding，来学习每个文字的相对/绝对位置，最后再和输入句中文字的隐向量相加。</p>
+<p>论文使用了方程式：</p>
+<script type="math/tex; mode=display">
+PE(pos, 2i)=sin(pos/10000^{2i/d_{model}}) \\\\
+PE(pos, 2i+1)=cos(pos/10000^{2i/d_{model}})</script><p><img src="/2019/02/25/transformer/1_i4k32A-DJhdrtuB4Ty76Wg.png" alt=""></p>
+<p>pos代表的是位置，i代表的是维度，<strong>偶数位置的文字会透过sin函数进行转换，奇数位置的文字则透过cos函数进行转换</strong>，借由三角函数，可以发现positional encoding 是个有周期性的波长；举例来说，[pos+k]可以写成PE[pos]的线性转换，使得模型可以学到不同位置文字间的相对位置。</p>
+<p><img src="/2019/02/25/transformer/v2-7c7fe7a87f6b1ef0343eb933fbdff13e_hd.jpg" alt=""></p>
+<div class="note warning"><p>The intuition here is that adding these values to the embeddings provides meaningful distances between the embedding vectors once they’re projected into Q/K/V vectors and during dot-product attention.</p></div>
+<p><img src="/2019/02/25/transformer/transformer_positional_encoding_vectors.png" alt=""></p>
+<h1 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h1><p>Decoder的基本结构如图右下部分：</p>
+<p><img src="/2019/02/25/transformer/transformer_resideual_layer_norm_3.png" alt=""></p>
+<h2 id="Masked-multi-head-attention"><a href="#Masked-multi-head-attention" class="headerlink" title="Masked multi-head attention"></a>Masked multi-head attention</h2><p>Decoder self attention与Encoder self attention基本结构一样，Decoder 的输入来自encoder outputs（$d_{model}=512 $） 和decoder positon encoding（预测的时候来自上一时刻的预测值）。</p>
+<p>不同的地方是：为了避免在解码的时后，还在翻译前半段时，就突然翻译到后半段的句子，会在<strong>计算self-attention时的softmax前先mask掉未来的位置</strong>(设定成-∞)。这个步骤确保在预测位置i的时候只能根据i之前位置的输出，其实这个是因应Encoder-Decoder attention 的特性而做的配套措施，因为Encoder-Decoder attention可以看到encoder的整个句子。</p>
+<h2 id="Encoder-Decoder-Attention"><a href="#Encoder-Decoder-Attention" class="headerlink" title="Encoder-Decoder Attention"></a>Encoder-Decoder Attention</h2><p>Encoder-Decoder attention就类似于之前的s2s attention了，<strong>它的Query来自于decoder self-attention，而Key、Value则是encoder的output。</strong></p>
+<h1 id="The-Final-Linear-and-Softmax-Layer"><a href="#The-Final-Linear-and-Softmax-Layer" class="headerlink" title="The Final Linear and Softmax Layer"></a>The Final Linear and Softmax Layer</h1><p>Decoder最后会得出一个向量，<strong>传到最后一层linear layer后做softmax</strong>。Linear layer只是单纯的全连接层网络，并产生每个文字对应的分数，softmax layer会将分数转成机率值，最高机率的值就是在这个时间顺序时所要产生的文字。</p>
+<p><img src="/2019/02/25/transformer/transformer_decoder_output_softmax.png" alt=""></p>
+<p><img src="/2019/02/25/transformer/transformer_decoding_2.gif" alt=""></p>
+<h1 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h1><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>multi-head attention来解决平行化和计算复杂度过高的问题</li>
+<li>依赖关係也能透过self-attention中词语与词语比较时，长度只有1的方式来克服</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li>在语言建模的设置中受到<strong>固定长度上下文</strong>(fixed-length context)的限制（Transformer-XL）</li>
+<li>对于长输入的任务，典型的比如篇章级别的任务（例如文本摘要），因为任务的输入太长，Transformer 会有巨大的计算复杂度，导致速度会急剧变慢</li>
+<li></li>
+</ul>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>代码参考：<a href="https://github.com/tensorflow/models/tree/master/official/transformer/model" target="_blank" rel="noopener">tensorflow官方版</a></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><strong>beam_search</strong></p>
+<p><strong>teach_forcing</strong></p>
+<p>参考文献：</p>
+<p>[1]. <a href="https://daiwk.github.io/posts/nlp-self-attention-models.html" target="_blank" rel="noopener">自然语言处理中的自注意力机制</a></p>
+<p>[2]. <a href="https://zhuanlan.zhihu.com/p/47470866" target="_blank" rel="noopener">从Seq2seq到Attention模型到Self Attention（二）</a></p>
+<p>[3]. <a href="https://jalammar.github.io/illustrated-transformer/" target="_blank" rel="noopener">The Illustrated Transformer</a></p>
+<p>[4]. <a href="https://zhuanlan.zhihu.com/p/48508221" target="_blank" rel="noopener">详解Transformer</a></p>
+
       
     </div>
     
@@ -538,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自注意力"><span class="nav-number">1.</span> <span class="nav-text">自注意力</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder"><span class="nav-number">1.1.</span> <span class="nav-text">Encoder</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Encoder"><span class="nav-number">2.</span> <span class="nav-text">Encoder</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder-Self-Attention"><span class="nav-number">2.1.</span> <span class="nav-text">Encoder Self Attention</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scaled-Dot-Product-Attention"><span class="nav-number">2.1.1.</span> <span class="nav-text">Scaled Dot-Product Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自注意力优点"><span class="nav-number">2.1.2.</span> <span class="nav-text">自注意力优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-head-attention"><span class="nav-number">2.2.</span> <span class="nav-text">Multi-head attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Residual-Connection-amp-Layer-Normalization"><span class="nav-number">2.3.</span> <span class="nav-text">Residual Connection &amp; Layer Normalization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feed-Forward-Networks"><span class="nav-number">2.4.</span> <span class="nav-text">Feed-Forward Networks</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Positional-Encoding"><span class="nav-number">3.</span> <span class="nav-text">Positional Encoding</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Decoder"><span class="nav-number">4.</span> <span class="nav-text">Decoder</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Masked-multi-head-attention"><span class="nav-number">4.1.</span> <span class="nav-text">Masked multi-head attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder-Decoder-Attention"><span class="nav-number">4.2.</span> <span class="nav-text">Encoder-Decoder Attention</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Final-Linear-and-Softmax-Layer"><span class="nav-number">5.</span> <span class="nav-text">The Final Linear and Softmax Layer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#评价"><span class="nav-number">6.</span> <span class="nav-text">评价</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">6.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">6.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">7.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">8.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
 
           </div>

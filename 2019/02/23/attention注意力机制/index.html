@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/23/attention注意力机制/20180822114615980.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/23/attention注意力机制/20180614214547645.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/23/attention注意力机制/20190224230541.png">
-<meta property="og:updated_time" content="2019-02-25T03:56:59.419Z">
+<meta property="og:updated_time" content="2019-02-25T04:01:48.788Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Attention注意力机制">
 <meta name="twitter:description" content="为什么需要注意力机制一般对于输入输出的不同部分具有不同的重要程度。例如，在翻译任务中，输出的第一个单词是一般是基于输入的前几个词，输出的最后几个词可能基于输入的几个词。例如在阅读理解任务中，编码时还不知道可能会接收到什么样的问句。这些问句可能会涉及到背景文章的所有信息点，因此丢失任何信息都可能导致无法正确回答问题。 注意力一般分为两种：一种是自上而下的有意识的注意力，称为聚焦式（focus）注意力">
@@ -287,7 +287,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:56:59+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T12:01:48+08:00">
                 2019-02-25
               </time>
             
@@ -379,7 +379,7 @@
 <a id="more"></a>
 <p>在目前的神经网络注意力机制也可称为注意力络模型中，我们可以将max pooling、gating机制来近似地看作是自下而上的基于显著性的注意力机制。除此之外，自上而下的会聚式注意力也是一种有效的信息选择方式。</p>
 <h1 id="普通注意力机制"><a href="#普通注意力机制" class="headerlink" title="普通注意力机制"></a>普通注意力机制</h1><p><strong>结构</strong></p>
-<p>用$X = [x_1,…, x_N ]​$表示$N​$个输入信息，为了节省计算资源，不需要将所有的$N​$个输入信息都输入到神经网络进行计算，只需要从$X​$中选择一些和任务相关的信息输入给神经网络。给定一个和任务相关的查询向量$q​$，我们用注意力变量$z ∈ [1, N]​$来表示被选择信息的索引位置，即$z = i​$表示选择了第$i​$个输入信息。为了方便计算，我们采用一种<strong>软性</strong>的信息选择机制，首先计算在给定$q​$ 和$X​$ 下，选择第$i​$个输入信息的概率$α_i​$：</p>
+<p>用$X = [x_1,…, x_N ]$表示$N$个输入信息，为了节省计算资源，不需要将所有的$N$个输入信息都输入到神经网络进行计算，只需要从$X$中选择一些和任务相关的信息输入给神经网络。给定一个和任务相关的查询向量$q$，我们用注意力变量$z ∈ [1, N]$来表示被选择信息的索引位置，即$z = i$表示选择了第$i$个输入信息。为了方便计算，我们采用一种<strong>软性</strong>的信息选择机制，首先计算在给定$q$ 和$X$ 下，选择第$i$个输入信息的概率$α_i$：</p>
 <script type="math/tex; mode=display">
 \alpha_i = p(z=i|X,q)\\\\
 =softmax(s(x_i,q)) \\\\
@@ -473,8 +473,8 @@ att((K,V),q) = \sum_{i=1}^N \alpha_i v_i \\\\
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/25/selfattention/" rel="prev" title="Self-attention">
-                Self-attention <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/25/transformer/" rel="prev" title="Transformer">
+                Transformer <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
