@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-111023@2x.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-142826@2x.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-170735@2x.png">
-<meta property="og:updated_time" content="2019-02-25T03:54:23.241Z">
+<meta property="og:updated_time" content="2019-03-02T07:42:47.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="word2vec">
 <meta name="twitter:description" content="相关知识GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。 独热编码  离散编码，丢失了单词之间的相似性 词向量  分布式表达，能够编码词之间的关系 两种模型SKip-gram 中心词预测上下文词的">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:54:23+08:00">
-                2019-02-25
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-02T15:42:47+08:00">
+                2019-03-02
               </time>
             
           </span>
@@ -332,7 +332,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.1k
+                  2.7k
                 </span>
               
 
@@ -348,7 +348,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  11
                 </span>
               
             </div>
@@ -442,19 +442,19 @@ J = -log P(w_{t-m},...,w_{t-1},w_{t+1}...,w_{t+m}|w_t) \\\\
 <script type="math/tex; mode=display">
 P(D=1|t,c,\theta) = \sigma(u^T_tv_c) = \frac{1}{1+e^{-u^T_tv_c}}</script><p>采用<strong>极大似然估计</strong>得到：</p>
 <script type="math/tex; mode=display">
-J =\prod _{(t,c)∈D}P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}P(D=0|t,c,\theta) \\\\
-=\prod _{(t,c)∈D}P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}(1-P(D=1|t,c,\theta))\\\\
-logJ=\sum_{(t,c)∈D}logP(D=1|t,c,\theta)+\sum_{(t,c)∈\tilde{D}}log(1-P(D=1|t,c,\theta)) \\\\
-=\sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1-\frac{1}{1+e^{-u^T_tv_c}}) \\\\
-=\sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p>那么<strong>损失函数</strong>就是：</p>
+J =P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}P(D=0|t,c,\theta) \\\\
+=P(D=1|t,c,\theta)\prod _{(t,c)∈\tilde{D}}(1-P(D=1|t,c,\theta))\\\\
+logJ=logP(D=1|t,c,\theta)+\sum_{(t,c)∈\tilde{D}}log(1-P(D=1|t,c,\theta)) \\\\
+=log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1-\frac{1}{1+e^{-u^T_tv_c}}) \\\\
+=log \frac{1}{1+e^{-u^T_tv_c}} +\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p>那么某个单词的<strong>损失函数</strong>就是：</p>
 <script type="math/tex; mode=display">
-J = - \sum_{(t,c)∈D} log \frac{1}{1+e^{-u^T_tv_c}} -\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p><strong>Skip-gram</strong></p>
+J = - log \frac{1}{1+e^{-u^T_tv_c}} -\sum_{(t,c)∈\tilde{D}}log(1+\frac{1}{1+e^{u^T_tv_c}})</script><p><strong>Skip-gram</strong></p>
 <p>我们对给定中心词$t$来观察的上下文单词$c−m+j$的新目标函数为：</p>
 <script type="math/tex; mode=display">
 -log \sigma (u_{t-m+j}^T·v_t)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p><strong>CBOW</strong></p>
 <p>我们对给定上下文向量$v_c = V(\frac{x^{t-m} +…+x^{t-1}+x^{t+1}…+x^{t+m}}{2m})$来观察中心词的新目标函数为：</p>
 <script type="math/tex; mode=display">
-- log \sigma(u_o^T·v_c)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p>在上面的公式中，$\tilde{u_k}∣k=1…K$是从$P(w)$ 中抽样。在Tensorflow中，通常会用到nce_loss或者sample_loss。</p>
+- log \sigma(u_t^T·v_c)-\sum_{k=1}^Klog \sigma(-\tilde{u_k}·v_t)</script><p>在上面的公式中，$\tilde{u_k}∣k=1…K$是从$P(w)$ 中抽样。在Tensorflow中，通常会用到nce_loss或者sample_loss。</p>
 <h2 id="分层softmax"><a href="#分层softmax" class="headerlink" title="分层softmax"></a>分层softmax</h2><p>Hierarchical Softmax相比普通的 Softmax这是一种更有效的替代方法。在实际中，<strong>Hierarchical Softmax 对低频词往往表现得更好，负采样对高频词和较低维度向量表现得更好</strong>。</p>
 <p>Hierarchical Softmax使用一个<strong>二叉树</strong>来表示词表中的所有词。树中的每个叶结点都是一个单词，而且只有一条路径从根结点到叶结点。在这个模型中，没有词的输出表示。相反，<strong>图的每个节点（根节点和叶结点除外）与模型要学习的向量相关联</strong>。</p>
 <p>从根节点出发，到达指定叶子节点的路径是唯一的。Hierarchical Softmax正是利用这条路径来计算指定词的概率，而非用softmax来计算。</p>
@@ -471,10 +471,23 @@ P(w_t|w_c)\\\\
 <script type="math/tex; mode=display">
 P（w_c|w_t） \\\\
 =\prod_i \prod_{j=1}^{L(w)-1} \sigma([[n(w,j+1)=ch(n(w,j))]](u_{n(w,j)}^T v_{t+i})) \\\\
-i∈\{-m,...,m\}</script><p>参考文献：</p>
+i∈\{-m,...,m\}</script><h1 id="矩阵分解"><a href="#矩阵分解" class="headerlink" title="矩阵分解"></a>矩阵分解</h1><p>所谓而分布式表示，就是开一个窗口（前后若干个词加上当前词，作为一个窗口），<strong>统计当前词的前后若干个词的分布情况</strong>，就用这个分布情况来表示当前词，而这个分布也可以用相应的$N$维的向量来表示。由于是通过上下文分布来表示一个词，而不再是孤立地“独热”了，因此能够表示语义的相关性，但问题是它还是$N$维的，维度还是太大了，<strong>整个词向量表（共现矩阵）太稀疏</strong>。[4]</p>
+<p>对于稀疏矩阵，一个既能够将维，又可以提高泛化能力的方案就是对矩阵SVD分解。这种方案就是说：原始的分布式表示的词向量是$N$维的，太大，我们可以用自编码器来降低维度，自编码器的中间节点数记为$n$，把$n$设置为一个适当的值，训练完自编码器后，<strong>直接把中间层的$n$维结果就作为新的词向量</strong>。所以说，这就是一个$N$维输入，中间节点为$n$个，$N$维输出的自编码器方案，也等价于一个SVD分解（SVD分解等价于一个不带激活函数的三层自编码器）。</p>
+<p>简单自编码器：第一层：m x hidden_size，第二层：hiddex_size x n</p>
+<p>SVD：第一层：mxm，第二层：mxn，第三层：nxn</p>
+<p>word2vec：第一层：embed_size x vocab_size，第二层：vocab_size x embed_size</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">input_size = <span class="number">784</span></span><br><span class="line">hidden_size = <span class="number">64</span></span><br><span class="line">output_size = <span class="number">784</span></span><br><span class="line"></span><br><span class="line">x = Input(shape=(input_size,))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Encoder</span></span><br><span class="line">h = Dense(hidden_size, activation=<span class="string">'relu'</span>)(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Decoder</span></span><br><span class="line">r = Dense(output_size, activation=<span class="string">'sigmoid'</span>)(h)</span><br><span class="line"></span><br><span class="line">autoencoder = Model(input=x, output=r)</span><br><span class="line">autoencoder.compile(optimizer=<span class="string">'adam'</span>, loss=<span class="string">'mse'</span>)</span><br></pre></td></tr></table></figure>
+<p>Word2Vec的一个CBOW方案是，将前后若干个词的词向量求和，然后接一个$N$维的全连接层，并做一个softmax来预测当前词的概率。这种词向量求和，等价于原来的词袋模型接一个全连接层（这个全连接层的参数就是词向量表），这样来看，Word2Vec也只是一个$N$维输入，中间节点为$n$个，$N​$维输出的三层神经网络罢了，所以从网络结构上来看，它跟自编码器等价，也就是跟SVD分解等价。</p>
+<p>从实现上来看，区别也很明显：</p>
+<blockquote>
+<p>1、Word2Vec的这种方案，可以看作是通过前后词来预测当前词，而自编码器或者SVD则是通过前后词来预测前后词；</p>
+<p>2、Word2Vec最后接的是softmax来预测概率，也就是说实现了一个非线性变换，而自编码器或者SVD并没有。</p>
+</blockquote>
+<p>参考文献：</p>
 <p>[1]. <a href="https://blog.csdn.net/itplus/article/details/37969979" target="_blank" rel="noopener">word2vec数学原理</a></p>
 <p>[2]. <a href="https://huangzhanpeng.github.io/2017/12/13/cs224n-lecture1-notes/" target="_blank" rel="noopener">cs224n notes_1</a></p>
 <p>[3]. <a href="https://www.cnblogs.com/Determined22/p/5804455.html" target="_blank" rel="noopener">词表示模型</a></p>
+<p>[4]. <a href="https://spaces.ac.cn/archives/4233" target="_blank" rel="noopener">SVD分解</a></p>
 
       
     </div>
@@ -634,7 +647,7 @@ i∈\{-m,...,m\}</script><p>参考文献：</p>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关知识"><span class="nav-number">1.</span> <span class="nav-text">相关知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#两种模型"><span class="nav-number">2.</span> <span class="nav-text">两种模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW"><span class="nav-number">2.1.</span> <span class="nav-text">CBOW</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数说明"><span class="nav-number">2.1.1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络"><span class="nav-number">2.1.2.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">2.1.3.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价"><span class="nav-number">2.1.4.</span> <span class="nav-text">评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skip-gram"><span class="nav-number">2.2.</span> <span class="nav-text">Skip-gram</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数说明-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点-1"><span class="nav-number">2.2.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#加速方法"><span class="nav-number">3.</span> <span class="nav-text">加速方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#负采样"><span class="nav-number">3.1.</span> <span class="nav-text">负采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分层softmax"><span class="nav-number">3.2.</span> <span class="nav-text">分层softmax</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关知识"><span class="nav-number">1.</span> <span class="nav-text">相关知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#两种模型"><span class="nav-number">2.</span> <span class="nav-text">两种模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CBOW"><span class="nav-number">2.1.</span> <span class="nav-text">CBOW</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数说明"><span class="nav-number">2.1.1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络"><span class="nav-number">2.1.2.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">2.1.3.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价"><span class="nav-number">2.1.4.</span> <span class="nav-text">评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skip-gram"><span class="nav-number">2.2.</span> <span class="nav-text">Skip-gram</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数说明-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点-1"><span class="nav-number">2.2.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#加速方法"><span class="nav-number">3.</span> <span class="nav-text">加速方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#负采样"><span class="nav-number">3.1.</span> <span class="nav-text">负采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分层softmax"><span class="nav-number">3.2.</span> <span class="nav-text">分层softmax</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#矩阵分解"><span class="nav-number">4.</span> <span class="nav-text">矩阵分解</span></a></li></ol></div>
             
 
           </div>

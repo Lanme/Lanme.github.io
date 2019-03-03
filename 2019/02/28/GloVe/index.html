@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="原理共现矩阵目标函数与word2vec相比缺点词向量的评价方法">
+<meta name="description" content="相关知识目前主流的两种模型都存在一些显著的不足。对于一些global matrix factorization方法（如LSA），在词类比任务的表现不好，表明这种方法得到的是向量空间的次优解；对于一些local context window方法（如skip-gram）可能在词类比任务上表现比较好，但这种方法没有很好得利用语料库的统计信息因为它们只在局部上下文中进行训练。 GloVe模型就是将这两中特">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GloVe">
 <meta property="og:url" content="https://Lanme.github.io/2019/02/28/GloVe/index.html">
 <meta property="og:site_name" content="锦鲤木兰">
-<meta property="og:description" content="原理共现矩阵目标函数与word2vec相比缺点词向量的评价方法">
+<meta property="og:description" content="相关知识目前主流的两种模型都存在一些显著的不足。对于一些global matrix factorization方法（如LSA），在词类比任务的表现不好，表明这种方法得到的是向量空间的次优解；对于一些local context window方法（如skip-gram）可能在词类比任务上表现比较好，但这种方法没有很好得利用语料库的统计信息因为它们只在局部上下文中进行训练。 GloVe模型就是将这两中特">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-01T00:47:51.872Z">
+<meta property="og:image" content="https://lanme.github.io/2019/02/28/GloVe/v2-867648522f5c8fd3b2dda59425eef667_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/28/GloVe/kdnzqnxvk8.jpg">
+<meta property="og:updated_time" content="2019-03-03T05:08:16.813Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GloVe">
-<meta name="twitter:description" content="原理共现矩阵目标函数与word2vec相比缺点词向量的评价方法">
+<meta name="twitter:description" content="相关知识目前主流的两种模型都存在一些显著的不足。对于一些global matrix factorization方法（如LSA），在词类比任务的表现不好，表明这种方法得到的是向量空间的次优解；对于一些local context window方法（如skip-gram）可能在词类比任务上表现比较好，但这种方法没有很好得利用语料库的统计信息因为它们只在局部上下文中进行训练。 GloVe模型就是将这两中特">
+<meta name="twitter:image" content="https://lanme.github.io/2019/02/28/GloVe/v2-867648522f5c8fd3b2dda59425eef667_hd.jpg">
 
 
 
@@ -277,8 +280,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-01T08:47:51+08:00">
-                2019-03-01
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-03T13:08:16+08:00">
+                2019-03-03
               </time>
             
           </span>
@@ -327,7 +330,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  24
+                  1.1k
                 </span>
               
 
@@ -343,7 +346,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  4
                 </span>
               
             </div>
@@ -364,7 +367,87 @@
       
 
       
-        <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="共现矩阵"><a href="#共现矩阵" class="headerlink" title="共现矩阵"></a>共现矩阵</h2><h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><h1 id="与word2vec相比"><a href="#与word2vec相比" class="headerlink" title="与word2vec相比"></a>与word2vec相比</h1><h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><h1 id="词向量的评价方法"><a href="#词向量的评价方法" class="headerlink" title="词向量的评价方法"></a>词向量的评价方法</h1>
+        <h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><p>目前主流的两种模型都存在一些显著的不足。对于一些global matrix factorization方法（如LSA），在词类比任务的表现不好，表明这种方法得到的是向量空间的次优解；对于一些local context window方法（如skip-gram）可能在词类比任务上表现比较好，但这种方法没有很好得利用语料库的统计信息因为它们只在局部上下文中进行训练。</p>
+<p>GloVe模型就是将这两中特征合并到一起的，包括：<strong>全局特征的矩阵分解方法（global matrix factorizations）和局部上下文窗口（local context window）</strong>，为了做到这一点GloVe模型引入了Co-occurrence Probabilities Matrix。</p>
+<a id="more"></a>
+<h2 id="共现矩阵"><a href="#共现矩阵" class="headerlink" title="共现矩阵"></a>共现矩阵</h2><p>$X$ ：共现矩阵</p>
+<p>$X_{ij}$：单词j在单词i的上下文出现的次数</p>
+<p>$X_i = \sum _k X_{ik}$：表示单词j出现在单词i上下文的次数</p>
+<p>$P_{ij} = P(j|i) = \frac{X_{ij}}{X_i}$：表示单词j出现在单词i上下文的概率</p>
+<p>考虑两个在某些方面比较类似的词：i代表ice，j代表steam。<strong>这两个词的关系可以通过研究它们与某个词k的共现概率之比来得到</strong>。</p>
+<p><img src="/2019/02/28/GloVe/v2-867648522f5c8fd3b2dda59425eef667_hd.jpg" alt=""></p>
+<p>（1）如果k和i相关，k和j不相关， $\frac{P_{ik}}{P_{jk}}$很大；</p>
+<p>（2）如果k和i不相关，k和j相关， $\frac{P_{ik}}{P_{jk}}$很小；</p>
+<p>（3）如果k和i、j都相关，或者都不相关， $\frac{P_{ik}}{P_{jk}}$接近1。</p>
+<p>GloVe的目标就是获取每一个word的词向量表示v，而这些词向量所呈现的规律和$Ratio = \frac{P_{ik}}{P_{jk}}​$具有一致性，即词向量中包含了共现矩阵中的信息。</p>
+<h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><p>1、构造一个向量函数，使得：</p>
+<script type="math/tex; mode=display">
+F(w_i,w_j,\tilde{w_k})=\frac{P_{ik}}{P_{jk}}</script><p>2、$w$是单词词向量，$\tilde{w}$是上下文词向量。为了考察$w_i$和$w_j$之间的关系，自然联想到的是两个向量之间的差，所以F函数的形式可以是：</p>
+<script type="math/tex; mode=display">
+F(w_i-w_j,\tilde{w_k}) = \frac{P_{ij}}{P_{jk}}</script><p>3、上面的公式中，$\frac{P_{ik}}{P_{jk}}$是一个标量，而F是计算两个向量。向量和标量的关系自然联想到使用内积，因此F函数的形式进一步确定为：</p>
+<script type="math/tex; mode=display">
+F((w_i-w_j)^T\tilde{w_k}) = F(w_i^T\tilde{w_k} - w_j^T\tilde{w_k}) = \frac{P_{ik}}{P_{jk}}</script><p>4、由于左边为差，右边为商，将F函数取作$exp$将差和商关联起来：</p>
+<script type="math/tex; mode=display">
+exp(w_i^T\tilde{w_k} - w_j^T\tilde{w_k}) = \frac{exp(w_i^T\tilde{w_k})}{exp(w_j^T\tilde{w_k})} = \frac{P_{ik}}{P_{jk}}</script><p>那么现在只需要文中$exp(w_i^T\tilde{w_k}) = P_{ik}$，即：</p>
+<script type="math/tex; mode=display">
+w_i^T\tilde{w_k} = log P_{ik} = log \frac{X_{ik}}{X_i} = log X_{ik} - log X_i</script><p>5、这里要考虑一个最重要的约束：<strong>对称性问题</strong></p>
+<p>单词词向量$w$和上下文词向量$\tilde{w}$是相等的：When $X$ is symmetric,$W$ and $\tilde{W}$ are<br>equivalent and differ only as a result of their random initializations; the two sets of vectors should perform equivalently. </p>
+<p>此时，交换左边的顺序：$w^T_i\tilde{w_k} = w^T_k \tilde{w_i}​$。但右边交换顺序$log X_{ik}-logX_i ≠log X_{ki} - log X_k​$。为了解决对称性问题，引入了两个偏置项：</p>
+<script type="math/tex; mode=display">
+log X_{ik} = w^T_i \tilde{w_k} +b_i +\tilde{b_k}</script><p>其中$b_i​$包含了$log X_i​$，为了保持对称性，又加入了$b_k​$。</p>
+<p>6、在实验中，左右两边要求结果接近，从而损失函数为：</p>
+<script type="math/tex; mode=display">
+J = \sum_{ik}^{v} (w_i^T\tilde{w_j} +b_i+ \tilde{b_j} - log (X_{ij}))^2</script><p>V表示单词表的大小。</p>
+<p>7、根据经验，如果两个词出现的次数越多，那么在损失函数中的影响就越大。因此根据其共同出现的次数，对每一项加权：</p>
+<script type="math/tex; mode=display">
+J = \sum_{ik}^{v} f(X_{ij})(w_i^T\tilde{w_j} +b_i+ \tilde{b_j} - log (X_{ij}))^2</script><p>令$f(X_{ij})$为权重，则其应该满足三个条件：</p>
+<ul>
+<li><p>$f(0)=0$，这样可以保证当$X_{ij}→0$时$lim_{x→0}f(x)log^2x​$是有限值</p>
+</li>
+<li><p>$f(x)​$应该是单调不减函数，这样不会导致共现次数低的值被赋予更多权重</p>
+</li>
+<li><p>$f(x)​$在x值很大时应该相对比较小，这样不会导致共现次数很大的值被赋予过大权重</p>
+</li>
+</ul>
+<p>所以最终作者确定$f(x)$的表达式为：</p>
+<script type="math/tex; mode=display">
+f(x) = \left\{
+\begin{aligned}
+(x/x_{max})^{\alpha} , x<x_{max} \\
+1 ,  otherwise 
+\end{aligned}
+\right.</script><p>当$\alpha=3/4$时，$f(x)$的图像为：</p>
+<p><img src="/2019/02/28/GloVe/kdnzqnxvk8.jpg" alt=""></p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>实现代码参考:<a href="https://github.com/GradySimon/tensorflow-glove/blob/master/tf_glove.py" target="_blank" rel="noopener">Glove实现</a></p>
+<p>论文实现一些说明：</p>
+<ol>
+<li><p>语料库中的词汇都符号化和并变为小写，建立一个含有400,000个常用词的词汇表。</p>
+</li>
+<li><p>利用上下文窗口来计数得到共现矩阵X。在利用上下文窗口时需要设定窗口的大小（论文采用了上下文各10个单词的窗口长度）和是否需要区分上文和下文等。</p>
+</li>
+<li><p>乘以一个随距离d递减的权重项，即与单词i距离为d的单词在计数时要乘上权重1/d，表示距离越远的词可能相关性越小。</p>
+</li>
+<li>采用AdaGrad的方法迭代50次（非监督学习，没有用神经网络）</li>
+<li>作者从神经网络的训练中得到的灵感：对于某些神经网络，训练多个网络并把这些网络结合起来有助于减少过拟合和噪声并且能改善性能。受此启发，作者将W+˜W作为最终词向量，并且能够使得这些词向量在某些任务上的表现变好。 </li>
+</ol>
+<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><ul>
+<li>模型中最大的问题在于参数$b_i,b_j$也是可训练的参数</li>
+</ul>
+<script type="math/tex; mode=display">
+\sum_{w_i,w_j}  (<v_i,\hat{v_j}> +b_i,\hat{b_j} - logX_{ij})^2 \\\\
+=\sum_(w_i,w_j) (<v_i+c,\hat{v_j}+c> +(b_i-<v_i,c>-\frac{|c|^2}{2})+ \\\\(\hat{b_j}-<\hat{v_j},c>-\frac{|c|^2}{2}) - logX_{ij})^2</script><p>也就是说，对于glove训练处的词向量加上任意一个常数向量后，它还是这个损失函数的解！这意味着，当加上一个非常大的常数向量之后，它们仍然是解，但是这个解的词向量没有意义，因为任意两个词的cos接近为1。</p>
+<ul>
+<li>和word2vec一样没有考虑一词多义</li>
+</ul>
+<h1 id="词向量的评价方法"><a href="#词向量的评价方法" class="headerlink" title="词向量的评价方法"></a>词向量的评价方法</h1><ul>
+<li>Word analogies, Word similarity等内部评估</li>
+<li>Named entity recognition、文本分类等外部评估</li>
+</ul>
+<p>参考文献：</p>
+<p>[1]. <a href="https://zhuanlan.zhihu.com/p/42073620" target="_blank" rel="noopener">通俗易懂Glove算法</a></p>
+<p>[2]. <a href="https://zhuanlan.zhihu.com/p/52070686" target="_blank" rel="noopener">Glove这个老古董</a></p>
+<p>[3]. </p>
+
       
     </div>
     
@@ -519,7 +602,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#共现矩阵"><span class="nav-number">1.1.</span> <span class="nav-text">共现矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目标函数"><span class="nav-number">1.2.</span> <span class="nav-text">目标函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#与word2vec相比"><span class="nav-number">2.</span> <span class="nav-text">与word2vec相比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺点"><span class="nav-number">3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#词向量的评价方法"><span class="nav-number">4.</span> <span class="nav-text">词向量的评价方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关知识"><span class="nav-number">1.</span> <span class="nav-text">相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#共现矩阵"><span class="nav-number">1.1.</span> <span class="nav-text">共现矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目标函数"><span class="nav-number">1.2.</span> <span class="nav-text">目标函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺点"><span class="nav-number">3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#词向量的评价方法"><span class="nav-number">4.</span> <span class="nav-text">词向量的评价方法</span></a></li></ol></div>
             
 
           </div>

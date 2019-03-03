@@ -279,8 +279,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-01T08:47:51+08:00">
-                2019-03-01
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-03T13:08:16+08:00">
+                2019-03-03
               </time>
             
           </span>
@@ -329,7 +329,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  24
+                  1.1k
                 </span>
               
 
@@ -345,7 +345,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  4
                 </span>
               
             </div>
@@ -367,9 +367,15 @@
 
       
         
-          
-            <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="共现矩阵"><a href="#共现矩阵" class="headerlink" title="共现矩阵"></a>共现矩阵</h2><h2 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h2><h1 id="与word2vec相比"><a href="#与word2vec相比" class="headerlink" title="与word2vec相比"></a>与word2vec相比</h1><h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><h1 id="词向量的评价方法"><a href="#词向量的评价方法" class="headerlink" title="词向量的评价方法"></a>词向量的评价方法</h1>
-          
+          <h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><p>目前主流的两种模型都存在一些显著的不足。对于一些global matrix factorization方法（如LSA），在词类比任务的表现不好，表明这种方法得到的是向量空间的次优解；对于一些local context window方法（如skip-gram）可能在词类比任务上表现比较好，但这种方法没有很好得利用语料库的统计信息因为它们只在局部上下文中进行训练。</p>
+<p>GloVe模型就是将这两中特征合并到一起的，包括：<strong>全局特征的矩阵分解方法（global matrix factorizations）和局部上下文窗口（local context window）</strong>，为了做到这一点GloVe模型引入了Co-occurrence Probabilities Matrix。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/28/GloVe/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -463,8 +469,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-01T08:48:02+08:00">
-                2019-03-01
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-02T16:18:31+08:00">
+                2019-03-02
               </time>
             
           </span>
@@ -513,7 +519,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.7k
+                  1.8k
                 </span>
               
 
@@ -529,7 +535,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  7
                 </span>
               
             </div>
@@ -848,8 +854,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T11:54:23+08:00">
-                2019-02-25
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-02T15:42:47+08:00">
+                2019-03-02
               </time>
             
           </span>
@@ -898,7 +904,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.1k
+                  2.7k
                 </span>
               
 
@@ -914,7 +920,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  11
                 </span>
               
             </div>

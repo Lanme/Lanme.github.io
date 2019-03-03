@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/25/Transformer/transformer_resideual_layer_norm_3.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/25/Transformer/transformer_decoder_output_softmax.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/25/Transformer/transformer_decoding_2.gif">
-<meta property="og:updated_time" content="2019-03-01T00:48:02.957Z">
+<meta property="og:updated_time" content="2019-03-02T08:18:31.364Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Transformer">
 <meta name="twitter:description" content="背景Attention model虽然解决了输入句仅有一个context vector的缺点，但依旧存在不少问题。  context vector计算的是输入句、目标句间的关联，却忽略了输入句中文字间的关联，和目标句中文字间的关联性。 不管是Seq2seq或是Attention model，其中使用的都是RNN，RNN的缺点就是无法平行化处理，导致模型训练的时间很长。  Self attentio">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-01T08:48:02+08:00">
-                2019-03-01
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-02T16:18:31+08:00">
+                2019-03-02
               </time>
             
           </span>
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.7k
+                  1.8k
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  7
                 </span>
               
             </div>
@@ -456,7 +456,9 @@ PE(pos, 2i+1)=cos(pos/10000^{2i/d_{model}})</script><p><img src="/2019/02/25/Tra
 <li></li>
 </ul>
 <h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>代码参考：<a href="https://github.com/tensorflow/models/tree/master/official/transformer/model" target="_blank" rel="noopener">tensorflow官方版</a></p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><strong>beam_search</strong></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><strong>bert</strong></p>
+<p>BERT Transformer 使用双向self-attention，而GPT Transformer 使用受限制的self-attention，其中每个token只能处理其左侧的上下文。双向 Transformer 通常被称为“Transformer encoder”，而左侧上下文被称为“Transformer decoder”，decoder是不能获要预测的信息的。</p>
+<p><strong>beam_search</strong></p>
 <p><strong>teach_forcing</strong></p>
 <p>参考文献：</p>
 <p>[1]. <a href="https://daiwk.github.io/posts/nlp-self-attention-models.html" target="_blank" rel="noopener">自然语言处理中的自注意力机制</a></p>
