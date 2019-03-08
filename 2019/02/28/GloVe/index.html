@@ -88,7 +88,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://lanme.github.io/2019/02/28/GloVe/v2-867648522f5c8fd3b2dda59425eef667_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/28/GloVe/kdnzqnxvk8.jpg">
-<meta property="og:updated_time" content="2019-03-03T05:08:16.813Z">
+<meta property="og:updated_time" content="2019-03-04T16:40:52.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GloVe">
 <meta name="twitter:description" content="相关知识目前主流的两种模型都存在一些显著的不足。对于一些global matrix factorization方法（如LSA），在词类比任务的表现不好，表明这种方法得到的是向量空间的次优解；对于一些local context window方法（如skip-gram）可能在词类比任务上表现比较好，但这种方法没有很好得利用语料库的统计信息因为它们只在局部上下文中进行训练。 GloVe模型就是将这两中特">
@@ -280,8 +280,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-03T13:08:16+08:00">
-                2019-03-03
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-05T00:40:52+08:00">
+                2019-03-05
               </time>
             
           </span>
@@ -428,7 +428,7 @@ f(x) = \left\{
 <li><p>乘以一个随距离d递减的权重项，即与单词i距离为d的单词在计数时要乘上权重1/d，表示距离越远的词可能相关性越小。</p>
 </li>
 <li>采用AdaGrad的方法迭代50次（非监督学习，没有用神经网络）</li>
-<li>作者从神经网络的训练中得到的灵感：对于某些神经网络，训练多个网络并把这些网络结合起来有助于减少过拟合和噪声并且能改善性能。受此启发，作者将W+˜W作为最终词向量，并且能够使得这些词向量在某些任务上的表现变好。 </li>
+<li>作者从神经网络的训练中得到的灵感：对于某些神经网络，训练多个网络并把这些网络结合起来有助于减少过拟合和噪声并且能改善性能。<strong>受此启发，作者将W+˜W作为最终词向量，并且能够使得这些词向量在某些任务上的表现变好。</strong> </li>
 </ol>
 <h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><ul>
 <li>模型中最大的问题在于参数$b_i,b_j$也是可训练的参数</li>
@@ -480,6 +480,10 @@ f(x) = \left\{
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/03/lda主题模型/" rel="prev" title="lda主题模型">
+                lda主题模型 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -556,7 +560,7 @@ f(x) = \left\{
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

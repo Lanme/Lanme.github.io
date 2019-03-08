@@ -93,6 +93,9 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/cc2d415b8ccda9fdaba12c575d4d3c4b.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/image1.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20190217233658.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-3548fbec8da27d3957d024d556cef4a6_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-02ae5786c710b1427a222465ecc6346e_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-1d979af221d94aea41972e62a8935a95_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9ca9bfc160d53b23ea0d1164e6accffe.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/e9858303cd62eacc21759b16a121ff58.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/optimizer-1.gif">
@@ -107,7 +110,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20180112195606874.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9d0db64a9c9b050466a039c935f36f93.png">
-<meta property="og:updated_time" content="2019-02-28T13:25:08.980Z">
+<meta property="og:updated_time" content="2019-03-03T14:19:43.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络优化">
 <meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
@@ -299,8 +302,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-28T21:25:08+08:00">
-                2019-02-28
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-03T22:19:43+08:00">
+                2019-03-03
               </time>
             
           </span>
@@ -349,7 +352,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  7k
+                  7.4k
                 </span>
               
 
@@ -365,7 +368,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  26
+                  27
                 </span>
               
             </div>
@@ -479,8 +482,18 @@ g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
 <p>下图的前两行公式为指数加权平均，此时的梯度不再只是现在的数据的梯度，而是有<strong>一定权重的之前的梯度</strong>。就像是把原本的梯度压缩一点，并且补上一个之前就已经存在的<code>动量</code>。每一次梯度下降都会有一个之前的速度的作用，如果我这次的方向与之前相同，则会因为之前的速度继续加速；如果这次的方向与之前相反，则会由于之前存在速度的作用不会产生一个急转弯，而是尽量把路线向一条直线拉过去。</p>
 <p>$v_{dw}​$ 、$v_{db}​$的初始值为0，$\alpha​$、$\beta​$是超参数，$\beta​$通常取为0.9。</p>
 <p><img src="/2019/02/16/网络优化/image1.png" alt=""></p>
-<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>RMSprop 是 Geoff Hinton 提出的一种<code>自适应学习率方法</code>，根据历史梯度累积量来改变学习率。和动量梯度下降法一样，都解决了相同的问题，使梯度下降时的<code>折返情况</code>减轻，从而加快训练速度。因为下降的路线更接近同一个方向，因此也可以将学习率增大来加快训练速度。</p>
+<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>RMSprop 是 Geoff Hinton 提出的一种<code>自适应学习率方法</code>（自适应学习率对loss是不敏感的，换句话说，将loss乘上10倍，最终的优化效果基本没什么变化，但如果在随机梯度下降中，将loss乘上10倍，就等价于将学习率乘以10了）。根据历史梯度累积量来改变学习率。和动量梯度下降法一样，都解决了相同的问题，使梯度下降时的<code>折返情况</code>减轻，从而加快训练速度。因为下降的路线更接近同一个方向，因此也可以将学习率增大来加快训练速度。</p>
 <p><img src="/2019/02/16/网络优化/20190217233658.png" alt=""></p>
+<h3 id="AdaGrad"><a href="#AdaGrad" class="headerlink" title="AdaGrad"></a>AdaGrad</h3><p><img src="/2019/02/16/网络优化/v2-3548fbec8da27d3957d024d556cef4a6_hd.jpg" alt=""></p>
+<p>我们可以看出该优化算法与普通的sgd算法差别就在于标黄的哪部分，采取了<code>累积平方梯度</code>。[10]</p>
+<p><strong>简单来讲，设置全局学习率之后，每次通过，全局学习率逐参数的除以历史梯度平方和的平方根，使得每个参数的学习率不同</strong>。</p>
+<p>正常情况下：</p>
+<p><img src="/2019/02/16/网络优化/v2-02ae5786c710b1427a222465ecc6346e_hd.jpg" alt=""></p>
+<p>假设我们现在就只有两个参数w,b，我们从图中可以看到在b方向走的比较陡峭，这影响了优化速度。</p>
+<p>而我们采取AdaGrad算法之后，我们在算法中使用了累积平方梯度r=:r + g.g。</p>
+<p><strong>从上图可以看出在b方向上的梯度g要大于在w方向上的梯度。</strong></p>
+<p>那么在下次计算更新的时候，r是作为分母出现的，<code>越大的反而更新越小，越小的值反而更新越大</code>，那么后面的更新则会像下面绿色线更新一样，明显就会好于蓝色更新曲线。</p>
+<p><img src="/2019/02/16/网络优化/v2-1d979af221d94aea41972e62a8935a95_hd.jpg" alt=""></p>
 <h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><p><code>RMSProp</code> + <code>Momentum</code></p>
 <p>初始化：$V_{dw}=0，S_{dw}=0，V_{db}=0，S_{db}=0​$</p>
 <p><img src="/2019/02/16/网络优化/9ca9bfc160d53b23ea0d1164e6accffe.png" alt=""></p>
@@ -633,6 +646,7 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
 <p>[7].  <a href="https://zhuanlan.zhihu.com/p/23249000" target="_blank" rel="noopener">图片数据增强</a></p>
 <p>[8].  <a href="https://www.jianshu.com/p/70487abdf96b" target="_blank" rel="noopener">正则项</a></p>
 <p>[9].  <a href="https://blog.csdn.net/qq_25737169/article/details/79048516" target="_blank" rel="noopener">批归一化</a></p>
+<p>[10]. <a href="https://zhuanlan.zhihu.com/p/29920135" target="_blank" rel="noopener">Adagrad</a></p>
 <p>[n].  deeplearning.ai</p>
 
       
@@ -747,7 +761,7 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -793,7 +807,7 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#凸问题"><span class="nav-number">1.</span> <span class="nav-text">凸问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么有凸优化问题"><span class="nav-number">1.1.</span> <span class="nav-text">为什么有凸优化问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据预处理"><span class="nav-number">1.2.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">1.3.</span> <span class="nav-text">初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Glorot-Initialization-glorot-uniform-glorot-normal"><span class="nav-number">1.3.1.</span> <span class="nav-text">Glorot Initialization(glorot_uniform, glorot_normal)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization-he-normal-he-uniform"><span class="nav-number">1.3.2.</span> <span class="nav-text">He Initialization(he_normal, he_uniform)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Orthogonal-Initialization"><span class="nav-number">1.3.3.</span> <span class="nav-text">Orthogonal Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度下降法的变种"><span class="nav-number">1.4.</span> <span class="nav-text">梯度下降法的变种</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mini-batch"><span class="nav-number">1.4.1.</span> <span class="nav-text">Mini-batch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动量梯度下降法（Momentum）"><span class="nav-number">1.4.2.</span> <span class="nav-text">动量梯度下降法（Momentum）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">1.4.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">1.4.4.</span> <span class="nav-text">Adam</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各种优化算法的对比"><span class="nav-number">1.4.5.</span> <span class="nav-text">各种优化算法的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习率衰减"><span class="nav-number">1.5.</span> <span class="nav-text">学习率衰减</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度截断"><span class="nav-number">1.6.</span> <span class="nav-text">梯度截断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛化问题"><span class="nav-number">2.</span> <span class="nav-text">泛化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据增强"><span class="nav-number">2.1.</span> <span class="nav-text">数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">2.2.</span> <span class="nav-text">正则化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则项的作用"><span class="nav-number">2.2.1.</span> <span class="nav-text">正则项的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L1正则"><span class="nav-number">2.2.2.</span> <span class="nav-text">L1正则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2正则"><span class="nav-number">2.2.3.</span> <span class="nav-text">L2正则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dropout"><span class="nav-number">2.3.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#归一化"><span class="nav-number">2.4.</span> <span class="nav-text">归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要归一化"><span class="nav-number">2.4.1.</span> <span class="nav-text">为什么需要归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BatchNorm"><span class="nav-number">2.4.2.</span> <span class="nav-text">BatchNorm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LayerNorm"><span class="nav-number">2.4.3.</span> <span class="nav-text">LayerNorm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Early-Stop"><span class="nav-number">2.5.</span> <span class="nav-text">Early Stop</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#凸问题"><span class="nav-number">1.</span> <span class="nav-text">凸问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么有凸优化问题"><span class="nav-number">1.1.</span> <span class="nav-text">为什么有凸优化问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据预处理"><span class="nav-number">1.2.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">1.3.</span> <span class="nav-text">初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Glorot-Initialization-glorot-uniform-glorot-normal"><span class="nav-number">1.3.1.</span> <span class="nav-text">Glorot Initialization(glorot_uniform, glorot_normal)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization-he-normal-he-uniform"><span class="nav-number">1.3.2.</span> <span class="nav-text">He Initialization(he_normal, he_uniform)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Orthogonal-Initialization"><span class="nav-number">1.3.3.</span> <span class="nav-text">Orthogonal Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度下降法的变种"><span class="nav-number">1.4.</span> <span class="nav-text">梯度下降法的变种</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mini-batch"><span class="nav-number">1.4.1.</span> <span class="nav-text">Mini-batch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动量梯度下降法（Momentum）"><span class="nav-number">1.4.2.</span> <span class="nav-text">动量梯度下降法（Momentum）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">1.4.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AdaGrad"><span class="nav-number">1.4.4.</span> <span class="nav-text">AdaGrad</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">1.4.5.</span> <span class="nav-text">Adam</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各种优化算法的对比"><span class="nav-number">1.4.6.</span> <span class="nav-text">各种优化算法的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习率衰减"><span class="nav-number">1.5.</span> <span class="nav-text">学习率衰减</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度截断"><span class="nav-number">1.6.</span> <span class="nav-text">梯度截断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛化问题"><span class="nav-number">2.</span> <span class="nav-text">泛化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据增强"><span class="nav-number">2.1.</span> <span class="nav-text">数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">2.2.</span> <span class="nav-text">正则化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则项的作用"><span class="nav-number">2.2.1.</span> <span class="nav-text">正则项的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L1正则"><span class="nav-number">2.2.2.</span> <span class="nav-text">L1正则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2正则"><span class="nav-number">2.2.3.</span> <span class="nav-text">L2正则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dropout"><span class="nav-number">2.3.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#归一化"><span class="nav-number">2.4.</span> <span class="nav-text">归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要归一化"><span class="nav-number">2.4.1.</span> <span class="nav-text">为什么需要归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BatchNorm"><span class="nav-number">2.4.2.</span> <span class="nav-text">BatchNorm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LayerNorm"><span class="nav-number">2.4.3.</span> <span class="nav-text">LayerNorm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Early-Stop"><span class="nav-number">2.5.</span> <span class="nav-text">Early Stop</span></a></li></ol></li></ol></div>
             
 
           </div>

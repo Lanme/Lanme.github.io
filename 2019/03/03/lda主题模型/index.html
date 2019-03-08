@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="写在前面  PLSA：多项分布+EM算法[2] PLSA并没有考虑参数的先验知识，这时候出现了另一个改进的算法： LDA：Dirichlet分布+Gibbs采样 LDA涉及到的先验知识有：二项分布、Gamma函数、Beta分布、多项分布、Dirichlet分布、马尔科夫链、MCMC、Gibbs Sampling、EM算法等。涉及概念众多，所以也是导致它晦涩难懂的主要原因。 伯努利分布伯努利分布（t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lda主题模型">
+<meta property="og:url" content="https://Lanme.github.io/2019/03/03/lda主题模型/index.html">
+<meta property="og:site_name" content="锦鲤木兰">
+<meta property="og:description" content="写在前面  PLSA：多项分布+EM算法[2] PLSA并没有考虑参数的先验知识，这时候出现了另一个改进的算法： LDA：Dirichlet分布+Gibbs采样 LDA涉及到的先验知识有：二项分布、Gamma函数、Beta分布、多项分布、Dirichlet分布、马尔科夫链、MCMC、Gibbs Sampling、EM算法等。涉及概念众多，所以也是导致它晦涩难懂的主要原因。 伯努利分布伯努利分布（t">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304143116.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304143205.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304114654.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304114722.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304114817.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190305162224.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304115351.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304115800.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190309010839.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304224457.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304215855.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190308231350.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190308231800.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190305183837.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190305000239.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190309004057.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190309011432.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/41bc1b41d3d5a1ae3a9a92ab7fe51c1b.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/91faa3882bb2a880a8a89da5c7bfa0ab.png">
+<meta property="og:updated_time" content="2019-03-08T17:16:17.626Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="lda主题模型">
+<meta name="twitter:description" content="写在前面  PLSA：多项分布+EM算法[2] PLSA并没有考虑参数的先验知识，这时候出现了另一个改进的算法： LDA：Dirichlet分布+Gibbs采样 LDA涉及到的先验知识有：二项分布、Gamma函数、Beta分布、多项分布、Dirichlet分布、马尔科夫链、MCMC、Gibbs Sampling、EM算法等。涉及概念众多，所以也是导致它晦涩难懂的主要原因。 伯努利分布伯努利分布（t">
+<meta name="twitter:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190304143116.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Lanme.github.io/2019/03/03/lda主题模型/">
+
+
+
+
+
+  <title>lda主题模型 | 锦鲤木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">锦鲤木兰</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/03/03/lda主题模型/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">lda主题模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T13:09:51+08:00">
+                2019-03-03
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-09T01:16:17+08:00">
+                2019-03-09
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.5k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  18
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p><img src="/2019/03/03/lda主题模型/20190304143116.png" alt=""></p>
+<p><img src="/2019/03/03/lda主题模型/20190304143205.png" alt=""></p>
+<p>PLSA：多项分布+EM算法[2]</p>
+<p>PLSA并没有考虑参数的先验知识，这时候出现了另一个改进的算法：</p>
+<p>LDA：Dirichlet分布+Gibbs采样</p>
+<p>LDA涉及到的先验知识有：二项分布、Gamma函数、Beta分布、多项分布、Dirichlet分布、马尔科夫链、MCMC、Gibbs Sampling、EM算法等。涉及概念众多，所以也是导致它晦涩难懂的主要原因。</p>
+<h1 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h1><p>伯努利分布（the Bernoulli distribution，又名两点分布或者0-1分布），是一个离散型概率分布，记其成功概率为p(0≤p≤1)，失败概率为q=1-p。</p>
+<a id="more"></a>
+<h1 id="二项分布"><a href="#二项分布" class="headerlink" title="二项分布"></a>二项分布</h1><p>单次抛硬币是伯努利分布，多次抛硬币是二项分布。二项分布中：</p>
+<script type="math/tex; mode=display">
+P(X=x|n,p) = C_{n}^{x}p^{x}(1-p)^{n-x}</script><p>当n = 1时，二项分布就是伯努利分布。</p>
+<h1 id="多项分布"><a href="#多项分布" class="headerlink" title="多项分布"></a>多项分布</h1><p>多项分布，是二项分布扩展到多维的情况. 多项分布是指单次试验中的随机变量的取值不再是0-1的，而是有多种离散值可能（1,2,3…,k）.概率密度函数为：</p>
+<script type="math/tex; mode=display">
+P(x_{1}, x_{2},…, x_{k}|n, p_{1}, p_{2},…, p_{k}) = \frac{n!}{Π_{i=1}^{k}x_{i}!} * p_{i}^{x_{i}}</script><h1 id="Gamma函数"><a href="#Gamma函数" class="headerlink" title="Gamma函数"></a>Gamma函数</h1><p>Gamma函数的定义：</p>
+<script type="math/tex; mode=display">
+\Gamma(x) = \int_0 ^{\infty} t^{z-1}e^{-t}dt</script><p>分部积分后，Gamma有如下性质：</p>
+<script type="math/tex; mode=display">
+\Gamma(x+1) = x\Gamma(x)</script><p>Gamma可以看做是阶乘在实数集上的拓展，具有如下性质：</p>
+<script type="math/tex; mode=display">
+\Gamma(n) = (n-1)!</script><h1 id="Beta分布"><a href="#Beta分布" class="headerlink" title="Beta分布"></a>Beta分布</h1><p><strong>公式来源</strong></p>
+<p><img src="/2019/03/03/lda主题模型/20190304114654.png" alt=""></p>
+<p>解决这个问题，可以尝试计算 落在区间$[x,x+\Delta  x]$的概率。首先，把[0,1]区间分成三段$[0,x),[x,x+\Delta x]，(x+\Delta x,1]$，然后考虑下简单的情形：即假设n个数中只有1个落在了区间$[x,x+\Delta x]$内，由于这个区间内的数X(k)是第k大的，所以[0,x)中应该有k−1个数，$(x+\Delta x,1]$这个区间中应该有n−k个数。（其实这个假设也可以认为计算是伯努利分布参数为$p=\frac{k}{n}$的概率，又因为p本身也是概率，所以是暗示了分布的分布） 如下图所示：</p>
+<p><img src="/2019/03/03/lda主题模型/20190304114722.png" alt=""></p>
+<p>上述问题可以转换为下述事件E：</p>
+<p><img src="/2019/03/03/lda主题模型/20190304114817.png" alt=""></p>
+<p>其中，$ o(\Delta x)$表示$\Delta x$的高阶无穷小。显然，由于不同的排列组合，即n个数中有一个落在$[x,x+\Delta x]$区间的有n种取法，余下n−1个数中有k−1个落在[0,x)的有C(n-1,k-1)种组合。所以和事件E等价的事件一共有nC(n-1,k-1)个。</p>
+<p>只要落在$[x,x+\Delta x]​$内的数字超过一个，则对应的事件的概率就是$o(\Delta x)​$。所以的概率密度函数为：</p>
+<p><img src="/2019/03/03/lda主题模型/20190305162224.png" alt=""></p>
+<p>利用Gamma函数，我们可以将f(x)表示成如下形式：</p>
+<p><img src="/2019/03/03/lda主题模型/20190304115351.png" alt=""></p>
+<p>在上式中，我们用$\alpha=k，\beta=n-k+1$替换，可以得到beta分布的概率密度函数。</p>
+<p><strong>定义</strong></p>
+<p>对于参数$\alpha&gt;0,\beta&gt;0​$，取值范围在[0,1]的随机变量x的概率密度函数为：</p>
+<script type="math/tex; mode=display">
+p(p|α,β) = \frac{1}{B(α,β)} * p^{α-1} * (1-p)^{β-1}</script><p>其中，$β∈[0,1]，\frac{1}{B(α,β)} = \frac{Γ(α+β)}{Γ(α)Γ(β)}  $。$\alpha、\beta​$为伪计数，即我们的先验知识告诉我们这两种事件发生的次数。</p>
+<h1 id="Dirichlet分布"><a href="#Dirichlet分布" class="headerlink" title="Dirichlet分布"></a>Dirichlet分布</h1><p>Dirichlet的概率密度函数为：</p>
+<script type="math/tex; mode=display">
+p(P=p_i|\alpha_i) = \frac{1}{B(\alpha)}\prod_{i=1}^k p_i^{\alpha_{i}-1}</script><p>其中，</p>
+<script type="math/tex; mode=display">
+B(\alpha) = \frac{Π_{i}Γ(α_{i})}{Γ(∑_{i}α_{i})},\sum_{i=1}^k p_i=1</script><p>有些地方将$p_i,\alpha_i$写成向量形式，即$\vec{p},\vec{\alpha}$。另外，Dirichlet分布还可以表示为：</p>
+<script type="math/tex; mode=display">
+Dir(\vec{p}|\vec{\alpha}) = \frac{1}{\Delta(\vec{\alpha})} \prod_{k=1}^v p_{k}^{\alpha_k-1},\vec{\alpha} = (\alpha_1,...,\alpha_V)</script><p>$\Delta(\vec{\alpha})$是归一化因子：</p>
+<script type="math/tex; mode=display">
+\Delta(\vec{\alpha}) = \int \prod_{k=1}^V p_k^{\alpha_k-1} d\vec{p}</script><h1 id="共轭先验分布"><a href="#共轭先验分布" class="headerlink" title="共轭先验分布"></a>共轭先验分布</h1><p>在贝叶斯概率理论中，如果后验概率$p(\theta|x)$和先验概率$p(\theta)$满足同样的分布律，那么，先验分布和后验分布被叫做<code>共轭分布</code>，同时，先验分布叫做似然函数$ p(\theta|x) $的<code>共轭先验分布</code>。</p>
+<script type="math/tex; mode=display">
+p(\theta|x) = \frac{p(\theta,x)}{p(x)}\propto p(x|\theta)p(\theta)</script><p><strong>Beta分布是二项式分布的<code>共轭先验分布</code>，而狄利克雷(Dirichlet)分布是多项式分布的<code>共轭先验分布</code>。</strong></p>
+<blockquote>
+<p>贝叶斯学派的最基本的观点是，任何一个未知量θ，都可以看作一个随机变量，应用一个概率分布去描述θ的未知状况。这个概率分布是在抽样前就有关于θ的先验信息的概率陈述，这个概率分布被称为先验分布。</p>
+</blockquote>
+<h2 id="Beta-Binomial"><a href="#Beta-Binomial" class="headerlink" title="Beta-Binomial"></a>Beta-Binomial</h2><p><img src="/2019/03/03/lda主题模型/20190304115800.png" alt=""></p>
+<p>按照贝叶斯推理的逻辑，把以上过程整理如下：</p>
+<p>1、p是我们要猜测的参数，我们推导出p的分布为$f(p)=Beta(p|k,n-k+1)​$，称为p的先验分布</p>
+<p>2、根据$Y_i$中有$m_1$个比p小，有$m_2$个比p大，$Y_i$相当是做了m次伯努利实验，所以$m_1、m_2$服从二项分布$B(m,p)$</p>
+<p>3、在给定了来自数据提供$(m_1,m_2)$知识后，p的后验分布变为：</p>
+<script type="math/tex; mode=display">
+f(p|m1,m2)=Beta(p|k+m1,n-k+1+m2)</script><p>贝叶斯估计的基本过程是：</p>
+<p><strong>先验分布 + 数据的知识 = 后验分布</strong></p>
+<p>以上贝叶斯分析过程的简单直观的表示就是：</p>
+<p>$Beta(p|k,n-k+1) + BinomCount(m_1,m_2) = Beta(p|k+m1,n-k+1+m2)$</p>
+<p>更一般的，对于非负实数alpha和beta，我们有如下关系：</p>
+<p>$Beta(p|\alpha,\beta) + BinomCount(m_1,m_2) = Beta(p|\alpha+m_1,\beta+m_2)$</p>
+<p>针对于这种观测到的数据符合二项分布，参数的先验分布和后验分布都是Beta分布的情况，就是Beta-Binomial共轭。换言之，Beta分布是二项式分布的共轭先验概率分布。<strong>二项分布和Beta分布是共轭分布意味着，如果我们为二项分布的参数p选取的先验分布是Beta分布，那么以p为参数的二项分布用贝叶斯估计得到的后验分布仍然服从Beta分布。</strong></p>
+<p><strong>公式证明</strong></p>
+<p><img src="/2019/03/03/lda主题模型/20190309010839.png" alt=""></p>
+<h2 id="分布的分布"><a href="#分布的分布" class="headerlink" title="分布的分布"></a>分布的分布</h2><p>举个栗子：</p>
+<p>Beta分布可以看做是分布之上的分布。我们还是以抛硬币为例。不过，我们并不假设硬币是均匀的（也就是说：并不假设每次抛硬币，正面朝上的概率为0.5），所以抛硬币的正面朝上的概率p是未知的（只知道p∈[0,1]）。如果进行一次二项分布试验，在这次二项分布试验中，抛硬币10000次，其中正面朝上7000次，反面朝上3000次，我们可以得到，正负面朝上的概率分别为{p,1-p}={0.7,0.3}。但是我们并不确信这个结果是正确的。我们想要做10000次二项分布试验，在每次二项分布试验中，均抛硬币10000次（说不定在其他二项分布实验中，得到的正负面朝上的概率是{0.2,0.8}或者{0.6,0.4}，这些情况都有可能），那么，我们想要知道，在这样的多次重复二项分布实验中，抛硬币最后得到正负面朝上概率为{0.7,0.3}这样概率为多少？这就是在求抛硬币的概率分布之上的分布。这样的分布就叫做Beta分布。</p>
+<p>正如二项分布可以看做多次进行伯努利试验所得到的分布一样，Beta分布也可以看做是多次进行二项分布的试验所得到的分布，是分布之上的分布。</p>
+<h2 id="为什么需要共轭分布"><a href="#为什么需要共轭分布" class="headerlink" title="为什么需要共轭分布"></a>为什么需要共轭分布</h2><p>为什么LDA要假设共轭分布呢？当某个似然概率异常复杂时，后验概率计算会叫人难以理解，使用共轭先验可以简化问题。从Beta-Binomial可以看出，选择与似然函数共轭的先验，<strong>得到的后验函数只是参数调整后的先验函数</strong>。</p>
+<p><strong>先验概率取为共轭先验的好处就在于：每当有新的观测数据，就把上次的后验概率作为先验概率，乘以新数据的likelihood，然后就得到新的后验概率，而不必用先验概率乘以所有数据的likelihood得到后验概率。</strong></p>
+<h1 id="Beta-Dirichlet分布的一个性质"><a href="#Beta-Dirichlet分布的一个性质" class="headerlink" title="Beta/Dirichlet分布的一个性质"></a>Beta/Dirichlet分布的一个性质</h1><p>如果$p\text{~}Beta(t|\alpha,\beta)​$,则：</p>
+<script type="math/tex; mode=display">
+E(p) = \int_o^1 t*Beta(t|\alpha,\beta)dt \\\\
+ = \int_0^1 t*\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} t^{(\alpha-1)}(1-t)^{(\beta-1)}dt \\\\
+ =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \int_0^1 t^{(\alpha)}(1-t)^{(\beta-1)}dt</script><p>上面右边的积分对应到概率分布$Beta(t|\alpha+1,\beta)$，对于这个分布有：</p>
+<script type="math/tex; mode=display">
+\int_0^1 \frac{\Gamma(\alpha+\beta+1)}{\Gamma(\alpha+1)\Gamma(\beta)}  t^{(\alpha)}(1-t)^{(\beta-1)}dt = 1</script><p>把上式带回E(p)的计算式：</p>
+<script type="math/tex; mode=display">
+E(p) =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \frac {\Gamma(\alpha+1)\Gamma(\beta)}{\Gamma(\alpha+\beta+1)} \\\\
+=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha+\beta+1)} \frac{\Gamma(\alpha+1)}{\Gamma(\alpha)} \\\\
+=\frac{\alpha}{\alpha+\beta}</script><p>这说明，对于对于Beta分布的随机变量，其均值可以用$\frac{\alpha}{\alpha+\beta}$来估计。Dirichlet分布也有类似的结论，如果p服从于$Dir(\vec{p}|\vec{\alpha})$，同样可以证明：</p>
+<script type="math/tex; mode=display">
+E(\vec{p}) = (\frac{\alpha_1}{\sum_{i=1}^k a_i},\frac{\alpha_2}{\sum_{i=1}^k a_i},...,\frac{\alpha_k}{\sum_{i=1}^k a_i})</script><p>对于后验分布，假设$\vec{p}$的后验分布为$Dir(\vec{p}|\vec{n}+\vec{\alpha})$，即有：</p>
+<script type="math/tex; mode=display">
+E(\vec{p}) = (\frac{n_1+\alpha_1}{\sum_{i=1}^k (n_i+a_i)},\frac{n_2+\alpha_2}{\sum_{i=1}^k (n_i+a_i)},...,\frac{n_k+\alpha_k}{\sum_{i=1}^k (n_i+a_i)})</script><p>也就是说对于每一个$p_i$ 用下式做参数估计：</p>
+<script type="math/tex; mode=display">
+\hat{p}_i  = \frac{n_i+\alpha_i}{\sum_{i=1}^k (n_i+a_i)}</script><p>这个重要性质会在Gibbs Sampling中推导用到。</p>
+<h1 id="LDA主要思想"><a href="#LDA主要思想" class="headerlink" title="LDA主要思想"></a>LDA主要思想</h1><p>LDA生成文档的过程如下：</p>
+<p><img src="/2019/03/03/lda主题模型/20190304224457.png" alt=""></p>
+<p>同种，K为主题个数，M为文档总数，$N_m$是第m个文档的单词总数，$\vec{\beta}$是每个Topic下词的多项分布的Dirichlet先验参数（一个$\beta$生成一个词的多项分布的参数），$\vec{\alpha}$是每个文档下Topic的多项分布的Dirichlet先验参数（一个$\alpha$生成一个主题多项分布的参数）。$z_{m,n}$是第m个文档中第n个词的主题，$w_{m,n}$是m个文档的第n个词。$\vec{\theta_m}$和$\vec{\phi_k}$是隐变量，分别表示第m个文档下的Topic分布和第k个Topic下的词分布。</p>
+<p><img src="/2019/03/03/lda主题模型/20190304215855.png" alt=""></p>
+<p>简单理解为两个物理过程：</p>
+<script type="math/tex; mode=display">
+\vec{\alpha} \to \vec{\theta}_m \to z_{m,n} \\\\
+\vec{\beta} \to \vec{\phi}_k \to w_{m,n}|k=z_{m,n}</script><p>我们可以写出最后所有变量的联合分布：</p>
+<script type="math/tex; mode=display">
+p(\vec{w}_m,\vec{z}_m,\vec{\theta}_m,\vec{\phi}_{z_{m,n}}|\vec{\alpha},\vec{\beta}) = 
+\begin{matrix} document \ plate \\ \overbrace{ 
+\begin{matrix} \underbrace{
+
+\prod_{n-1}^{N_m} p(w_{m,n}|\vec{\phi_{z}}_{m,n}) p (z_{m,n}|\vec{\theta}_m)
+
+} \\ word \ plate\end{matrix}
+p(\vec{\theta}_m|\vec{\alpha})
+
+}\end{matrix}
+
+\begin{matrix} topic \ plate \\ \overbrace{
+p(\Phi|\vec{\beta})
+
+}\end{matrix}</script><p>简单点写，最后的目标是求：</p>
+<script type="math/tex; mode=display">
+p(\vec{w},\vec{z}|\vec{\alpha},\vec{\beta}) = p(\vec{w}|\vec{z},\vec{\beta})p(\vec{z}|\vec{\alpha}) \\\\</script><p>根据Dirichlet公式，分别计算$p(\vec{z}|\vec{\alpha})$和$p(\vec{w}|\vec{z},\vec{\beta})$如下：</p>
+<p><img src="/2019/03/03/lda主题模型/20190308231350.png" alt=""></p>
+<p><img src="/2019/03/03/lda主题模型/20190308231800.png" alt=""></p>
+<p><strong>$\vec{n}_z$表示term t被观察到分配 topic z 的次数， $\vec{n}_m$表示topic k分配给文档m中的 word 的次数。</strong></p>
+<p>这个联合概率公式是非常难计算的， 所以需要采用Gibbs Sampling算法进行采样计算这个联合概率公式。 因为$w$是已经观测到的样本，  $z$是初始计算时随机分配的topic， 所以最终的目的是要$z​$实现收敛， 这样在LDA的plate model中的每篇文档对应的topic 分布 和每个topic下对应的term的分布就自然也是收敛的了。</p>
+<h1 id="Gibbs-Sampling"><a href="#Gibbs-Sampling" class="headerlink" title="Gibbs Sampling"></a>Gibbs Sampling</h1><p>由于LDA中含有隐变量，参数估计方法一般有精确计算（exact inference）和近似计算（approximate inference）。精确计算是很困难的，所以一般采用近似计算。</p>
+<p><strong>对于给定的概率分布$p(X)$，我们希望构造一个从任何初始状态$x_0$出发，都能沿着马氏链转移直到收敛到平稳分布，这个分布就是我们想要得到的分布。</strong>基于这个思想，Metropolis在1953年首次提出基于马氏链的蒙特卡洛方法，并启发了一系列MCMC算法。</p>
+<p><code>Gibbs Sampling</code>算法是MCMC的一个特例，如果某个概率$P(X)$不易求得，那么可以交替地固定某一维度$x_i$，然后通过其他维度$x_{¬i}$（去除$x_i$的其他所有值）的值来抽样近似求解，也就是说，Gibbs采样就是用<code>条件分布</code>的采样来替代全概率分布的采样。</p>
+<p>假设有一个概率分布$p(x,y)$，考察x坐标相同的两个点A$(x_1,y_1)$和B$(x_1,y_2)$，我们发现：</p>
+<script type="math/tex; mode=display">
+p(x_1,y_1)p(y_2|x_1) = p(x_1)p(y_1|x_1)p(y_2|x_1) \\\\
+p(x_1,y_2)p(y_1|x_1) = p(x_1)p(y_2|x_1)p(y_1|x_1)</script><p>结果得到</p>
+<script type="math/tex; mode=display">
+p(x_1,y_1)p(y_2|x_1) = p(x_1,y_2)p(y_1|x_1) \\\\
+即：P(A)p(y_2|x_1) = P(B)p(y_1|x_1)</script><p>Gibbs采样的来源参考[1]，二维采样过程：</p>
+<p><img src="/2019/03/03/lda主题模型/20190305183837.png" alt=""></p>
+<h1 id="LDA与Gibbs-Sampling"><a href="#LDA与Gibbs-Sampling" class="headerlink" title="LDA与Gibbs Sampling"></a>LDA与Gibbs Sampling</h1><p><img src="/2019/03/03/lda主题模型/20190305000239.png" alt=""></p>
+<p>初始时随机给文本中的每个单词分配主题$z^{(0)}​$，然后统计每个主题$z​$下出现$term \ t​$的数量以及每个文档$m​$下出现主题$z​$中给的词的数量，每一轮计算$P(z_i|z_{¬i},d,w)​$，即排除当前词的主题分配，根据其他所有词的主题分配估计当前词分配的各个主题的概率。当得到当前词属于所有主题$z​$的概率分布后，根据这个概率分布为该词sample​一个新的主题$z^{(1)}​$。</p>
+<p>用同样的方法不断更新下一个词的主题，直到发现每个文档下Topic分布$\theta_m​$和每个Topic下词的分布$\phi_k​$收敛，算法停止，输出待估计的参数$\theta_m​$和$\phi_k​$，最终每个单词的主题$z_{m,n}​$也同时得出。实际应用中会设置最大迭代次数。</p>
+<p>这里面涉及Gibbs sampling更新规则，对于第m篇文档中的第n个词，<strong>我们用$¬_i​$表示去除下标为$i​$的词</strong>。那么按照Gibbs Sampling算法的眼球，我们要求得任一个坐标轴i对于的条件分布$P(z_i=k|\vec{z}_{¬i},\vec{w})​$。假设已经观察到的词$w_i=t​$，则由贝叶斯公式：</p>
+<script type="math/tex; mode=display">
+P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto p(z_i=k,w_i=t|\vec{z}_{¬i},\vec{w}_{¬i})</script><p>由于$w_i=k,w_i=t​$只涉及到第m篇文档和第k个主题，由于语料在每轮计算排除掉当前词即第i个词对于的$(z_i,w_i)​$，并不改变Dirichlet-Multinomial共轭结构，因此由上一个LDA的结果，排除掉当前词，即：</p>
+<script type="math/tex; mode=display">
+P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto \frac{\Delta(\vec{n}_z+\vec{\beta})}{\Delta(\vec{n}_{z,¬_i}+\vec{\beta})}·\frac{\Delta(\vec{n}_m+\vec{\alpha})}{\Delta(\vec{n}_{m,¬_i}+\vec{\alpha})}</script><p>计算结果套用了第九点说的关于重要性质：</p>
+<p><img src="/2019/03/03/lda主题模型/20190309004057.png" alt=""></p>
+<p>注意以上公式和原来LDA公式的差别！</p>
+<p>当Gibbs Samling收敛后，要根据最后文档的所有单词的主题分配，计算$\vec{\theta}_m$和$\vec{\phi}_k$，每个文档Topic后验分布和Topic下的词分布如下：</p>
+<p><img src="/2019/03/03/lda主题模型/20190309011432.png" alt=""></p>
+<p>图中是由下面两行公式根据Dirichlet分布的期望计算公式，最终得到上面两行计算结果。</p>
+<h1 id="完整过程"><a href="#完整过程" class="headerlink" title="完整过程"></a>完整过程</h1><div class="note warning"><p><strong>注意</strong> 一个文档可以有N个主题，一个主题可以有M个单词，但是一个单词只有一个主题。</p></div>
+<h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p><img src="/2019/03/03/lda主题模型/41bc1b41d3d5a1ae3a9a92ab7fe51c1b.png" alt=""></p>
+<h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><p><img src="/2019/03/03/lda主题模型/91faa3882bb2a880a8a89da5c7bfa0ab.png" alt=""></p>
+<p>训练过程是为了得到每个词的主题，即（z，w）样本对。<br>推断阶段，尤其是给定新文档的推断，可以假定<strong>词分布已经确定</strong>，只更新新文档的主题分布即可。</p>
+<h1 id="主题个数评价指标"><a href="#主题个数评价指标" class="headerlink" title="主题个数评价指标"></a>主题个数评价指标</h1><ol>
+<li><p>根据困惑度的下降速度，查看最佳拐点</p>
+</li>
+<li><p>根据coherence分数，查看最佳拐点 <a href="https://datascienceplus.com/evaluation-of-topic-modeling-topic-coherence/" target="_blank" rel="noopener">代码参考</a></p>
+</li>
+<li><p>计算KL散度</p>
+</li>
+<li><p>计算各个主题的相似度</p>
+</li>
+<li><p>最常用也是最靠谱的，还是人工确定主题个数</p>
+</li>
+</ol>
+<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><p>一、<strong>短文本上效果不好</strong>，原因是document-level word co-occurrences 很稀疏。解决这个问题的方式：</p>
+<ol>
+<li>是如word2vec一样，利用local context-level word co-occurrences。 也就是说，把每个词当成一个文档以及把它周围出现过的词当做这个文档的内容。这样的话就不会受文档长度的限制了。</li>
+<li>短文本语义更集中明确，LDA是适合处理的，也可以做一些文本扩展的工作，有query log的话，1). query session，2). clickstream。无query log的话，1). 短文本当做query，通过搜索引擎（或语料库）获取Top相关性网页，2). 用语料库中短文本周边词集，3). 知识库中近义词，上下位词等。</li>
+<li><a href="https://segmentfault.com/a/1190000010200075" target="_blank" rel="noopener">Twitterlda</a>：Twitter-LDA的大致思想其实很简单，他从每个用户的角度上考虑，每个用户有个topic分布矩阵，然后每一个tweet的生成是根据这个矩阵选出来的topic再去选单词。</li>
+</ol>
+<p>二、没有较好地结合相关语义强化机制，<strong>主题语义连贯性较差</strong>，很难为人所理解。</p>
+<p>三、参数推断过程中<strong>没有显式地考虑上下文信息</strong>，使得对于主题的分配过程难以收敛到一个较好的状态。</p>
+<p>四、传统的主题模型仍然是一种浅层的表示结构，存在<strong>特征表达能力不强</strong>等缺点。</p>
+<p>参考文献：</p>
+<p>[1]. LDA数学八卦</p>
+<p>[2]. PLSA及EM算法-yangliuy.pdf</p>
+<p>[3]. LDA及Gibbs-Sampling-yangliuy.pdf</p>
+<p>[4]. <a href="http://arthur503.github.io/blog/2013/11/17/ML-Bornuli-Binary-Beta-Multinominal-Dirichlet-Distribution.html" target="_blank" rel="noopener">各个分布</a></p>
+<p>[5]. <a href="https://zhuanlan.zhihu.com/p/37976562" target="_blank" rel="noopener">共轭分布</a></p>
+<p>[6]. <a href="http://www.cips-cl.org/static/anthology/CCL-2017/CCL-17-043.pdf" target="_blank" rel="noopener">神经主题模型</a></p>
+<p>[7]. </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/28/GloVe/" rel="next" title="GloVe">
+                <i class="fa fa-chevron-left"></i> GloVe
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">杀死庸碌的时间</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伯努利分布"><span class="nav-number">2.</span> <span class="nav-text">伯努利分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二项分布"><span class="nav-number">3.</span> <span class="nav-text">二项分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多项分布"><span class="nav-number">4.</span> <span class="nav-text">多项分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gamma函数"><span class="nav-number">5.</span> <span class="nav-text">Gamma函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Beta分布"><span class="nav-number">6.</span> <span class="nav-text">Beta分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dirichlet分布"><span class="nav-number">7.</span> <span class="nav-text">Dirichlet分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#共轭先验分布"><span class="nav-number">8.</span> <span class="nav-text">共轭先验分布</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Beta-Binomial"><span class="nav-number">8.1.</span> <span class="nav-text">Beta-Binomial</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布的分布"><span class="nav-number">8.2.</span> <span class="nav-text">分布的分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要共轭分布"><span class="nav-number">8.3.</span> <span class="nav-text">为什么需要共轭分布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Beta-Dirichlet分布的一个性质"><span class="nav-number">9.</span> <span class="nav-text">Beta/Dirichlet分布的一个性质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LDA主要思想"><span class="nav-number">10.</span> <span class="nav-text">LDA主要思想</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gibbs-Sampling"><span class="nav-number">11.</span> <span class="nav-text">Gibbs Sampling</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LDA与Gibbs-Sampling"><span class="nav-number">12.</span> <span class="nav-text">LDA与Gibbs Sampling</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整过程"><span class="nav-number">13.</span> <span class="nav-text">完整过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#训练过程"><span class="nav-number">13.1.</span> <span class="nav-text">训练过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试过程"><span class="nav-number">13.2.</span> <span class="nav-text">测试过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主题个数评价指标"><span class="nav-number">14.</span> <span class="nav-text">主题个数评价指标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺点"><span class="nav-number">15.</span> <span class="nav-text">缺点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

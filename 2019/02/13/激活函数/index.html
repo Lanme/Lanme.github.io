@@ -96,7 +96,8 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数7.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/1_ypsvQH7kvtI2BhzR2eT_Sw.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/激活函数8.png">
-<meta property="og:updated_time" content="2019-02-25T02:10:46.509Z">
+<meta property="og:image" content="https://lanme.github.io/2019/02/13/激活函数/1524499526_165.png">
+<meta property="og:updated_time" content="2019-03-04T07:12:29.158Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="激活函数">
 <meta name="twitter:description" content="使用激活函数的目的事实证明，如果你使用线性激活函数(恒等激励函数)或者没有使用一个激活函数，那么无论你的神经网络有多少层一直在做的只是计算线性函数，所以不如直接去掉全部隐藏层。在我们的简明案例中，事实证明如果你在隐藏层用线性激活函数，在输出层用Sigmoid函数，那么这个模型的复杂度和没有任何隐藏层的标准Logistic回归是一样的。  在这里线性隐层一点用也没有，因为这两个线性函数的组合本身就是">
@@ -288,8 +289,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-02-25T10:10:46+08:00">
-                2019-02-25
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-04T15:12:29+08:00">
+                2019-03-04
               </time>
             
           </span>
@@ -440,6 +441,11 @@ x ,if\  x>0 \\
 Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以依概率随机的概率分布$\Phi(x) = P(X\leq x)$，这里$\Phi(x)$是正太分布的概率函数，可以简单采用正太分布N(0,1)。</p>
 <p><img src="/2019/02/13/激活函数/激活函数8.png" alt="1"></p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#tensorflow</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gelu</span><span class="params">(input_tensor)</span>:</span></span><br><span class="line">	cdf = <span class="number">0.5</span> * (<span class="number">1.0</span> + tf.erf(input_tensor / tf.sqrt(<span class="number">2.0</span>)))</span><br><span class="line">	<span class="keyword">return</span> input_tesnsor*cdf</span><br></pre></td></tr></table></figure>
+<h1 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h1><ul>
+<li><a href="https://www.julyedu.com/question/big/kp_id/26/ques_id/2127" target="_blank" rel="noopener">是否可以将任何非线性作为激活函数? </a></li>
+</ul>
+<p><img src="/2019/02/13/激活函数/1524499526_165.png" alt=""></p>
+
       
     </div>
     
@@ -548,7 +554,7 @@ Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -594,7 +600,7 @@ Gelu(x) = xP(X\leq x)，X服从N(\mu,\sigma^2)</script><p>Gelu对于输入乘以
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用激活函数的目的"><span class="nav-number">1.</span> <span class="nav-text">使用激活函数的目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sigmoid函数"><span class="nav-number">2.</span> <span class="nav-text">Sigmoid函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式"><span class="nav-number">2.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid梯度消失的原因"><span class="nav-number">2.2.</span> <span class="nav-text">Sigmoid梯度消失的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zero-centered"><span class="nav-number">2.3.</span> <span class="nav-text">zero-centered</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tanh函数"><span class="nav-number">3.</span> <span class="nav-text">Tanh函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式-1"><span class="nav-number">3.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价"><span class="nav-number">3.2.</span> <span class="nav-text">评价</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh与Sigmoid"><span class="nav-number">3.3.</span> <span class="nav-text">Tanh与Sigmoid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN中的Tanh函数"><span class="nav-number">3.4.</span> <span class="nav-text">RNN中的Tanh函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Relu函数"><span class="nav-number">4.</span> <span class="nav-text">Relu函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式-2"><span class="nav-number">4.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价-1"><span class="nav-number">4.2.</span> <span class="nav-text">评价</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leaky-Relu函数"><span class="nav-number">5.</span> <span class="nav-text">Leaky Relu函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gelu函数"><span class="nav-number">6.</span> <span class="nav-text">Gelu函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式-3"><span class="nav-number">6.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">6.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用激活函数的目的"><span class="nav-number">1.</span> <span class="nav-text">使用激活函数的目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sigmoid函数"><span class="nav-number">2.</span> <span class="nav-text">Sigmoid函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式"><span class="nav-number">2.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sigmoid梯度消失的原因"><span class="nav-number">2.2.</span> <span class="nav-text">Sigmoid梯度消失的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zero-centered"><span class="nav-number">2.3.</span> <span class="nav-text">zero-centered</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tanh函数"><span class="nav-number">3.</span> <span class="nav-text">Tanh函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式-1"><span class="nav-number">3.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价"><span class="nav-number">3.2.</span> <span class="nav-text">评价</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tanh与Sigmoid"><span class="nav-number">3.3.</span> <span class="nav-text">Tanh与Sigmoid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN中的Tanh函数"><span class="nav-number">3.4.</span> <span class="nav-text">RNN中的Tanh函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Relu函数"><span class="nav-number">4.</span> <span class="nav-text">Relu函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式-2"><span class="nav-number">4.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评价-1"><span class="nav-number">4.2.</span> <span class="nav-text">评价</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leaky-Relu函数"><span class="nav-number">5.</span> <span class="nav-text">Leaky Relu函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gelu函数"><span class="nav-number">6.</span> <span class="nav-text">Gelu函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数形式-3"><span class="nav-number">6.1.</span> <span class="nav-text">函数形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">6.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#一些问题"><span class="nav-number"></span> <span class="nav-text">一些问题</span></a></li></div>
             
 
           </div>
