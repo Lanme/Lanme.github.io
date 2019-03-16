@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="主题模型,共轭分布,Gibbs采样,">
 
 
 
@@ -80,6 +80,7 @@
 
 
 <meta name="description" content="写在前面  PLSA：多项分布+EM算法[2] PLSA并没有考虑参数的先验知识，这时候出现了另一个改进的算法： LDA：Dirichlet分布+Gibbs采样 LDA涉及到的先验知识有：二项分布、Gamma函数、Beta分布、多项分布、Dirichlet分布、马尔科夫链、MCMC、Gibbs Sampling、EM算法等。涉及概念众多，所以也是导致它晦涩难懂的主要原因。 伯努利分布伯努利分布（t">
+<meta name="keywords" content="主题模型,共轭分布,Gibbs采样">
 <meta property="og:type" content="article">
 <meta property="og:title" content="lda主题模型">
 <meta property="og:url" content="https://Lanme.github.io/2019/03/03/lda主题模型/index.html">
@@ -103,9 +104,10 @@
 <meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190305000239.png">
 <meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190309004057.png">
 <meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190309011432.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/20190309122303.png">
 <meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/41bc1b41d3d5a1ae3a9a92ab7fe51c1b.png">
 <meta property="og:image" content="https://lanme.github.io/2019/03/03/lda主题模型/91faa3882bb2a880a8a89da5c7bfa0ab.png">
-<meta property="og:updated_time" content="2019-03-08T17:16:17.626Z">
+<meta property="og:updated_time" content="2019-03-09T04:57:21.177Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="lda主题模型">
 <meta name="twitter:description" content="写在前面  PLSA：多项分布+EM算法[2] PLSA并没有考虑参数的先验知识，这时候出现了另一个改进的算法： LDA：Dirichlet分布+Gibbs采样 LDA涉及到的先验知识有：二项分布、Gamma函数、Beta分布、多项分布、Dirichlet分布、马尔科夫链、MCMC、Gibbs Sampling、EM算法等。涉及概念众多，所以也是导致它晦涩难懂的主要原因。 伯努利分布伯努利分布（t">
@@ -297,7 +299,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-09T01:16:17+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-09T12:57:21+08:00">
                 2019-03-09
               </time>
             
@@ -449,8 +451,8 @@ f(p|m1,m2)=Beta(p|k+m1,n-k+1+m2)</script><p>贝叶斯估计的基本过程是：
 <p><strong>公式证明</strong></p>
 <p><img src="/2019/03/03/lda主题模型/20190309010839.png" alt=""></p>
 <h2 id="分布的分布"><a href="#分布的分布" class="headerlink" title="分布的分布"></a>分布的分布</h2><p>举个栗子：</p>
-<p>Beta分布可以看做是分布之上的分布。我们还是以抛硬币为例。不过，我们并不假设硬币是均匀的（也就是说：并不假设每次抛硬币，正面朝上的概率为0.5），所以抛硬币的正面朝上的概率p是未知的（只知道p∈[0,1]）。如果进行一次二项分布试验，在这次二项分布试验中，抛硬币10000次，其中正面朝上7000次，反面朝上3000次，我们可以得到，正负面朝上的概率分别为{p,1-p}={0.7,0.3}。但是我们并不确信这个结果是正确的。我们想要做10000次二项分布试验，在每次二项分布试验中，均抛硬币10000次（说不定在其他二项分布实验中，得到的正负面朝上的概率是{0.2,0.8}或者{0.6,0.4}，这些情况都有可能），那么，我们想要知道，在这样的多次重复二项分布实验中，抛硬币最后得到正负面朝上概率为{0.7,0.3}这样概率为多少？这就是在求抛硬币的概率分布之上的分布。这样的分布就叫做Beta分布。</p>
-<p>正如二项分布可以看做多次进行伯努利试验所得到的分布一样，Beta分布也可以看做是多次进行二项分布的试验所得到的分布，是分布之上的分布。</p>
+<p>Beta分布可以看做是分布之上的分布。我们还是以抛硬币为例。不过，我们并不假设硬币是均匀的（也就是说：并不假设每次抛硬币，正面朝上的概率为0.5），所以抛硬币的正面朝上的概率p是未知的（只知道p∈[0,1]）。如果进行一次二项分布试验，在这次二项分布试验中，抛硬币10000次，其中正面朝上7000次，反面朝上3000次，我们可以得到，正负面朝上的概率分别为{p,1-p}={0.7,0.3}。但是我们并不确信这个结果是正确的。我们想要做10000次二项分布试验，在每次二项分布试验中，均抛硬币10000次（说不定在其他二项分布实验中，得到的正负面朝上的概率是{0.2,0.8}或者{0.6,0.4}，这些情况都有可能），<strong>那么，我们想要知道，在这样的多次重复二项分布实验中，抛硬币最后得到正负面朝上概率为{0.7,0.3}这样概率为多少？这就是在求抛硬币的概率分布之上的分布。</strong>这样的分布就叫做Beta分布。</p>
+<p>正如二项分布可以看做多次进行伯努利试验所得到的分布一样，Beta分布也可以看做是多次进行二项分布的试验所得到的分布，是<code>分布之上的分布</code>。</p>
 <h2 id="为什么需要共轭分布"><a href="#为什么需要共轭分布" class="headerlink" title="为什么需要共轭分布"></a>为什么需要共轭分布</h2><p>为什么LDA要假设共轭分布呢？当某个似然概率异常复杂时，后验概率计算会叫人难以理解，使用共轭先验可以简化问题。从Beta-Binomial可以看出，选择与似然函数共轭的先验，<strong>得到的后验函数只是参数调整后的先验函数</strong>。</p>
 <p><strong>先验概率取为共轭先验的好处就在于：每当有新的观测数据，就把上次的后验概率作为先验概率，乘以新数据的likelihood，然后就得到新的后验概率，而不必用先验概率乘以所有数据的likelihood得到后验概率。</strong></p>
 <h1 id="Beta-Dirichlet分布的一个性质"><a href="#Beta-Dirichlet分布的一个性质" class="headerlink" title="Beta/Dirichlet分布的一个性质"></a>Beta/Dirichlet分布的一个性质</h1><p>如果$p\text{~}Beta(t|\alpha,\beta)​$,则：</p>
@@ -514,16 +516,17 @@ p(x_1,y_1)p(y_2|x_1) = p(x_1,y_2)p(y_1|x_1) \\\\
 <h1 id="LDA与Gibbs-Sampling"><a href="#LDA与Gibbs-Sampling" class="headerlink" title="LDA与Gibbs Sampling"></a>LDA与Gibbs Sampling</h1><p><img src="/2019/03/03/lda主题模型/20190305000239.png" alt=""></p>
 <p>初始时随机给文本中的每个单词分配主题$z^{(0)}​$，然后统计每个主题$z​$下出现$term \ t​$的数量以及每个文档$m​$下出现主题$z​$中给的词的数量，每一轮计算$P(z_i|z_{¬i},d,w)​$，即排除当前词的主题分配，根据其他所有词的主题分配估计当前词分配的各个主题的概率。当得到当前词属于所有主题$z​$的概率分布后，根据这个概率分布为该词sample​一个新的主题$z^{(1)}​$。</p>
 <p>用同样的方法不断更新下一个词的主题，直到发现每个文档下Topic分布$\theta_m​$和每个Topic下词的分布$\phi_k​$收敛，算法停止，输出待估计的参数$\theta_m​$和$\phi_k​$，最终每个单词的主题$z_{m,n}​$也同时得出。实际应用中会设置最大迭代次数。</p>
-<p>这里面涉及Gibbs sampling更新规则，对于第m篇文档中的第n个词，<strong>我们用$¬_i​$表示去除下标为$i​$的词</strong>。那么按照Gibbs Sampling算法的眼球，我们要求得任一个坐标轴i对于的条件分布$P(z_i=k|\vec{z}_{¬i},\vec{w})​$。假设已经观察到的词$w_i=t​$，则由贝叶斯公式：</p>
+<p>这里面涉及<code>Gibbs sampling更新规则</code>，对于第m篇文档中的第n个词，<strong>我们用$¬_i$表示去除下标为$i$的词</strong>。那么按照Gibbs Sampling算法的眼球，我们要求得任一个坐标轴i对于的条件分布$P(z_i=k|\vec{z}_{¬i},\vec{w})$。假设已经观察到的词$w_i=t$，则由贝叶斯公式：</p>
 <script type="math/tex; mode=display">
 P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto p(z_i=k,w_i=t|\vec{z}_{¬i},\vec{w}_{¬i})</script><p>由于$w_i=k,w_i=t​$只涉及到第m篇文档和第k个主题，由于语料在每轮计算排除掉当前词即第i个词对于的$(z_i,w_i)​$，并不改变Dirichlet-Multinomial共轭结构，因此由上一个LDA的结果，排除掉当前词，即：</p>
 <script type="math/tex; mode=display">
 P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto \frac{\Delta(\vec{n}_z+\vec{\beta})}{\Delta(\vec{n}_{z,¬_i}+\vec{\beta})}·\frac{\Delta(\vec{n}_m+\vec{\alpha})}{\Delta(\vec{n}_{m,¬_i}+\vec{\alpha})}</script><p>计算结果套用了第九点说的关于重要性质：</p>
 <p><img src="/2019/03/03/lda主题模型/20190309004057.png" alt=""></p>
 <p>注意以上公式和原来LDA公式的差别！</p>
-<p>当Gibbs Samling收敛后，要根据最后文档的所有单词的主题分配，计算$\vec{\theta}_m$和$\vec{\phi}_k$，每个文档Topic后验分布和Topic下的词分布如下：</p>
+<p>当Gibbs Samling收敛后，要根据<code>最后文档的所有单词的主题分配</code>，计算$\vec{\theta}_m$和$\vec{\phi}_k$，每个文档Topic后验分布和Topic下的词分布如下：</p>
 <p><img src="/2019/03/03/lda主题模型/20190309011432.png" alt=""></p>
 <p>图中是由下面两行公式根据Dirichlet分布的期望计算公式，最终得到上面两行计算结果。</p>
+<p><img src="/2019/03/03/lda主题模型/20190309122303.png" alt=""></p>
 <h1 id="完整过程"><a href="#完整过程" class="headerlink" title="完整过程"></a>完整过程</h1><div class="note warning"><p><strong>注意</strong> 一个文档可以有N个主题，一个主题可以有M个单词，但是一个单词只有一个主题。</p></div>
 <h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p><img src="/2019/03/03/lda主题模型/41bc1b41d3d5a1ae3a9a92ab7fe51c1b.png" alt=""></p>
 <h2 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h2><p><img src="/2019/03/03/lda主题模型/91faa3882bb2a880a8a89da5c7bfa0ab.png" alt=""></p>
@@ -572,6 +575,16 @@ P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto \frac{\Delta(\vec{n}_z+\vec{\beta})}{\Del
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/主题模型/" rel="tag"># 主题模型</a>
+          
+            <a href="/tags/共轭分布/" rel="tag"># 共轭分布</a>
+          
+            <a href="/tags/Gibbs采样/" rel="tag"># Gibbs采样</a>
+          
+        </div>
+      
 
       
       
@@ -590,6 +603,10 @@ P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto \frac{\Delta(\vec{n}_z+\vec{\beta})}{\Del
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/15/ELMo/" rel="prev" title="ELMo">
+                ELMo <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -666,7 +683,7 @@ P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto \frac{\Delta(\vec{n}_z+\vec{\beta})}{\Del
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -683,6 +700,15 @@ P(z_i=k|\vec{z}_{¬i},\vec{w}) \propto \frac{\Delta(\vec{n}_z+\vec{\beta})}{\Del
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>

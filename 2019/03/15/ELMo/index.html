@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="词向量,highway network,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="写在前面记得在的文章中提到，Glove和Word2vec，对于每一个单词都有唯一的一个embedding表示，而对于多义词显然这种做法不符合直觉，而单词的意思又和上下文相关。ELMo (Embeddings from Language Models)的做法是只预训练language model（LM），而word embedding是通过输入的句子实时输出的, 这样单词的意思就是上下文相关的了，这">
+<meta name="keywords" content="词向量,highway network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ELMo">
+<meta property="og:url" content="https://Lanme.github.io/2019/03/15/ELMo/index.html">
+<meta property="og:site_name" content="锦鲤木兰">
+<meta property="og:description" content="写在前面记得在的文章中提到，Glove和Word2vec，对于每一个单词都有唯一的一个embedding表示，而对于多义词显然这种做法不符合直觉，而单词的意思又和上下文相关。ELMo (Embeddings from Language Models)的做法是只预训练language model（LM），而word embedding是通过输入的句子实时输出的, 这样单词的意思就是上下文相关的了，这">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/baseline_biLM-f9173e8e65a8597d3d8a909f3aee39f1-3d61e.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/biLM_with_residual-096e1ae8acc0d3f846f0a71da2be3449-3d61e.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/modified_input_embedding-ce183e70063bae69926ef6a79e39b764-c2cda.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/elmo_combination-a7af2b3eb2b5ceb37f3e9c5f2b066f14-3d61e.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/20190316154916.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/20190316155005.png">
+<meta property="og:updated_time" content="2019-03-16T08:33:06.832Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ELMo">
+<meta name="twitter:description" content="写在前面记得在的文章中提到，Glove和Word2vec，对于每一个单词都有唯一的一个embedding表示，而对于多义词显然这种做法不符合直觉，而单词的意思又和上下文相关。ELMo (Embeddings from Language Models)的做法是只预训练language model（LM），而word embedding是通过输入的句子实时输出的, 这样单词的意思就是上下文相关的了，这">
+<meta name="twitter:image" content="https://lanme.github.io/2019/03/15/ELMo/baseline_biLM-f9173e8e65a8597d3d8a909f3aee39f1-3d61e.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Lanme.github.io/2019/03/15/ELMo/">
+
+
+
+
+
+  <title>ELMo | 锦鲤木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">锦鲤木兰</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/03/15/ELMo/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ELMo</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-15T17:21:03+08:00">
+                2019-03-15
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-16T16:33:06+08:00">
+                2019-03-16
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>记得在的文章中提到，Glove和Word2vec，对于每一个单词都有唯一的一个embedding表示，而对于<code>多义词</code>显然这种做法不符合直觉，而<strong>单词的意思又和上下文相关</strong>。ELMo (Embeddings from Language Models)的做法是只<code>预训练</code>language model（LM），而<strong>word embedding是通过输入的句子实时输出的, 这样单词的意思就是<code>上下文相关</code>的了，这样就很大程度上缓解了歧义的发生</strong>，且ELMo输出多个层的embedding表示，试验中已经发现每层LM输出的信息对于不同的任务效果不同， 因此对每个token用不同层的embedding表示会提升效果。</p>
+<a id="more"></a>
+<h1 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h1><p>使用双向的LM，即给懂N个tokens（$t_1,t_2,…,t_N$），LM通过前k-1个token计算第k个token出现的概率：</p>
+<script type="math/tex; mode=display">
+p(t_1,t_2,...,t_N) = \prod_{k=1}^Np(t_k|t_1,t_2,...,t_{k-1})</script><p>后向计算：</p>
+<script type="math/tex; mode=display">
+p(t_1,t_2,...,t_N) = \prod_{k=1}^Np(t_k|t_{k+1},t_{k+2},...,t_{N})</script><p>双向biLM训练过程中的目标就是最大化：</p>
+<script type="math/tex; mode=display">
+\sum(\log p(t_k|t_1,t_2,...,t_{k-1};\Theta_x,\overrightarrow{\Theta}_{LSTM},\Theta_s)+\log p(t_k|t_{k+1},t_{k+2},...,t_{N};\overleftarrow{\Theta}_{LSTM},\Theta_s))</script><p>ELMo对于每个token $t_k$，通过一个L层的biLMdedao 2L+1个表示：</p>
+<script type="math/tex; mode=display">
+R_k = \{x_k^{LM},\overrightarrow{h}_{k,j}^{LM},\overleftarrow{h}_{k,j}^{LM}|j = 1,...,L \} = \{h_{k,j}^{LM}|j = 1,...,L \}</script><p>其中，$x_k^{LM}​$是对字符直接进行CNN编码，即上式的$h_{k,0}^{LM}​$。而$h_{k,j}^{LM} = \{ \overrightarrow{h}_{k,j}^{LM},\overleftarrow{h}_{k,j}^{LM} \}​$是biLSTM层的输出结果。</p>
+<p>在应用中，最简单的压缩方法是取最后一层的输出做为token的表示：$E(R_k) = h_{k,L}^{LM}$。更通用的做法是通过一些参数来联合所有层的信息：</p>
+<script type="math/tex; mode=display">
+ELMo_k^{task} = E(R_k;\Theta^{task}) = \gamma^{task}\sum_{j=0}^L s_j^{task} h_{k,j}^{LM}</script><p>其中，</p>
+<ul>
+<li>$s_j$是一个softmax出来的结果</li>
+<li>$\gamma$是任务相关的scale参数</li>
+</ul>
+<p><strong>Pre-trained的language model是用了两层的biLM, 对token进行上下文无关的编码是通过CNN对字符进行编码, 然后将三层的输出scale到1024维,最后对每个token输出3个1024维的向量表示。</strong></p>
+<h2 id="biLM"><a href="#biLM" class="headerlink" title="biLM"></a>biLM</h2><p><img src="/2019/03/15/ELMo/baseline_biLM-f9173e8e65a8597d3d8a909f3aee39f1-3d61e.png" alt=""></p>
+<p>上面这个两层的神经网络，在第一层和第二层中间添加<strong>残差块连接</strong>如下：</p>
+<p><img src="/2019/03/15/ELMo/biLM_with_residual-096e1ae8acc0d3f846f0a71da2be3449-3d61e.png" alt=""></p>
+<p>对于传统的神经网络而言，每个token在第一个输入层会被转化为特定长度的词向量，主要是通过初始化一个embedding matrix，或者使用GloVe等预训练向量。但是ELMo并不是简单地look up an embedding，而是首先将每个token使用<code>字符编码</code>，主要是用过CNN+max pool+2-layer highway network 进行编码，之后再输入到LSTM层中。</p>
+<h2 id="字符编码"><a href="#字符编码" class="headerlink" title="字符编码"></a>字符编码</h2><p><img src="/2019/03/15/ELMo/modified_input_embedding-ce183e70063bae69926ef6a79e39b764-c2cda.png" alt=""></p>
+<p>字符编码的好处是：</p>
+<ul>
+<li>获得词编码中提取不到的信息</li>
+<li>对oov单词形成一些有效的表征</li>
+</ul>
+<p>CNN filters的好处是：能够提取n-gram特征</p>
+<p>highway network的好处是：smoother information transfer through the input</p>
+<p><img src="/2019/03/15/ELMo/elmo_combination-a7af2b3eb2b5ceb37f3e9c5f2b066f14-3d61e.png" alt=""></p>
+<p>上面图片中，f函数最终对输入的word k（图中即happy）执行以下操作：</p>
+<script type="math/tex; mode=display">
+ELMo_k^{task} = \gamma_k(s_0^{task}·x_k +s_1^{task}·h_{1,k} +s_2^{task}·h_{2,k})</script><h1 id="Highway-Network"><a href="#Highway-Network" class="headerlink" title="Highway Network"></a>Highway Network</h1><h2 id="传统的神经网络"><a href="#传统的神经网络" class="headerlink" title="传统的神经网络"></a>传统的神经网络</h2><p>传统的神经网络对输入使用一个非线性变换$H$来得到输出output，公式如下：</p>
+<script type="math/tex; mode=display">
+y = H(x,W_H)</script><p>x表示输入，$W_H$表示权重。</p>
+<h2 id="Highway-Network-1"><a href="#Highway-Network-1" class="headerlink" title="Highway Network"></a>Highway Network</h2><p>Highway network基于<code>门机制</code>引入了transform gate $T$ 和carry gate $C$ ，输出output是由tranform input和carry input组成：</p>
+<script type="math/tex; mode=display">
+y = H(x,W_H)·T(x,W_T)+x·C(x,W_C)</script><p>为了简单，设置$C=1-T$，即：</p>
+<script type="math/tex; mode=display">
+y = H(X,W_H)·T(x,W_T)+x·(1-T(x,W_T))</script><p>其中，$x,y,H(x,W_H),T(x,W_T)$的维度是一样的，特别的：</p>
+<p><img src="/2019/03/15/ELMo/20190316154916.png" alt=""></p>
+<p>该层的雅可比变换为：</p>
+<p><img src="/2019/03/15/ELMo/20190316155005.png" alt=""></p>
+<p><strong>可以看到Highway Network其实就是对输入一部分进行处理（和传统神经网络相同），一部分直接通过。</strong></p>
+<p>因此，类似于传统神经网络plain layer计算第i个神经元输出：$y_i = H_i(x)$，highway network计算就是：</p>
+<script type="math/tex; mode=display">
+y_i = H_i(x)·T_i(x)+x_i·(1-T_i(x))</script><p>其中transform gate计算方法为：</p>
+<script type="math/tex; mode=display">
+T(x) = \sigma(W_T^T x+b_T)</script><p>$W_T、b_T$分别为权重矩阵和bias vector，$b_T$一般为<strong>负值</strong>（如-1，-3）,使得网络初始的时候更偏向carry behavior。在实验中还发现将$b_T​$设置成负值，即是网络层数很深， 用各种各样的方法初始化用不同的激活函数都可以让网络高效的学习。</p>
+<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><p>虽然ELMo有用双向RNN来做encoding，但是这两个方向的RNN其实是分开训练的，只是在最后在loss层做了个简单相加。这样就导致对于每个方向上的单词来说，在被encoding的时候始终是看不到它另一侧的单词的。而显然句子中有的单词的语义会<strong>同时依赖于它左右两侧的某些词，仅仅从单方向做encoding是不能描述清楚的</strong>。所以，在BERT中，提出了使用一种新的任务来训练监督任务中的那种真正可以双向encoding的模型，这个任务称为Masked Language Model （Masked LM）。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>源码来自：<a href="https://github.com/allenai/allennlp" target="_blank" rel="noopener">https://github.com/allenai/allennlp</a></p>
+<p>其他使用参考：<a href="https://blog.csdn.net/sinat_26917383/article/details/81913790#42_allenaibilmtf_140" target="_blank" rel="noopener">Elmo词向量中文训练过程杂记</a></p>
+<p>参考文献：</p>
+<p>[1]. <a href="https://zhuanlan.zhihu.com/p/37915351" target="_blank" rel="noopener">NAACL2018 一种新的embedding方法Deep contextualized word representations ELMo原理与用法</a></p>
+<p>[2]. <a href="https://www.mihaileric.com/posts/deep-contextualized-word-representations-elmo/" target="_blank" rel="noopener">Deep Contextualized Word Representations with ELMo</a></p>
+<p>[3]. <a href="https://arxiv.org/pdf/1802.05365.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1802.05365.pdf</a></p>
+<p>[4]. <a href="https://zhuanlan.zhihu.com/p/35019701" target="_blank" rel="noopener">Highway network</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/词向量/" rel="tag"># 词向量</a>
+          
+            <a href="/tags/highway-network/" rel="tag"># highway network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/03/lda主题模型/" rel="next" title="lda主题模型">
+                <i class="fa fa-chevron-left"></i> lda主题模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/16/卷积神经网络/" rel="prev" title="卷积神经网络">
+                卷积神经网络 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">杀死庸碌的时间</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构"><span class="nav-number">2.</span> <span class="nav-text">结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#biLM"><span class="nav-number">2.1.</span> <span class="nav-text">biLM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符编码"><span class="nav-number">2.2.</span> <span class="nav-text">字符编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Highway-Network"><span class="nav-number">3.</span> <span class="nav-text">Highway Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#传统的神经网络"><span class="nav-number">3.1.</span> <span class="nav-text">传统的神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Highway-Network-1"><span class="nav-number">3.2.</span> <span class="nav-text">Highway Network</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺点"><span class="nav-number">4.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

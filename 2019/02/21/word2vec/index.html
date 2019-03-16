@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="词向量,矩阵分解,负采样,分层softmax,">
 
 
 
@@ -80,6 +80,7 @@
 
 
 <meta name="description" content="相关知识GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。 独热编码  离散编码，丢失了单词之间的相似性 词向量  分布式表达，能够编码词之间的关系 两种模型SKip-gram 中心词预测上下文词的">
+<meta name="keywords" content="词向量,矩阵分解,负采样,分层softmax">
 <meta property="og:type" content="article">
 <meta property="og:title" content="word2vec">
 <meta property="og:url" content="https://Lanme.github.io/2019/02/21/word2vec/index.html">
@@ -90,7 +91,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-111023@2x.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-142826@2x.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/21/word2vec/QQ20170831-170735@2x.png">
-<meta property="og:updated_time" content="2019-03-02T07:42:47.535Z">
+<meta property="og:updated_time" content="2019-03-09T04:59:14.285Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="word2vec">
 <meta name="twitter:description" content="相关知识GloVe与word2vec根据词汇的共现（co-occurrence）信息，将词汇编码成一个向量（所谓共现，即语料中词汇一块出现的频率）。两者最直观的区别在于，word2vec是predictive的模型，而GloVe是count-based的模型。 独热编码  离散编码，丢失了单词之间的相似性 词向量  分布式表达，能够编码词之间的关系 两种模型SKip-gram 中心词预测上下文词的">
@@ -282,8 +283,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-02T15:42:47+08:00">
-                2019-03-02
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-09T12:59:14+08:00">
+                2019-03-09
               </time>
             
           </span>
@@ -503,6 +504,18 @@ i∈\{-m,...,m\}</script><h1 id="矩阵分解"><a href="#矩阵分解" class="he
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/词向量/" rel="tag"># 词向量</a>
+          
+            <a href="/tags/矩阵分解/" rel="tag"># 矩阵分解</a>
+          
+            <a href="/tags/负采样/" rel="tag"># 负采样</a>
+          
+            <a href="/tags/分层softmax/" rel="tag"># 分层softmax</a>
+          
+        </div>
+      
 
       
       
@@ -601,7 +614,7 @@ i∈\{-m,...,m\}</script><h1 id="矩阵分解"><a href="#矩阵分解" class="he
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -618,6 +631,15 @@ i∈\{-m,...,m\}</script><h1 id="矩阵分解"><a href="#矩阵分解" class="he
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>

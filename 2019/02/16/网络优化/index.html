@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="梯度下降,数据增强,学习率,初始化,正则化,优化算法,dropout,">
 
 
 
@@ -80,6 +80,7 @@
 
 
 <meta name="description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
+<meta name="keywords" content="梯度下降,数据增强,学习率,初始化,正则化,优化算法,dropout">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络优化">
 <meta property="og:url" content="https://Lanme.github.io/2019/02/16/网络优化/index.html">
@@ -110,7 +111,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/20180112195606874.png">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/16/网络优化/9d0db64a9c9b050466a039c935f36f93.png">
-<meta property="og:updated_time" content="2019-03-03T14:19:43.268Z">
+<meta property="og:updated_time" content="2019-03-15T09:44:10.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络优化">
 <meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
@@ -302,8 +303,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-03T22:19:43+08:00">
-                2019-03-03
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-15T17:44:10+08:00">
+                2019-03-15
               </time>
             
           </span>
@@ -352,7 +353,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  7.4k
+                  7.6k
                 </span>
               
 
@@ -368,7 +369,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  27
+                  28
                 </span>
               
             </div>
@@ -584,10 +585,13 @@ w :=w-\frac{\eta \lambda }{n}w-\eta \frac{\partial C_0}{\partial w} \\\\
 <h2 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h2><p><strong>Dropout</strong>会遍历网络的每一层，并设置消除神经网络中节点的概率。</p>
 <p>假设网络中的每一层，每个节点都以抛硬币的方式设置概率，每个节点得以<code>保留</code>和<code>消除</code>的概率是<code>p</code>和<code>1-p</code>，设置完节点概率，我们会消除一些节点，然后删除掉从该节点进出的连线，最后得到一个节点更少，规模更小的网络，然后用<strong>backprop</strong>方法进行训练。</p>
 <p>反向传播的时候，<strong>0的神经元的参数就不再更新。</strong></p>
-<p>预测的时候，要<strong>保留</strong>所有的神经元，即不使用Dropout。</p>
 <p><img src="/2019/02/16/网络优化/e45f9a948989b365650ddf16f62b097e.png" alt=""></p>
 <p><img src="/2019/02/16/网络优化/9fa7196adeeaf88eb386fda2e9fa9909.png" alt=""></p>
-<h2 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h2><h3 id="为什么需要归一化"><a href="#为什么需要归一化" class="headerlink" title="为什么需要归一化"></a>为什么需要归一化</h3><ul>
+<p>预测的时候，不使用Dropout（不对网络的参数做任何丢弃，就是说dropout layer进来什么就输出什么）。事实上，由于我们在测试时不使用Dropout，这样做导致统计意义下，测试时每层dropout layer比训练时的输出多加了(1-p)<em>100% units的输出。所以，为了使得dropout layer下一层的输入和训练时具有相同的意义和数量级，我们对测试的伪dropout layer的输出做rescale：<em>*乘以一个p</em></em>，表示最后只有这么大的概率被保留下来。</p>
+<p>假设x是dropout layer的输入，y是输出，W是上一层的weight params，$W|_p$是retaining probability为p采样得到的weight params子集，则有</p>
+<script type="math/tex; mode=display">
+train:y=W|_p*x\\\\
+\ test:y = W*px</script><h2 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h2><h3 id="为什么需要归一化"><a href="#为什么需要归一化" class="headerlink" title="为什么需要归一化"></a>为什么需要归一化</h3><ul>
 <li>神经网络学习过程本质就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低</li>
 <li>上层参数需要不断适应新的输入数据分布，降低学习速度。</li>
 <li>下层输入的变化可能趋向于变大或者变小，导致上层落入饱和区，使得学习过早停止</li>
@@ -662,6 +666,24 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/梯度下降/" rel="tag"># 梯度下降</a>
+          
+            <a href="/tags/数据增强/" rel="tag"># 数据增强</a>
+          
+            <a href="/tags/学习率/" rel="tag"># 学习率</a>
+          
+            <a href="/tags/初始化/" rel="tag"># 初始化</a>
+          
+            <a href="/tags/正则化/" rel="tag"># 正则化</a>
+          
+            <a href="/tags/优化算法/" rel="tag"># 优化算法</a>
+          
+            <a href="/tags/dropout/" rel="tag"># dropout</a>
+          
+        </div>
       
 
       
@@ -761,7 +783,7 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -778,6 +800,15 @@ h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻�
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>
