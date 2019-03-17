@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="梯度下降,数据增强,学习率,初始化,正则化,优化算法,dropout,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
+<meta name="keywords" content="梯度下降,数据增强,学习率,初始化,正则化,优化算法,dropout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络优化">
+<meta property="og:url" content="https://Lanme.github.io/2019/02/05/网络优化/index.html">
+<meta property="og:site_name" content="锦鲤木兰">
+<meta property="og:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/966e5a9b00687678374b8221fdd33475.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/b8167ff0926046e112acf789dba98057.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/20190217221130.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/cc2d415b8ccda9fdaba12c575d4d3c4b.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/image1.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/20190217233658.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/v2-3548fbec8da27d3957d024d556cef4a6_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/v2-02ae5786c710b1427a222465ecc6346e_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/v2-1d979af221d94aea41972e62a8935a95_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/9ca9bfc160d53b23ea0d1164e6accffe.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/e9858303cd62eacc21759b16a121ff58.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/optimizer-1.gif">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/optimizer-2.gif">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/20180315185333871.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/20180315201648786.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/f5f9e03bf245e71f5538e12d06a83ea0_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/20140504123020546.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/e45f9a948989b365650ddf16f62b097e.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/9fa7196adeeaf88eb386fda2e9fa9909.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/v2-13bb64b6122e98421ea3528539c1bffc_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/20180112195606874.png">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/02/05/网络优化/9d0db64a9c9b050466a039c935f36f93.png">
+<meta property="og:updated_time" content="2019-03-17T15:05:19.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络优化">
+<meta name="twitter:description" content="神经网络会遇到许多困难：  数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）  对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）  深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能   凸问题为什么有凸优化问题ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非">
+<meta name="twitter:image" content="https://lanme.github.io/2019/02/05/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Lanme.github.io/2019/02/05/网络优化/">
+
+
+
+
+
+  <title>网络优化 | 锦鲤木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">锦鲤木兰</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/02/05/网络优化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">网络优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-05T23:38:07+08:00">
+                2019-02-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-17T23:05:19+08:00">
+                2019-03-17
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/神经网络/" itemprop="url" rel="index">
+                    <span itemprop="name">神经网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  7.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  28
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>神经网络会遇到许多困难：</p>
+<ul>
+<li><p>数据集的问题包括：不平衡数据集，数据集的大小，训练测试的分布不一致，数据质量（数据清洗）</p>
+</li>
+<li><p>对于浅层的神经网络来说，其困难主要来自于凸问题（优化问题）</p>
+</li>
+<li><p>深层神经网络的困难则是为了防止过拟合（泛化问题），超参数优化，梯度消失，当然还有加快性能</p>
+</li>
+</ul>
+<h1 id="凸问题"><a href="#凸问题" class="headerlink" title="凸问题"></a>凸问题</h1><h2 id="为什么有凸优化问题"><a href="#为什么有凸优化问题" class="headerlink" title="为什么有凸优化问题"></a>为什么有凸优化问题</h2><p>ML/DL在计算模型中都在寻找全局最优解，那么如果损失函数为凸函数，意味着存在全局的最小值，如果是非凸的，则找不到全局最小值。</p>
+<p>大多数DL中损失函数都是非凸的[2]，其非凸为什么很难优化？[1]</p>
+<a id="more"></a>
+<p>持续好多年，学术界认为DL在优化的时候包含很多局部极小值，使得优化算法容易陷入到这些局部极小值点中，难以自拔。2014年NIPS的文章《Identifying and attacking the saddle point problem in high-dimensional non-convex optimization》中提出，高维非凸优化的困难之处在于存在大量<code>鞍点</code>（ 鞍点是梯度为0，但一些维度是最高点，另一些维度是最低点）而非局部极小值。</p>
+<p><img src="/2019/02/05/网络优化/v2-10e21f35e8585619f509f0f2de9b3693_b.jpg" alt=""></p>
+<p>梯度优化算法在鞍点附近，梯度很小，Loss变化很小，形成“卡住了”的现象（而且针对高维情形，鞍点附近的平坦区域可能非常大）。这种现象和局部极小值处的现象一致，或许这就是导致学术界很长一段时间认为高维非凸优化困难的原因是存在大量局部极小值的原因。<strong>二者的区别在于，虽然“卡住了”，但是还是可以从鞍点出走出来（加扰动），有可能进入另一个鞍点附近，但是局部极小值不可以</strong>！</p>
+<p>在机器学习领域中，非凸优化中的一个核心问题是鞍点的逃逸问题，研究表明，梯度下降法一般可以渐近地逃离鞍点。<strong>梯度下降法</strong>（Gradient descent）是一个一阶最优化算法， 要使用梯度下降法找到一个函数的<strong>局部极小值</strong>，必须向函数上当前点对应梯度的<strong>反方向</strong>的规定步长距离点进行迭代搜索。如果相反地向梯度<strong>正方向</strong>迭代进行搜索，则会接近函数的<strong>局部极大值</strong>点；这个过程则被称为<strong>梯度上升法</strong>。</p>
+<p>梯度下降法如何处理：</p>
+<ul>
+<li><p>预处理</p>
+</li>
+<li><p>初始化</p>
+</li>
+<li><p>学习率</p>
+</li>
+<li><p>梯度下降法的变种</p>
+</li>
+</ul>
+<h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><p>在我们面对多维特征问题的时候，我们要保证这些特征都具有相近的尺度，这将帮助梯度下降算法更快地收敛。</p>
+<p>以房价问题为例，假设我们使用两个特征，房屋的尺寸和房间的数量，尺寸的值为 0-2000平方英尺，而房间数量的值则是0-5，以两个参数分别为横纵坐标，绘制代价函数的等高线图能，看出图像会显得很扁，<strong>取值范围大的特征会占主导作用</strong>，梯度下降算法需要非常多次的迭代才能收敛。</p>
+<p><img src="/2019/02/05/网络优化/966e5a9b00687678374b8221fdd33475.jpg" alt=""></p>
+<p>解决的方法是尝试将所有特征的尺度都尽量缩放到-1到1之间。如图：</p>
+<p><img src="/2019/02/05/网络优化/b8167ff0926046e112acf789dba98057.png" alt=""></p>
+<p><code>标准化归一法</code> 令：$x= \frac {x-\mu}{s}$，其中$\mu$是平均值，$s$是标准差。</p>
+<p><code>极大极小值归一法</code> $x = \frac{x - x_{min}}{x_{max}-x_{min}}​$</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当你训练神经网络时，权重随机初始化是很重要的。对于逻辑回归，把权重初始化为0当然也是可以的。但是对于一个神经网络，如果你把权重或者参数都初始化为0，那么梯度下降将不会起作用。具体来说，在连接到相同输入的隐藏层中并排的节点必须有不同的权重，这样才能使学习算法更新权重。 这通常被称为在训练期间需要<code>打破对称性</code>（symmetry）。 </p>
+<h3 id="Glorot-Initialization-glorot-uniform-glorot-normal"><a href="#Glorot-Initialization-glorot-uniform-glorot-normal" class="headerlink" title="Glorot Initialization(glorot_uniform, glorot_normal)"></a>Glorot Initialization(<a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L48" target="_blank" rel="noopener">glorot_uniform</a>, <a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L56" target="_blank" rel="noopener">glorot_normal</a>)</h3><p>Glorot Initialization，或者叫 Xavier Initialization，是Xavier Glorot和Yoshua Bengio于2010年提出的初始化方法，该方法的均匀分布版本(glorot_uniform)是Keras中全连接层、二维卷积/反卷积层等层的默认初始化方式。[3]</p>
+<p>假设给定神经元接收n个输入数据$x =[x_1,x_2,…,x_n]$， 并且输出表示为$y$， 权值表示为$w$ . 则有以下公式： </p>
+<script type="math/tex; mode=display">
+y = w_1 x_1 + w_2 x_2 +...+ w_n x_n + b</script><p>其中$b$表示神经元的偏置（bias），由于这里输入数据$x$与权值$w$相互独立，因此对于以上公式中任意一项$w_i x_i$，其方差$Var(w_i x_i)$可表示为：</p>
+<script type="math/tex; mode=display">
+Var(w_i x_i) = E[x_i]^2Var(w_i) + E[w_i]^2Var(x_i) +Var(x_i)Var(w_i)</script><p>这里，如果输入数据已经进行预处理从而使其具有0均值，而且假设权向量的均值也为0，那么以上公式将简化为：</p>
+<script type="math/tex; mode=display">
+Var(w_i x_i) = Var(x_i)Var(w_i)</script><p>如果更进一步，假设$x_i$与$w_i$独立同分布，那么由以上公式可计算出神经元输出$y$的方差为：</p>
+<script type="math/tex; mode=display">
+Var(y) = Var(w_1 x_1 +w_2 x_2 +...+w_n x_n + b) \\\\
+ = Var(w_1 x_1) + ... + Var(b) \\\\
+ = nVar(x_i)Var(w_i)</script><p>在这里, 我们用$y^{(l)}$来表示第l 层的输出, $n^{(l)}$ 表示该层的输入数据维度，并且使用 $w^{(l)}$表示该层的神经元权值。那么，最后一层（表示为$L^{th}$）的输出方差将可以通过以下方式计算： </p>
+<script type="math/tex; mode=display">
+Var(y^{(L)})  = n^{(L)}Var(y^{(L-1)})Var(w^{(L)}) \\\\
+=  n^{(L)}[n^{(L-1)}Var(y^{(L-2)})Var(w^{(L-1)})]Var(w^{(L)}) \\\\
+=....\\\\
+=Var(x)\prod ^L_{l=1} [n^{(l)}Var(w^{(l)})]</script><p>在以上公式中，中间的连乘项，$\prod ^L_{l=1} [n^{(l)}Var(w^{(l)})]$，是导致深层网络难以优化的一个重要原因。如果其中的每项都小于1，那么一定深度后将会无限趋近于零。另一方面，如果每项都大于1的话，用不了几层就会大到可能越界。因此，为了使得x与y具有相同均值和方差，$n^{(l)}Var(w^{(l)})=1$，权值矩阵的方差则要求$Var(w^{(l)}) = \frac {1}{n^{(l)}}$，类似的，以相同的方式考虑反向传播过程，应当保持$Var(w^{(l)}) = \frac {1}{n^{(l+1)}}$，其中n(l+1)表示该层的输出（即下一层网络的输入）维度。为了综合考虑输入与输出，对正向与反向过程提取调和平均数，即 </p>
+<script type="math/tex; mode=display">
+Var(w^{(l)}) = \frac {2}{n^{(l)} + n^{(l+1)}}</script><p>因此对于正态分布，当输入数据具有0均值与单位方差时只需要按照以上公式调整方差即可。对于均匀分布X∼U[a,b]，其方差计算方式为</p>
+<script type="math/tex; mode=display">
+Var(x) = \frac {(b-a)^2} {12}</script><p>因此，为保证0均值与单位方差，权值$w$的分布应满足：$w^{(l)}$~ $U[- \frac { \sqrt 6}{n^{(l)} + n^{(l+1)}},\frac { \sqrt 6}{n^{(l)} + n^{(l+1)}}]$</p>
+<h3 id="He-Initialization-he-normal-he-uniform"><a href="#He-Initialization-he-normal-he-uniform" class="headerlink" title="He Initialization(he_normal, he_uniform)"></a>He Initialization(<a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L62" target="_blank" rel="noopener">he_normal</a>, <a href="https://github.com/fchollet/keras/blob/master/keras/initializations.py#L70" target="_blank" rel="noopener">he_uniform</a>)</h3><p>这两种初始化策略由微软亚洲研究院的何凯明等人于2015年正式发表，其基本思路与Glorot方法一致，即通过对权值进行缩放以完成normalization，与Glorot方法不同的是，该方法只考虑前向过程，因此对于正态分布和均匀分布，其公式分别为：</p>
+<p>$w^{(l)}$ ~$N(0,\frac{2}{n^{(l)}})$ （1）   $w^{(l)}$~  $U[- \frac { \sqrt 6}{n^{(l)}},\frac { \sqrt 6}{n^{(l)}}]$（2）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_fans</span><span class="params">(shape)</span>:</span></span><br><span class="line">    fan_in = shape[<span class="number">0</span>] <span class="keyword">if</span> len(shape) == <span class="number">2</span> <span class="keyword">else</span> np.prod(shape[<span class="number">1</span>:])</span><br><span class="line">    fan_out = shape[<span class="number">1</span>] <span class="keyword">if</span> len(shape) == <span class="number">2</span> <span class="keyword">else</span> shape[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">return</span> fan_in, fan_out</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">he_normal</span><span class="params">(shape, name=None)</span>:</span></span><br><span class="line">    fan_in, fan_out = get_fans(shape)</span><br><span class="line">    s = np.sqrt(<span class="number">2.</span> / fan_in)</span><br><span class="line">    <span class="keyword">return</span> normal(shape, s, name=name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">he_uniform</span><span class="params">(shape, name=None)</span>:</span></span><br><span class="line">    fan_in, fan_out = get_fans(shape)</span><br><span class="line">    s = np.sqrt(<span class="number">6.</span> / fan_in)</span><br><span class="line"><span class="keyword">return</span> uniform(shape, s, name=name)</span><br></pre></td></tr></table></figure>
+<h3 id="Orthogonal-Initialization"><a href="#Orthogonal-Initialization" class="headerlink" title="Orthogonal Initialization"></a>Orthogonal Initialization</h3><p>Orthogonal初始化，又称为<strong>正交矩阵初始化</strong>。[4]</p>
+<p>在反向传播的过程中要进行重复的矩阵乘法，而在对其<code>SVD分解</code>过程中，发现随着矩阵乘法次数N的逐渐增大：</p>
+<ul>
+<li>如果所有的特征值的绝对值都小于1，那么矩阵F会逐渐消失。</li>
+<li>如果所有的特征值的绝对值都等于1，那么矩阵F会保持在相应的常数范围内。</li>
+<li>如果所有的特征值的绝对值都大于1，那么矩阵F会逐渐爆炸。</li>
+</ul>
+<p>正交矩阵有许多有意思的特性，最重要的就是正交矩阵的特征值绝对值等于1。这意味着，无论我们重复多少次矩阵乘法，矩阵的结果既不会爆炸也不会消失。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">orthogonal</span><span class="params">(shape)</span>:</span></span><br><span class="line"> </span><br><span class="line">    flat_shape = (shape[<span class="number">0</span>], np.prod(shape[<span class="number">1</span>:]))</span><br><span class="line"> </span><br><span class="line">    a = np.random.normal(<span class="number">0.0</span>, <span class="number">1.0</span>, flat_shape)</span><br><span class="line"> </span><br><span class="line">    u, _, v = np.linalg.svd(a, full_matrices=<span class="keyword">False</span>)</span><br><span class="line"> </span><br><span class="line">    q = u <span class="keyword">if</span> u.shape == flat_shape <span class="keyword">else</span> v</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> q.reshape(shape)</span><br></pre></td></tr></table></figure>
+<h2 id="梯度下降法的变种"><a href="#梯度下降法的变种" class="headerlink" title="梯度下降法的变种"></a>梯度下降法的变种</h2><p>在求解无约束优化问题时，梯度下降是最常采用的方法之一。如果损失函数是凸函数，梯度下降法得到的解就一定是全局最优解，反之如果是非凸函数也可以保证得到局部最优解。</p>
+<h3 id="Mini-batch"><a href="#Mini-batch" class="headerlink" title="Mini-batch"></a>Mini-batch</h3><p>在第e个epoch时，在全部样本N中选取m个训练样本，计算梯度：</p>
+<script type="math/tex; mode=display">
+g_t = \frac{1}{m} \sum \frac{\partial J(\theta)}{\partial \theta} \\\\
+\theta_t:=\theta_{t-1} - \alpha·g_t</script><p>其中，$\alpha$为学习率（$\alpha \geq 0$），$1 \leq m \leq N$。</p>
+<p>BGD（m=N）</p>
+<ul>
+<li>每一轮都用所有的样本去更新参数，降低计算效率</li>
+<li>一旦跳入局部最优就无法跳出</li>
+</ul>
+<p>SGD（m=1）</p>
+<ul>
+<li>有一定几率跳出局部最优，到达更好的局部最优或者全局最优</li>
+<li>引入噪声，具有正则化的效果</li>
+<li>批量太小无法充分利用多核架构</li>
+</ul>
+<p><strong>合适的batch_size</strong></p>
+<p>深度学习中存在的一个问题：<em>使用大的batchsize训练网络会导致网络的泛化性能下降</em>（Generalization Gap）。<a href="https://openreview.net/pdf?id=H1oyRlYgg" target="_blank" rel="noopener">文中</a>给出了Generalization Gap现象的解释：大的batchsize训练使得目标函数倾向于收敛到sharp minima（类似于local minima），<code>sharp minima</code>导致了网络的泛化性能下降，同时文中给出了直观的数据支持。而小的batchsize则倾向于收敛到一个<code>flat minima</code>，这个现象支持了大家普遍认为的一个观点：小的batchsize存在固有噪声，这些噪声影响了梯度的变化。[5]</p>
+<p><img src="/2019/02/05/网络优化/20190217221130.png" alt=""></p>
+<p>batchsize设置的不能太大也不能太小，GPU对2的幂次的batch可以发挥更佳的性能，因此设置成16、32、64、128…时往往要比设置为整10、整100的倍数时表现更优。（以下来自deeplearning.ai）首先，如果训练集较小，直接使用<strong>batch</strong>梯度下降法，样本集较小就没必要使用<strong>mini-batch</strong>梯度下降法，你可以快速处理整个训练集，所以使用<strong>batch</strong>梯度下降法也很好，这里的少是说小于<code>2000</code>个样本，这样比较适合使用<strong>batch</strong>梯度下降法。不然，样本数目较大的话，一般的<strong>mini-batch</strong>大小为64到512，考虑到电脑内存设置和使用的方式，如果<strong>mini-batch</strong>大小是2的$n$次方，代码会运行地快一些。</p>
+<h3 id="动量梯度下降法（Momentum）"><a href="#动量梯度下降法（Momentum）" class="headerlink" title="动量梯度下降法（Momentum）"></a>动量梯度下降法（Momentum）</h3><p><img src="/2019/02/05/网络优化/cc2d415b8ccda9fdaba12c575d4d3c4b.png" alt=""></p>
+<p>这种上下波动减慢了梯度下降法的速度，你就无法使用更大的学习率，如果你要用较大的学习率（紫色箭头），结果可能会偏离函数的范围，<strong>为了避免摆动过大，你要用一个较小的学习率</strong>。</p>
+<p>下图的前两行公式为指数加权平均，此时的梯度不再只是现在的数据的梯度，而是有<strong>一定权重的之前的梯度</strong>。就像是把原本的梯度压缩一点，并且补上一个之前就已经存在的<code>动量</code>。每一次梯度下降都会有一个之前的速度的作用，如果我这次的方向与之前相同，则会因为之前的速度继续加速；如果这次的方向与之前相反，则会由于之前存在速度的作用不会产生一个急转弯，而是尽量把路线向一条直线拉过去。</p>
+<p>$v_{dw}​$ 、$v_{db}​$的初始值为0，$\alpha​$、$\beta​$是超参数，$\beta​$通常取为0.9。</p>
+<p><img src="/2019/02/05/网络优化/image1.png" alt=""></p>
+<h3 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h3><p>RMSprop 是 Geoff Hinton 提出的一种<code>自适应学习率方法</code>（自适应学习率对loss是不敏感的，换句话说，将loss乘上10倍，最终的优化效果基本没什么变化，但如果在随机梯度下降中，将loss乘上10倍，就等价于将学习率乘以10了）。根据历史梯度累积量来改变学习率。和动量梯度下降法一样，都解决了相同的问题，使梯度下降时的<code>折返情况</code>减轻，从而加快训练速度。因为下降的路线更接近同一个方向，因此也可以将学习率增大来加快训练速度。</p>
+<p><img src="/2019/02/05/网络优化/20190217233658.png" alt=""></p>
+<h3 id="AdaGrad"><a href="#AdaGrad" class="headerlink" title="AdaGrad"></a>AdaGrad</h3><p><img src="/2019/02/05/网络优化/v2-3548fbec8da27d3957d024d556cef4a6_hd.jpg" alt=""></p>
+<p>我们可以看出该优化算法与普通的sgd算法差别就在于标黄的哪部分，采取了<code>累积平方梯度</code>。[10]</p>
+<p><strong>简单来讲，设置全局学习率之后，每次通过，全局学习率逐参数的除以历史梯度平方和的平方根，使得每个参数的学习率不同</strong>。</p>
+<p>正常情况下：</p>
+<p><img src="/2019/02/05/网络优化/v2-02ae5786c710b1427a222465ecc6346e_hd.jpg" alt=""></p>
+<p>假设我们现在就只有两个参数w,b，我们从图中可以看到在b方向走的比较陡峭，这影响了优化速度。</p>
+<p>而我们采取AdaGrad算法之后，我们在算法中使用了累积平方梯度r=:r + g.g。</p>
+<p><strong>从上图可以看出在b方向上的梯度g要大于在w方向上的梯度。</strong></p>
+<p>那么在下次计算更新的时候，r是作为分母出现的，<code>越大的反而更新越小，越小的值反而更新越大</code>，那么后面的更新则会像下面绿色线更新一样，明显就会好于蓝色更新曲线。</p>
+<p><img src="/2019/02/05/网络优化/v2-1d979af221d94aea41972e62a8935a95_hd.jpg" alt=""></p>
+<h3 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h3><p><code>RMSProp</code> + <code>Momentum</code></p>
+<p>初始化：$V_{dw}=0，S_{dw}=0，V_{db}=0，S_{db}=0​$</p>
+<p><img src="/2019/02/05/网络优化/9ca9bfc160d53b23ea0d1164e6accffe.png" alt=""></p>
+<p><img src="/2019/02/05/网络优化/e9858303cd62eacc21759b16a121ff58.png" alt=""></p>
+<ul>
+<li>加速收敛</li>
+<li>适合处理稀疏数据</li>
+<li>自适应学习率</li>
+<li>对大多数凸问题的优化有效</li>
+</ul>
+<h3 id="各种优化算法的对比"><a href="#各种优化算法的对比" class="headerlink" title="各种优化算法的对比"></a>各种优化算法的对比</h3><p><img src="/2019/02/05/网络优化/optimizer-1.gif" alt=""></p>
+<p><img src="/2019/02/05/网络优化/optimizer-2.gif" alt=""></p>
+<h2 id="学习率衰减"><a href="#学习率衰减" class="headerlink" title="学习率衰减"></a>学习率衰减</h2><p>将$a$学习率设为<span>$\alpha= f({decay-rate,global-step}) * \alpha_0$</span><!-- Has MathJax --> ，<strong>decay-rate</strong>称为<code>衰减率</code>，<strong>global_step</strong>为<code>步数</code>，$\alpha_0$为<code>初始学习率</code>，注意这个衰减率是另一个你需要调整的超参数。[6]</p>
+<p>分段常数衰减就是在定义好的区间上，分别设置不同的常数值，作为学习率的初始值和后续衰减的取值。</p>
+<p>指数衰减的学习速率计算公式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decayed_learning_rate = learning_rate * decay_rate ^ (global_step / decay_steps)</span><br></pre></td></tr></table></figure>
+<p>自然指数衰减的学习率计算公式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)</span><br></pre></td></tr></table></figure>
+<p>红色：阶梯型；绿色：指数型；蓝色指数型衰减：</p>
+<p><img src="/2019/02/05/网络优化/20180315185333871.png" alt=""></p>
+<p><strong>参数cycle</strong>决定学习率是否在下降后重新上升，若cycle为True，则学习率下降后重新上升；使用decay_steps的倍数，取第一个大于global_steps的结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">decay_steps = decay_steps*ceil(global_step/decay_steps)</span><br><span class="line"></span><br><span class="line">decayed_learning_rate = (learning_rate-end_learning_rate)*(1-global_step/decay_steps)^ (power)+end_learning_rate</span><br></pre></td></tr></table></figure>
+<p><strong>参数cycle目的：防止神经网络训练后期学习率过小导致网络一直在某个局部最小值中振荡；这样，通过增大学习率可以跳出局部极小值．</strong></p>
+<p>红色：下降后不再上升；绿色：下降后重新上升： </p>
+<p><img src="/2019/02/05/网络优化/20180315201648786.png" alt=""></p>
+<h2 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h2><p>在深层神经网络或循环神经网络中，除了梯度消失之外，梯度爆炸是影响学习效率的主要因素。在基于梯度下降的优化过程中，如果梯度突然增大，用大的梯度进行更新参数，反而会导致其远离最优点。为了避免这种情况，当梯度的模大于一定阈值时，就对梯度进行截断，称为梯度截断。</p>
+<p>如何判断出现梯度爆炸：</p>
+<ul>
+<li>训练过程中模型梯度快速变大</li>
+<li>训练过程中模型权重变成 NaN 值</li>
+<li>训练过程中，每个节点和层的误差梯度值持续超过1.0</li>
+</ul>
+<p><strong>按值截断</strong> 第t次迭代时，梯度为$g_t$，给定一个区间[a,b]，如果一个参数的梯度小于a，就将其设为a；如果小于b时，就将其设为b。</p>
+<script type="math/tex; mode=display">
+g_t = \max(\min(g_t,b),a)</script><p><strong>按模截断</strong> 将梯度的模截断到一个给定的截断阈值b。</p>
+<p>如果$||g_t||^2 \leq b$，保持$g_t$不变。如果$||g_t||^2 &gt; b$，令</p>
+<script type="math/tex; mode=display">
+g_t = \frac{b}{||g_t||}g_t</script><p>在训练循环神经网络时，按模截断是避免梯度爆炸问题的有效方法。在 Keras 深度学习库中，你可以在训练之前设置优化器上的 clipnorm 或 clipvalue 参数，来使用梯度截断。</p>
+<h1 id="泛化问题"><a href="#泛化问题" class="headerlink" title="泛化问题"></a>泛化问题</h1><h2 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h2><p>图片处理：</p>
+<ul>
+<li>Color Jittering：对颜色的数据增强：图像亮度、饱和度、锐度、变焦；[7]</li>
+<li>PCA  Jittering：首先按照RGB三个颜色通道计算均值和标准差，再在整个训练集上计算协方差矩阵，进行特征分解，得到特征向量和特征值，用来做PCA Jittering；</li>
+<li>Random Scale：尺度变换；</li>
+<li>Random Crop：采用随机图像差值方式，对图像进行裁剪、缩放；包括Scale Jittering方法（VGG及ResNet模型使用）或者尺度和长宽比增强变换；</li>
+<li>Horizontal/Vertical Flip：水平/垂直翻转；</li>
+<li>Shift：平移变换；</li>
+<li>Rotation/Reflection：旋转/仿射变换；</li>
+<li>Noise：高斯噪声、模糊处理</li>
+</ul>
+<p>文本处理：</p>
+<ul>
+<li>clip|pad：对过长或过短的文本进行裁剪或者填充</li>
+<li>随机dropout|替换：给定一个比例随机抽选文本dropout、或者替换成其他单词</li>
+<li>shuffle：打乱文本</li>
+<li>Noise：高斯噪音</li>
+</ul>
+<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p><img src="/2019/02/05/网络优化/f5f9e03bf245e71f5538e12d06a83ea0_hd.jpg" alt=""></p>
+<h3 id="正则项的作用"><a href="#正则项的作用" class="headerlink" title="正则项的作用"></a>正则项的作用</h3><p>（1）实现参数的稀疏，这样可以简化模型，避免过拟合。在一个模型中重要的特征并不是很多，如果考虑所有的特征都是有作用的，那么就会对训练集进行充分的拟合，导致在测试集的表现并不是很好，所以我们需要稀疏参数，简化模型。[8]<br> （2）尽可能保证参数小一些，这又是为啥呢？因为越是复杂的模型，它会对所有的样本点进行拟合，如果在这里包含异常的样本，就会在小区间内产生很大的波动，不同于平均水平的高点或者低点，这样的话，会导致其导数很大，我们知道在多项式导数中，只有参数非常大的时候，才会产生较大的导数，所以<strong>模型越复杂，参数值也就越大</strong>。为了避免这种过度的拟合，需要控制参数值的大小。</p>
+<h3 id="L1正则"><a href="#L1正则" class="headerlink" title="L1正则"></a>L1正则</h3><script type="math/tex; mode=display">
+C=C_0 +\frac{\lambda}{n}\sum_w|w| \\\\
+\frac{\partial C}{\partial w} = \frac{\partial C_0}{\partial w} + \frac{\lambda}{n} sgn(w) \\\\
+w :=w-\frac{\eta \lambda }{n}sgn(w)-\eta \frac{\partial C_0}{\partial w}</script><ul>
+<li>当w为正时，更新后的w变小；当w为负时，更新后的w变大。<strong>因此它的效果就是让w往0靠，使网络中的权重尽可能为0，也就相当于减小了网络复杂度，防止过拟合。</strong></li>
+<li>w等于0时，|w|是不可导，可以规定$sgn(0)=0$，这样就把w=0的情况也统一进来了。</li>
+</ul>
+<h3 id="L2正则"><a href="#L2正则" class="headerlink" title="L2正则"></a>L2正则</h3><p>L2范数是各参数的平方和再求平方根。对于L2的每个元素都很小，但是不会为0，只是接近0，参数越小说明模型越简单，也就越不容易产生过拟合。</p>
+<script type="math/tex; mode=display">
+J(\theta) = \frac{1}{2m}[\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2 + \lambda\sum_{j=1}^n \theta_j^2]</script><p>λ 要做的就是控制惩罚项与均方差之间的平衡关系。 </p>
+<p>λ越大说明，参数被打压得越厉害，θ值也就越小</p>
+<script type="math/tex; mode=display">
+C=C_0 +\frac{\lambda}{2n}\sum_w w^2 \\\
+\frac{\partial C}{\partial w} = \frac{\partial C_0}{\partial w} + \frac{\lambda}{n} w \\\\
+w :=w-\frac{\eta \lambda }{n}w-\eta \frac{\partial C_0}{\partial w} \\\\
+=(1-\frac{\eta \lambda}{n})w - \eta\frac{\partial C_0}{\partial w}</script><ul>
+<li><p>在不使用L2正则化时，求导结果中w前系数为1，现在w前面系数为 1-ηλ/n ，因为η、λ、n都是正的，在样本量充足的时候，1-ηλ/n小于1，它的效果是减小w，这也就是权重衰减的由来。</p>
+</li>
+<li><p>考虑到后面的导数项，w最终的值可能增大也可能减小</p>
+</li>
+</ul>
+<p><img src="/2019/02/05/网络优化/20140504123020546.png" alt=""></p>
+<p>我们将模型空间限制在w的一个L1-ball 中。为了便于可视化，我们考虑两维的情况，在($w_1$,$ w_2$)平面上可以画出目标函数的等高线，而约束条件则成为平面上半径为C的一个 norm ball 。等高线与 norm ball 首次相交的地方就是最优解：</p>
+<p>可以看到，L1-ball 与L2-ball 的不同就在于L1在和每个坐标轴相交的地方都有“角”出现，而目标函数的测地线除非位置摆得非常好，大部分时候都会在角的地方相交。注意到在角的位置就会产生<strong>稀疏性</strong>，例如图中的相交点就有$w_1​$=0，而更高维的时候（想象一下三维的L1-ball 是什么样的？）除了角点以外，还有很多边的轮廓也是既有很大的概率成为第一次相交的地方，又会产生稀疏性。<strong>LASSO通常用来为其他方法所特征选择。例如，你可能会用LASSO回归获取适当的特征变量，然后在其他算法中使用。</strong></p>
+<p>相比之下，L2-ball 就没有这样的性质，因为没有角，所以<strong>第一次相交的地方出现在具有稀疏性的位置的概率就变得非常小了</strong>。这就从直观上来解释了为什么L1-regularization 能产生稀疏性，而L2-regularization 不行的原因了。</p>
+<p><strong>从 Bayesian 的角度，可以认为L2正则和L1正则引入了不同的 prior（一个是 Gaussian 一个是 Laplacian）。</strong></p>
+<blockquote>
+<p>   因此，一句话总结就是：L1会趋向于产生少量的特征，而其他的特征都是0，而L2会选择更多的特征，这些特征都会接近于0。Lasso在特征选择时候非常有用，而Ridge就只是一种规则化而已。</p>
+</blockquote>
+<h2 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h2><p><strong>Dropout</strong>会遍历网络的每一层，并设置消除神经网络中节点的概率。</p>
+<p>假设网络中的每一层，每个节点都以抛硬币的方式设置概率，每个节点得以<code>保留</code>和<code>消除</code>的概率是<code>p</code>和<code>1-p</code>，设置完节点概率，我们会消除一些节点，然后删除掉从该节点进出的连线，最后得到一个节点更少，规模更小的网络，然后用<strong>backprop</strong>方法进行训练。</p>
+<p>反向传播的时候，<strong>0的神经元的参数就不再更新。</strong></p>
+<p><img src="/2019/02/05/网络优化/e45f9a948989b365650ddf16f62b097e.png" alt=""></p>
+<p><img src="/2019/02/05/网络优化/9fa7196adeeaf88eb386fda2e9fa9909.png" alt=""></p>
+<p>预测的时候，不使用Dropout（不对网络的参数做任何丢弃，就是说dropout layer进来什么就输出什么）。事实上，由于我们在测试时不使用Dropout，这样做导致统计意义下，测试时每层dropout layer比训练时的输出多加了(1-p)<em>100% units的输出。所以，为了使得dropout layer下一层的输入和训练时具有相同的意义和数量级，我们对测试的伪dropout layer的输出做rescale：<em>*乘以一个p</em></em>，表示最后只有这么大的概率被保留下来。</p>
+<p>假设x是dropout layer的输入，y是输出，W是上一层的weight params，$W|_p$是retaining probability为p采样得到的weight params子集，则有</p>
+<script type="math/tex; mode=display">
+train:y=W|_p*x\\\\
+\ test:y = W*px</script><h2 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h2><h3 id="为什么需要归一化"><a href="#为什么需要归一化" class="headerlink" title="为什么需要归一化"></a>为什么需要归一化</h3><ul>
+<li>神经网络学习过程本质就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低</li>
+<li>上层参数需要不断适应新的输入数据分布，降低学习速度。</li>
+<li>下层输入的变化可能趋向于变大或者变小，导致上层落入饱和区，使得学习过早停止</li>
+<li>每层的更新都会影响到其它层，因此每层的参数更新策略需要尽可能的谨慎</li>
+</ul>
+<p>对于深度网络的训练是一个复杂的过程，只要网络的前面几层发生微小的改变，那么后面几层就会被累积放大下去。一旦网络某一层的输入数据的分布发生改变，那么这一层网络就需要去适应学习这个新的数据分布，所以如果训练过程中，<strong>训练数据的分布一直在发生变化，那么将会影响网络的训练速度</strong>。</p>
+<h3 id="BatchNorm"><a href="#BatchNorm" class="headerlink" title="BatchNorm"></a>BatchNorm</h3><p><img src="/2019/02/05/网络优化/v2-13bb64b6122e98421ea3528539c1bffc_hd.jpg" alt=""></p>
+<p>对每一个batch的输入都进行归一化，<strong>把数据转换为均值为0、方差为1的高斯分布</strong>。</p>
+<script type="math/tex; mode=display">
+\hat{x} = \frac{x-E(x)}{\sqrt{Var(x)+\epsilon}}</script><p>但是，<strong>强行归一化会破坏掉刚刚学习到的特征</strong> ，把每层的数据分布都固定了，但不一定是前面一层学习到的数据分布。因此，设置两个可以学习的变量<code>扩展参数</code>$γ$ ，和<code>平移参数</code> $β$ ，<strong>用这两个变量去还原上一层应该学习到的数据分布</strong>。[9]</p>
+<script type="math/tex; mode=display">
+y^{(k)} = \gamma^{(k)}\hat{x}^{(k)}+\beta^{(k)} \\\\</script><p>引入了这个可学习重构参数$γ、β$，让我们的网络可以学习恢复出原始网络所要学习的特征分布。最后Batch Normalization网络层的前向传导过程公式就是：</p>
+<p><img src="/2019/02/05/网络优化/20180112195606874.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Batchnorm_simple_for_train</span><span class="params">(x, gamma, beta, bn_param)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">param:x    : 输入数据，设shape(B,L)</span></span><br><span class="line"><span class="string">param:gama : 缩放因子  γ</span></span><br><span class="line"><span class="string">param:beta : 平移因子  β</span></span><br><span class="line"><span class="string">param:bn_param   : batchnorm所需要的一些参数</span></span><br><span class="line"><span class="string">	eps      : 接近0的数，防止分母出现0</span></span><br><span class="line"><span class="string">	momentum : 动量参数，一般为0.9， 0.99， 0.999</span></span><br><span class="line"><span class="string">	running_mean ：滑动平均的方式计算新的均值，训练时计算，为测试数据做准备</span></span><br><span class="line"><span class="string">	running_var  : 滑动平均的方式计算新的方差，训练时计算，为测试数据做准备</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">	running_mean = bn_param[<span class="string">'running_mean'</span>]  <span class="comment">#shape = [B]</span></span><br><span class="line">    running_var = bn_param[<span class="string">'running_var'</span>]    <span class="comment">#shape = [B]</span></span><br><span class="line">	results = <span class="number">0.</span> <span class="comment"># 建立一个新的变量</span></span><br><span class="line">    </span><br><span class="line">	x_mean=x.mean(axis=<span class="number">0</span>)  <span class="comment"># 计算x的均值</span></span><br><span class="line">    x_var=x.var(axis=<span class="number">0</span>)    <span class="comment"># 计算方差</span></span><br><span class="line">    x_normalized=(x-x_mean)/np.sqrt(x_var+eps)       <span class="comment"># 归一化</span></span><br><span class="line">    results = gamma * x_normalized + beta            <span class="comment"># 缩放平移</span></span><br><span class="line"></span><br><span class="line">    running_mean = momentum * running_mean + (<span class="number">1</span> - momentum) * x_mean</span><br><span class="line">    running_var = momentum * running_var + (<span class="number">1</span> - momentum) * x_var</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#记录新的值</span></span><br><span class="line">    bn_param[<span class="string">'running_mean'</span>] = running_mean</span><br><span class="line">    bn_param[<span class="string">'running_var'</span>] = running_var </span><br><span class="line">    </span><br><span class="line">	<span class="keyword">return</span> results , bn_param</span><br></pre></td></tr></table></figure>
+<p><strong>优点</strong></p>
+<ul>
+<li>Batchnorm本身上也是一种正则的方式，可以代替其他正则方式如dropout等</li>
+<li>没有它之前，需要小心的调整学习率和权重初始化，但是有了BN可以放心的使用大学习率，但是使用了BN，就不用小心的调参了，较大的学习率极大的提高了学习速度</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li><p>批量归一化是对一个中间层的单个神经元进行归一化操作，因此要求<strong>小批量样本的数量不能太小</strong>，否则难以计算单个神经元的统计信息</p>
+</li>
+<li><p>由于 BN 需要在运行过程中统计每个 mini-batch 的一阶统计量和二阶统计量，如果一个神经元的净输入的分布在神经网络中是<strong>动态变化</strong>的，比如循环神经网络，那么就无法应用批量归一化操作</p>
+</li>
+</ul>
+<p><strong>位置</strong></p>
+<p>一般<strong>在全连接层和激活函数之间</strong>添加BN层</p>
+<p><strong>适用</strong></p>
+<p>每个 mini-batch 比较大，数据分布比较接近。在进行训练之前，要做好充分的 shuffle，否则效果会差很多。</p>
+<h3 id="LayerNorm"><a href="#LayerNorm" class="headerlink" title="LayerNorm"></a>LayerNorm</h3><p>与 BN 不同，LN 是一种横向的规范化。</p>
+<p><img src="/2019/02/05/网络优化/v2-2f1ad5749e4432d11e777cf24b655da8_hd.jpg" alt=""></p>
+<p>它综合考虑一层所有维度的输入，计算该层的平均输入值和输入方差，然后用同一个规范化操作来转换各个维度的输入。</p>
+<p>对于一个深层神经网络中，令第$l$层神经的净输入为$z^{(l)}$，其均值和方差为：</p>
+<script type="math/tex; mode=display">
+\mu^{(l)} = \frac{1}{n^l}\sum_{i=1}^{n^l} z_i^{(l)} \\\\
+\sigma^{(l)^2} = \frac{1}{n^l}\sum_{k=1}^{n^l} (z_i^{(l)}-\mu^{(l)})^2</script><p>其中$n^{l}​$为第l层神经元的数量。</p>
+<p>层归一化的定义为：</p>
+<script type="math/tex; mode=display">
+\hat{z}^{(l)} = \frac{z^{(l)} - \mu^{(l)}}{\sqrt{\sigma^{(l)^2} + \epsilon}} \odot \gamma + \beta \\\\
+=LayerNorm_{\gamma,\beta}(z^{l})</script><p>其中$\gamma$和$\beta$分别代表缩放和平移的参数向量。对循环神经层进行归一化操作。假设在时刻t，循环神经网络的隐藏层为$h_t$，其层归一化的更新为：</p>
+<script type="math/tex; mode=display">
+z_t = Uh_{t-1}+Wx_t \\\\
+h_t = f(LN_{\gamma,\beta}(z_t))</script><p>其中输入为$x_t$为第$t$时刻的输入，U、W为网络参数。</p>
+<h2 id="Early-Stop"><a href="#Early-Stop" class="headerlink" title="Early Stop"></a>Early Stop</h2><p><img src="/2019/02/05/网络优化/9d0db64a9c9b050466a039c935f36f93.png" alt=""></p>
+<p>当你还未在神经网络上运行太多迭代过程的时候，参数$w$接近0，因为随机初始化$w$值时，它的值可能都是较小的随机值，所以在你长期训练神经网络之前$w$依然很小，在迭代过程和训练过程中<strong>$w$的值会变得越来越大</strong>，比如在这儿，神经网络中参数$w$的值已经非常大了，所以<strong>early stopping</strong>要做就是在中间点停止迭代过程。</p>
+<p><strong>early stopping</strong>的主要缺点就是你不能独立地处理这两个问题，因为提早停止梯度下降，也就是停止了优化代价函数$J$，因为现在你不再尝试降低代价函数$J$，所以<strong>代价函数$J$的值可能不够小，同时你又希望不出现过拟合</strong>，你没有采取不同的方式来解决这两个问题，而是用一种方法同时解决两个问题，这样做的结果是我要考虑的东西变得更复杂。</p>
+<p><strong>Early stopping</strong>的优点是，只运行一次梯度下降，你可以找出$w$的较小值，中间值和较大值，而无需尝试$L2$正则化超级参数$\lambda$的很多值。</p>
+<p>参考资料：</p>
+<p>[1].  <a href="https://zhpmatrix.github.io/2017/12/31/neural-networks-theory/" target="_blank" rel="noopener">[DL]扯扯神经网络的优化理论</a></p>
+<p>[2].  <a href="https://www.zhihu.com/question/265516791" target="_blank" rel="noopener">为什么损失函数是非凸的</a></p>
+<p>[3].  <a href="http://www.yanglajiao.com/article/QiaXi/52632935" target="_blank" rel="noopener">初始化方法</a></p>
+<p>[4].  <a href="https://zhuanlan.zhihu.com/p/28981495" target="_blank" rel="noopener">正交矩阵初始化1</a> <a href="https://zhuanlan.zhihu.com/p/28981495" target="_blank" rel="noopener">正交矩阵初始化2</a></p>
+<p>[5].  <a href="https://www.jianshu.com/p/8e96667fc996" target="_blank" rel="noopener">batch_size</a></p>
+<p>[6].  <a href="https://blog.csdn.net/akadiao/article/details/79560731" target="_blank" rel="noopener">学习率衰减</a></p>
+<p>[7].  <a href="https://zhuanlan.zhihu.com/p/23249000" target="_blank" rel="noopener">图片数据增强</a></p>
+<p>[8].  <a href="https://www.jianshu.com/p/70487abdf96b" target="_blank" rel="noopener">正则项</a></p>
+<p>[9].  <a href="https://blog.csdn.net/qq_25737169/article/details/79048516" target="_blank" rel="noopener">批归一化</a></p>
+<p>[10]. <a href="https://zhuanlan.zhihu.com/p/29920135" target="_blank" rel="noopener">Adagrad</a></p>
+<p>[n].  deeplearning.ai</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/梯度下降/" rel="tag"># 梯度下降</a>
+          
+            <a href="/tags/数据增强/" rel="tag"># 数据增强</a>
+          
+            <a href="/tags/学习率/" rel="tag"># 学习率</a>
+          
+            <a href="/tags/初始化/" rel="tag"># 初始化</a>
+          
+            <a href="/tags/正则化/" rel="tag"># 正则化</a>
+          
+            <a href="/tags/优化算法/" rel="tag"># 优化算法</a>
+          
+            <a href="/tags/dropout/" rel="tag"># dropout</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/23/激活函数/" rel="next" title="激活函数">
+                <i class="fa fa-chevron-left"></i> 激活函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/11/循环神经网络/" rel="prev" title="循环神经网络">
+                循环神经网络 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">杀死庸碌的时间</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#凸问题"><span class="nav-number">1.</span> <span class="nav-text">凸问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么有凸优化问题"><span class="nav-number">1.1.</span> <span class="nav-text">为什么有凸优化问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据预处理"><span class="nav-number">1.2.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-number">1.3.</span> <span class="nav-text">初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Glorot-Initialization-glorot-uniform-glorot-normal"><span class="nav-number">1.3.1.</span> <span class="nav-text">Glorot Initialization(glorot_uniform, glorot_normal)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#He-Initialization-he-normal-he-uniform"><span class="nav-number">1.3.2.</span> <span class="nav-text">He Initialization(he_normal, he_uniform)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Orthogonal-Initialization"><span class="nav-number">1.3.3.</span> <span class="nav-text">Orthogonal Initialization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度下降法的变种"><span class="nav-number">1.4.</span> <span class="nav-text">梯度下降法的变种</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mini-batch"><span class="nav-number">1.4.1.</span> <span class="nav-text">Mini-batch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动量梯度下降法（Momentum）"><span class="nav-number">1.4.2.</span> <span class="nav-text">动量梯度下降法（Momentum）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMSprop"><span class="nav-number">1.4.3.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AdaGrad"><span class="nav-number">1.4.4.</span> <span class="nav-text">AdaGrad</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adam"><span class="nav-number">1.4.5.</span> <span class="nav-text">Adam</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各种优化算法的对比"><span class="nav-number">1.4.6.</span> <span class="nav-text">各种优化算法的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习率衰减"><span class="nav-number">1.5.</span> <span class="nav-text">学习率衰减</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度截断"><span class="nav-number">1.6.</span> <span class="nav-text">梯度截断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛化问题"><span class="nav-number">2.</span> <span class="nav-text">泛化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据增强"><span class="nav-number">2.1.</span> <span class="nav-text">数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">2.2.</span> <span class="nav-text">正则化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则项的作用"><span class="nav-number">2.2.1.</span> <span class="nav-text">正则项的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L1正则"><span class="nav-number">2.2.2.</span> <span class="nav-text">L1正则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2正则"><span class="nav-number">2.2.3.</span> <span class="nav-text">L2正则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dropout"><span class="nav-number">2.3.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#归一化"><span class="nav-number">2.4.</span> <span class="nav-text">归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要归一化"><span class="nav-number">2.4.1.</span> <span class="nav-text">为什么需要归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BatchNorm"><span class="nav-number">2.4.2.</span> <span class="nav-text">BatchNorm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LayerNorm"><span class="nav-number">2.4.3.</span> <span class="nav-text">LayerNorm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Early-Stop"><span class="nav-number">2.5.</span> <span class="nav-text">Early Stop</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
