@@ -425,7 +425,7 @@
 <p><img src="/2019/02/25/Transformer/v2-c2a91ac08b34e73c7f4b415ce823840e_hd.jpg" alt=""></p>
 <h2 id="Residual-Connection-amp-Layer-Normalization"><a href="#Residual-Connection-amp-Layer-Normalization" class="headerlink" title="Residual Connection &amp; Layer Normalization"></a>Residual Connection &amp; Layer Normalization</h2><p>Multihead-attention完再接到feed-forward layer之前，还有一个sub-layer，需要经过residual connection和layer normalization。</p>
 <p>Residual connection 就是构建一种新的残差结构，将输出改写成和输入的残差，使得模型在训练时，微小的变化可以被注意到，这种架构很常用在电脑视觉(computer vision)。</p>
-<p>Layer normalization是在深度学习领域中的一种正规化方法，计算可以参考：<a href="/2019/02/16/网络优化/" title="网络优化">网络优化</a></p>
+<p>Layer normalization是在深度学习领域中的一种正规化方法，计算可以参考：<a href="/2019/02/05/网络优化/" title="网络优化">网络优化</a></p>
 <p><img src="/2019/02/25/Transformer/v2-8c9e1320f67fde9fbca8c687d23e0ce3_r.jpg" alt=""></p>
 <h2 id="Feed-Forward-Networks"><a href="#Feed-Forward-Networks" class="headerlink" title="Feed-Forward Networks"></a>Feed-Forward Networks</h2><p>Encoder/Decoder中的attention sublayers都会接到一层feed-forward networks(FFN)：<strong>两层线性转换和一个RELU</strong>，论文中是根据<strong>各个位置(输入句中的每个文字)</strong>分别做FFN。</p>
 <p>其中，每个位置进行相同的线性转换，这边使用的是<strong>convolution1D</strong>（TF官网的是dense layer），也就是kernel size=1，原因是convolution1D才能保持位置的完整性，可参考CNN，模型的输入/输出维度$d_{model}=512$，但中间层的维度是2048，目的是为了减少计算量。</p>
@@ -593,7 +593,7 @@ PE(pos, 2i+1)=cos(pos/10000^{2i/d_{model}})</script><p><img src="/2019/02/25/Tra
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,7 +604,7 @@ PE(pos, 2i+1)=cos(pos/10000^{2i/d_{model}})</script><p><img src="/2019/02/25/Tra
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -615,7 +615,7 @@ PE(pos, 2i+1)=cos(pos/10000^{2i/d_{model}})</script><p><img src="/2019/02/25/Tra
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

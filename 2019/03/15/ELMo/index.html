@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/elmo_combination-a7af2b3eb2b5ceb37f3e9c5f2b066f14-3d61e.png">
 <meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/20190316154916.png">
 <meta property="og:image" content="https://lanme.github.io/2019/03/15/ELMo/20190316155005.png">
-<meta property="og:updated_time" content="2019-03-16T08:33:06.832Z">
+<meta property="og:updated_time" content="2019-03-18T09:42:28.570Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELMo">
 <meta name="twitter:description" content="写在前面记得在的文章中提到，Glove和Word2vec，对于每一个单词都有唯一的一个embedding表示，而对于多义词显然这种做法不符合直觉，而单词的意思又和上下文相关。ELMo (Embeddings from Language Models)的做法是只预训练language model（LM），而word embedding是通过输入的句子实时输出的, 这样单词的意思就是上下文相关的了，这">
@@ -285,8 +285,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-16T16:33:06+08:00">
-                2019-03-16
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-18T17:42:28+08:00">
+                2019-03-18
               </time>
             
           </span>
@@ -374,7 +374,7 @@
       
         <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>记得在的文章中提到，Glove和Word2vec，对于每一个单词都有唯一的一个embedding表示，而对于<code>多义词</code>显然这种做法不符合直觉，而<strong>单词的意思又和上下文相关</strong>。ELMo (Embeddings from Language Models)的做法是只<code>预训练</code>language model（LM），而<strong>word embedding是通过输入的句子实时输出的, 这样单词的意思就是<code>上下文相关</code>的了，这样就很大程度上缓解了歧义的发生</strong>，且ELMo输出多个层的embedding表示，试验中已经发现每层LM输出的信息对于不同的任务效果不同， 因此对每个token用不同层的embedding表示会提升效果。</p>
 <a id="more"></a>
-<h1 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h1><p>使用双向的LM，即给懂N个tokens（$t_1,t_2,…,t_N$），LM通过前k-1个token计算第k个token出现的概率：</p>
+<h1 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h1><p>使用双向的LM，计算N个tokens（$t_1,t_2,…,t_N$），LM通过前k-1个token计算第k个token出现的概率：</p>
 <script type="math/tex; mode=display">
 p(t_1,t_2,...,t_N) = \prod_{k=1}^Np(t_k|t_1,t_2,...,t_{k-1})</script><p>后向计算：</p>
 <script type="math/tex; mode=display">
@@ -473,6 +473,10 @@ T(x) = \sigma(W_T^T x+b_T)</script><p>$W_T、b_T$分别为权重矩阵和bias ve
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/03/18/GBDT/" rel="prev" title="GBDT">
+                GBDT <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -548,7 +552,7 @@ T(x) = \sigma(W_T^T x+b_T)</script><p>$W_T、b_T$分别为权重矩阵和bias ve
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -559,7 +563,7 @@ T(x) = \sigma(W_T^T x+b_T)</script><p>$W_T、b_T$分别为权重矩阵和bias ve
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -570,7 +574,7 @@ T(x) = \sigma(W_T^T x+b_T)</script><p>$W_T、b_T$分别为权重矩阵和bias ve
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
