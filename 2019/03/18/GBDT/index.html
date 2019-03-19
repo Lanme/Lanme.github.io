@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging即套袋法，其算法过程如下[1]： A）从原始样本集中抽取训练集。每轮从原始样本集中使用Bootstraping的方法抽取n个">
+<meta name="description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging">
 <meta name="keywords" content="gbdt,决策树,xgboost,梯度下降,归一化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GBDT">
 <meta property="og:url" content="https://Lanme.github.io/2019/03/18/GBDT/index.html">
 <meta property="og:site_name" content="锦鲤木兰">
-<meta property="og:description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging即套袋法，其算法过程如下[1]： A）从原始样本集中抽取训练集。每轮从原始样本集中使用Bootstraping的方法抽取n个">
+<meta property="og:description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://lanme.github.io/2019/03/18/GBDT/20190319002637.png">
-<meta property="og:updated_time" content="2019-03-19T06:22:25.598Z">
+<meta property="og:updated_time" content="2019-03-19T06:37:21.801Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GBDT">
-<meta name="twitter:description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging即套袋法，其算法过程如下[1]： A）从原始样本集中抽取训练集。每轮从原始样本集中使用Bootstraping的方法抽取n个">
+<meta name="twitter:description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging">
 <meta name="twitter:image" content="https://lanme.github.io/2019/03/18/GBDT/20190319002637.png">
 
 
@@ -280,7 +280,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-19T14:22:25+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-19T14:37:21+08:00">
                 2019-03-19
               </time>
             
@@ -368,7 +368,8 @@
 
       
         <h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><h2 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h2><p>GBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，<code>基尼系数越小越好</code>，基尼的不纯度相当于熵所对应的混乱程度。</p>
-<h2 id="bagging-amp-boosting"><a href="#bagging-amp-boosting" class="headerlink" title="bagging &amp; boosting"></a>bagging &amp; boosting</h2><h3 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h3><p>即套袋法，其算法过程如下[1]：</p>
+<h2 id="bagging-amp-boosting"><a href="#bagging-amp-boosting" class="headerlink" title="bagging &amp; boosting"></a>bagging &amp; boosting</h2><h3 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h3><a id="more"></a>
+<p>即套袋法，其算法过程如下[1]：</p>
 <p><strong>A）从原始样本集中抽取训练集。</strong>每轮从原始样本集中使用Bootstraping的方法抽取n个训练样本（在训练集中，有些样本可能被多次抽取到，而有些样本可能一次都没有被抽中）。共进行k轮抽取，得到k个训练集。（k个训练集之间是相互独立的）</p>
 <p><strong>B）每次使用一个训练集得到一个模型，k个训练集共得到k个模型。</strong></p>
 <p><strong>C）对分类问题：将上步得到的k个模型采用投票的方式得到分类结果；对回归问题，计算上述模型的均值作为最后的结果。（所有模型的重要性相同）</strong></p>
@@ -629,7 +630,7 @@ y_i-F(x_i) , \ |y-F|\leq \delta \\\\
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
