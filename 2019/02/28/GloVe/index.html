@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://lanme.github.io/2019/02/28/GloVe/v2-867648522f5c8fd3b2dda59425eef667_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/28/GloVe/kdnzqnxvk8.jpg">
-<meta property="og:updated_time" content="2019-03-09T05:05:33.801Z">
+<meta property="og:updated_time" content="2019-03-20T02:07:04.690Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GloVe">
 <meta name="twitter:description" content="相关知识目前主流的两种模型都存在一些显著的不足。对于一些global matrix factorization方法（如LSA），在词类比任务的表现不好，表明这种方法得到的是向量空间的次优解；对于一些local context window方法（如skip-gram）可能在词类比任务上表现比较好，但这种方法没有很好得利用语料库的统计信息因为它们只在局部上下文中进行训练。 GloVe模型就是将这两中特">
@@ -281,8 +281,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-09T13:05:33+08:00">
-                2019-03-09
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-20T10:07:04+08:00">
+                2019-03-20
               </time>
             
           </span>
@@ -436,7 +436,7 @@ f(x) = \left\{
 </ul>
 <script type="math/tex; mode=display">
 \sum_{w_i,w_j}  (<v_i,\hat{v_j}> +b_i,\hat{b_j} - logX_{ij})^2 \\\\
-=\sum_(w_i,w_j) (<v_i+c,\hat{v_j}+c> +(b_i-<v_i,c>-\frac{|c|^2}{2})+ \\\\(\hat{b_j}-<\hat{v_j},c>-\frac{|c|^2}{2}) - logX_{ij})^2</script><p>也就是说，对于glove训练处的词向量加上任意一个常数向量后，它还是这个损失函数的解！这意味着，当加上一个非常大的常数向量之后，它们仍然是解，但是这个解的词向量没有意义，因为任意两个词的cos接近为1。</p>
+=\sum_{w_i,w_j} (<v_i+c,\hat{v_j}+c> +(b_i-<v_i,c>-\frac{|c|^2}{2})+ \\\\(\hat{b_j}-<\hat{v_j},c>-\frac{|c|^2}{2}) - logX_{ij})^2</script><p>也就是说，对于glove训练处的词向量加上任意一个常数向量后，它还是这个损失函数的解！这意味着，当加上一个非常大的常数向量之后，它们仍然是解，但是这个解的词向量没有意义，因为任意两个词的cos接近为1。</p>
 <ul>
 <li>和word2vec一样没有考虑一词多义</li>
 </ul>
@@ -569,7 +569,7 @@ f(x) = \left\{
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -580,7 +580,7 @@ f(x) = \left\{
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -591,7 +591,7 @@ f(x) = \left\{
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

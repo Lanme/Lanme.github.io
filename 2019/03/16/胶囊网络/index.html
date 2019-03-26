@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="capsnet,激活函数,cnn,池化,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="卷积神经网络 局部感知 共享权重（与RNN中的共享参数相区别）  padding填充像素通常有两个选择，分别叫做Valid卷积和Same卷积。 Valid卷积意味着不填充，这样的话，如果你有一个$n×n$的图像，用一个$f×f$的过滤器卷积，它将会给你一个$(n-f+1)×(n-f+1)$维的输出。这类似于我们在前面的视频中展示的例子，有一个6×6的图像，通过一个3×3的过滤器，得到一个4×4的输">
+<meta name="keywords" content="capsnet,激活函数,cnn,池化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="胶囊网络">
+<meta property="og:url" content="https://Lanme.github.io/2019/03/16/胶囊网络/index.html">
+<meta property="og:site_name" content="锦鲤木兰">
+<meta property="og:description" content="卷积神经网络 局部感知 共享权重（与RNN中的共享参数相区别）  padding填充像素通常有两个选择，分别叫做Valid卷积和Same卷积。 Valid卷积意味着不填充，这样的话，如果你有一个$n×n$的图像，用一个$f×f$的过滤器卷积，它将会给你一个$(n-f+1)×(n-f+1)$维的输出。这类似于我们在前面的视频中展示的例子，有一个6×6的图像，通过一个3×3的过滤器，得到一个4×4的输">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/ad626a7a5a1cda8eb679e15f953f84a7.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/p2.gif">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/9687f796debffce065daa8c654b9b7b7.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/1__nzxfHm_GWW7e_09UDdqyA.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/1_AL4k3d3Qov_uGKeJaB-vkA.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/1_LPpIdgcUQiskly8s6zvVbw.png">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/173550r5bxbmxtxelb0m6m.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/173551mx156p5a1xvzmoxx.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/173555sgoohoggtvtj3pgf.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/173555lz8t8fsapu8zt8v8.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/173556yki95il5ybg2y1kb.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/173556d3dn0rnrrm1zka7q.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/173556i2pglatlpr89wypd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/p.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/v2-15e24ecdb56302dc9c17eba6ac7e8131_hd.jpg">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/p.img">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/p1.img">
+<meta property="og:image" content="https://lanme.github.io/2019/03/16/胶囊网络/p3.img">
+<meta property="og:updated_time" content="2019-03-26T10:38:39.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="胶囊网络">
+<meta name="twitter:description" content="卷积神经网络 局部感知 共享权重（与RNN中的共享参数相区别）  padding填充像素通常有两个选择，分别叫做Valid卷积和Same卷积。 Valid卷积意味着不填充，这样的话，如果你有一个$n×n$的图像，用一个$f×f$的过滤器卷积，它将会给你一个$(n-f+1)×(n-f+1)$维的输出。这类似于我们在前面的视频中展示的例子，有一个6×6的图像，通过一个3×3的过滤器，得到一个4×4的输">
+<meta name="twitter:image" content="https://lanme.github.io/2019/03/16/胶囊网络/ad626a7a5a1cda8eb679e15f953f84a7.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://Lanme.github.io/2019/03/16/胶囊网络/">
+
+
+
+
+
+  <title>胶囊网络 | 锦鲤木兰</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">锦鲤木兰</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Lanme.github.io/2019/03/16/胶囊网络/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="锦鲤木兰">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">胶囊网络</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-16T18:25:45+08:00">
+                2019-03-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-26T18:38:39+08:00">
+                2019-03-26
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/神经网络/" itemprop="url" rel="index">
+                    <span itemprop="name">神经网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h1><ul>
+<li>局部感知</li>
+<li>共享权重（与RNN中的共享参数相区别）</li>
+</ul>
+<h2 id="padding"><a href="#padding" class="headerlink" title="padding"></a>padding</h2><p>填充像素通常有两个选择，分别叫做<strong>Valid</strong>卷积和<strong>Same</strong>卷积。</p>
+<p><strong>Valid</strong>卷积意味着<code>不填充</code>，这样的话，如果你有一个$n×n$的图像，用一个$f×f$的过滤器卷积，它将会给你一个$(n-f+1)×(n-f+1)$维的输出。这类似于我们在前面的视频中展示的例子，有一个6×6的图像，通过一个3×3的过滤器，得到一个4×4的输出。</p>
+<a id="more"></a>
+<p>另一个经常被用到的填充方法叫做<strong>Same</strong>卷积，那意味你填充后，你的<code>输出大小和输入大小是一样的</code>。根据这个公式$n-f+1​$，当你填充$p​$个像素点，$n​$就变成了$n+2p​$，最后公式变为$n+2p-f+1​$。因此如果你有一个$n×n​$的图像，用$p​$个像素填充边缘，输出的大小就是这样的$(n+2p-f+1)×(n+2p-f+1)​$。如果你想让$n+2p-f+1=n​$的话，使得输出和输入大小相等，如果你用这个等式求解$p​$，那么<strong>$p=(f-1)/2​$</strong>。所以当$f​$是一个奇数的时候，只要选择相应的填充尺寸，你就能确保得到和输入相同尺寸的输出。</p>
+<h2 id="卷积核"><a href="#卷积核" class="headerlink" title="卷积核"></a>卷积核</h2><p>注意下面的图，<strong>每个通道分别有各自的卷积核</strong>，使用的计算方法为点积，猜猜第二个图是怎么计算出来的呢？</p>
+<p><img src="/2019/03/16/胶囊网络/ad626a7a5a1cda8eb679e15f953f84a7.png" alt=""></p>
+<p><img src="/2019/03/16/胶囊网络/p2.gif" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#tf版本</span></span><br><span class="line"><span class="comment">#注意第0层的通道数与输入的通道数一致，第L层的通道数为人工设定。</span></span><br><span class="line">input = tf.Variable(tf.random_normal([<span class="number">1</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">5</span>]))<span class="comment">#[batch_size，长，宽，通道数]</span></span><br><span class="line">filter = tf.Variable(tf.random_normal([<span class="number">3</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>]))<span class="comment">#[长、宽、通道数、个数]</span></span><br><span class="line">...</span><br><span class="line">op = tf.nn.conv2d(input, filter, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'VALID'</span>)<span class="comment">#[strides为卷积时在图像每一维的步长，这是一个一维的向量，长度4]</span></span><br></pre></td></tr></table></figure>
+<h2 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h2><p><img src="/2019/03/16/胶囊网络/9687f796debffce065daa8c654b9b7b7.png" alt=""></p>
+<p>池化，也即降采样（subsample）。</p>
+<p>上图为<strong>最大池化</strong>（max pool），输入是一个4×4矩阵，最大池化的pool_size为pool_size=(2, 2)，步长为2，padding为“valid”，输出的每个元素都是其对应颜色区域中的最大元素值。除了最大池化，还有<strong>平均池化</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#keras版本</span></span><br><span class="line">keras.layers.pooling.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=<span class="keyword">None</span>, padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>)</span><br><span class="line"><span class="comment">#tensorflow版本</span></span><br><span class="line">tf.nn.max_pool(value,ksize,strides,padding,data_format=<span class="string">'NHWC'</span>,name=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="经典卷积网络"><a href="#经典卷积网络" class="headerlink" title="经典卷积网络"></a>经典卷积网络</h2><ul>
+<li>LeNet，这是最早用于数字识别的CNN</li>
+<li>AlexNet， 2012 ILSVRC比赛远超第2名的CNN，比LeNet更深，用多层小卷积层叠加替换单大卷积层</li>
+<li>GoogLeNet， 2014 ILSVRC比赛冠军</li>
+<li>VGGNet， 2014 ILSVRC比赛中的模型，图像识别略差于GoogLeNet，但是在很多图像转化学习问题(比如object detection)上效果奇好</li>
+<li>残差网络，2015年的ImageNet上取得冠军</li>
+</ul>
+<h1 id="胶囊网络"><a href="#胶囊网络" class="headerlink" title="胶囊网络"></a>胶囊网络</h1><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p><img src="/2019/03/16/胶囊网络/1__nzxfHm_GWW7e_09UDdqyA.png" alt=""></p>
+<p>对于上面的两张图，CNN的结果显示，它们都是人脸！由此暴露了CNN的缺点：对物体之间的空间关系 (spatial relationship) 的识别能力不强。</p>
+<blockquote>
+<p>Well to a network it has all the features of a face. <strong>When the convolution operations are applied they will be activated on all of those features!</strong></p>
+<p>An important thing to understand is that higher-level features combine lower-level features as a weighted sum: activation of a preceding layer are multiplied by the following layer neuron’s weights and added, before being passed to activation non-linearity. Nowhere in this information flow are the relationships between features taken into account.</p>
+<p>Thus, we can say that <strong>the main failure of CNNs is that they do not carry any information about the relative relationships between features</strong>. This is simply a flaw in the core design of CNNs since they are based on the basic convolution operation applied to <em>scalar</em> values.</p>
+</blockquote>
+<h2 id="胶囊"><a href="#胶囊" class="headerlink" title="胶囊"></a>胶囊</h2><h3 id="胶囊含义"><a href="#胶囊含义" class="headerlink" title="胶囊含义"></a>胶囊含义</h3><p>一个激活胶囊里的神经元的活动表示呈现在图像中的特定实体的各种属性。这些属性可以包括实例化参数的不同类型，如姿势（位置，大小，方向）、形变、速度、反射率、色调、纹理等等。下面的两个图分别是普通CNN和胶囊网络如何侦测面部特征的，可以看出，胶囊网络解决这个问题的方法是：使用<code>向量</code> 代替<code>标量</code>！</p>
+<p><img src="/2019/03/16/胶囊网络/1_AL4k3d3Qov_uGKeJaB-vkA.png" alt=""></p>
+<p><img src="/2019/03/16/胶囊网络/1_LPpIdgcUQiskly8s6zvVbw.png" alt=""></p>
+<p>从下图可以对比传统的神经元和胶囊之间的区别：</p>
+<p><img src="/2019/03/16/胶囊网络/173550r5bxbmxtxelb0m6m.jpg" alt=""></p>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>第一步是矩阵转化，即由输入$u_i$的低层特征转换为$\hat{u}_j|i$的高层特征。</p>
+<p><img src="/2019/03/16/胶囊网络/173551mx156p5a1xvzmoxx.jpg" alt=""></p>
+<p>第二步是对高层特征，一个胶囊体的输出是一个向量，这使得它可以用一个强大的动态路由机制来确保胶囊的输出发送到上一层的父节点。最初，输出被路由输送到所有可能的父节点，但是被耦合系数缩减为总数为1。</p>
+<p><img src="/2019/03/16/胶囊网络/173555sgoohoggtvtj3pgf.jpg" alt=""></p>
+<p><img src="/2019/03/16/胶囊网络/173555lz8t8fsapu8zt8v8.jpg" alt=""></p>
+<p>我们用一个胶囊的输出向量的长度表示胶囊所代表的实体在当前的输入中存在的概率。因此，我们使用一个非线性的“挤压（squashing）”函数来确保短向量压缩到接近于0的长度，且长向量被压缩到略低于1的长度，我们让它进行识别学习来好好的利用这个非线性。</p>
+<blockquote>
+<p>胶囊的模长代表这个特征的概率。</p>
+</blockquote>
+<p><img src="/2019/03/16/胶囊网络/173556yki95il5ybg2y1kb.jpg" alt=""></p>
+<p><img src="/2019/03/16/胶囊网络/173556d3dn0rnrrm1zka7q.jpg" alt=""></p>
+<p>第三步，动态路由算法，伪代码如下：</p>
+<p><img src="/2019/03/16/胶囊网络/173556i2pglatlpr89wypd.jpg" alt=""></p>
+<p>为什么需要动态路由呢？因为计算$v_j$需要softmax($c_{ij}$)，而在$c_{ij}$的更新中又需要$v_j$，所以这需要一个动态规划的思想，其实这个过程与聚类也有一点思想上的接近[6]。</p>
+<p><img src="/2019/03/16/胶囊网络/p.jpg" alt=""></p>
+<p><strong>注意</strong>  在 SN 的情况下，这些权重是通过反向传播 (backward propagation) 确定的，但是在 VN 的情况下，这些权重是使用动态路由 (dynamic routing) 确定的，此时：</p>
+<p><img src="/2019/03/16/胶囊网络/v2-15e24ecdb56302dc9c17eba6ac7e8131_hd.jpg" alt=""></p>
+<h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p><img src="/2019/03/16/胶囊网络/p.img" alt=""></p>
+<p>第一个卷积层：输入：mnist：28x28、卷积核大小：9x9，卷积核个数：256，卷积核通道数：1，步长：1，输出：20x20x256</p>
+<p>第二个卷积层（primarycaps）：卷积核大小：9x9，卷积核通道数：32，卷积核个数：8，步长：2，输出：6x6x8x32</p>
+<p><strong>其中，连续两个卷积层采用动态路由替换池化操作</strong>。</p>
+<p>动态路由（Digitscaps）：输入：6x6x1x32（每个向量长度为8），即第 i 层共有 1152 个 Capsule 单元。而第三层 j 有 10 个标准的 Capsule 单元，每个 Capsule 的输出向量有 16 个元素。前一层的 Capsule 单元数是 1152 个，那么 $w_{ij}$ 将有 1152×10 个，且每一个 $w_{ij}$ 的维度为 8×16。</p>
+<p>当$u_i$ 与对应的 $w_{ij}$ 相乘得到预测向量后，我们会有 1152×10 个耦合系数 $c_{ij}$，对应加权求和后会得到 10 个 16×1 的输入向量。将该输入向量输入到「squashing」非线性函数中求得最终的输出向量 $v_j$，其中 $v_j$ 的长度就表示识别为某个类别的概率。</p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p><img src="/2019/03/16/胶囊网络/p1.img" alt=""></p>
+<p>其中 c 是分类类别，$T_c$ 为分类的指示函数（c 存在为 1，c 不存在为 0），$m^+$ 为上边界(0.9)，$m^-$ 为下边界(0.1)。此外，$v_c$ 的模即向量的 L2 距离。</p>
+<p><img src="/2019/03/16/胶囊网络/p3.img" alt=""></p>
+<p>我们在训练期间，除了特定的 Capsule 输出向量，我们需要蒙住其它所有的输出向量。然后，使用该输出向量重构手写数字图像。DigitCaps 层的输出向量被馈送至包含 3 个全连接层的解码器中，并以上图所示的方式构建。这一过程的损失函数通过计算 FC Sigmoid 层的输出像素点与原始图像像素点间的欧几里德距离而构建。Hinton 等人还按 0.0005 的比例缩小重构损失，以使它不会主导训练过程中的 Margin loss。 </p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>代码查看：<a href="https://github.com/naturomics/CapsNet-Tensorflow" target="_blank" rel="noopener">https://github.com/naturomics/CapsNet-Tensorflow</a></p>
+<p><a href="https://github.com/bojone/Capsule/blob/master/capsule_test.py" target="_blank" rel="noopener">https://github.com/bojone/Capsule/blob/master/capsule_test.py</a></p>
+<p>参考文献：</p>
+<p>[1]. <a href="http://m.sohu.com/a/202438769_465975" target="_blank" rel="noopener">先读懂CapsNet架构然后用TensorFlow实现，这应该是最详细的教程了</a></p>
+<p>[2]. <a href="http://www.dataguru.cn/article-12895-1.html" target="_blank" rel="noopener">胶囊(向量神经)网络</a></p>
+<p>[3]. <a href="https://arxiv.org/pdf/1710.09829v2.pdf" target="_blank" rel="noopener">Dynamic Routing Between Capsules</a></p>
+<p>[4]. <a href="https://arxiv.org/ftp/arxiv/papers/1805/1805.11195.pdf" target="_blank" rel="noopener">CapsNet comparative performance evaluation for image<br>classification</a></p>
+<p>[5]. <a href="https://arxiv.org/pdf/1804.00538.pdf" target="_blank" rel="noopener">Investigating Capsule Networks with Dynamic Routing for<br>Text Classification</a></p>
+<p>[6]. <a href="https://kexue.fm/archives/5112" target="_blank" rel="noopener"><a href="https://kexue.fm/archives/5112" target="_blank" rel="noopener">再来一顿贺岁宴：从K-Means到Capsule</a></a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/capsnet/" rel="tag"># capsnet</a>
+          
+            <a href="/tags/激活函数/" rel="tag"># 激活函数</a>
+          
+            <a href="/tags/cnn/" rel="tag"># cnn</a>
+          
+            <a href="/tags/池化/" rel="tag"># 池化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/15/ELMo/" rel="next" title="ELMo">
+                <i class="fa fa-chevron-left"></i> ELMo
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/18/GBDT/" rel="prev" title="GBDT">
+                GBDT <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">杀死庸碌的时间</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#卷积神经网络"><span class="nav-number">1.</span> <span class="nav-text">卷积神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#padding"><span class="nav-number">1.1.</span> <span class="nav-text">padding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积核"><span class="nav-number">1.2.</span> <span class="nav-text">卷积核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#池化"><span class="nav-number">1.3.</span> <span class="nav-text">池化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#经典卷积网络"><span class="nav-number">1.4.</span> <span class="nav-text">经典卷积网络</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#胶囊网络"><span class="nav-number">2.</span> <span class="nav-text">胶囊网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">2.1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#胶囊"><span class="nav-number">2.2.</span> <span class="nav-text">胶囊</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#胶囊含义"><span class="nav-number">2.2.1.</span> <span class="nav-text">胶囊含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作原理"><span class="nav-number">2.2.2.</span> <span class="nav-text">工作原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络结构"><span class="nav-number">2.3.</span> <span class="nav-text">网络结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数"><span class="nav-number">2.4.</span> <span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
