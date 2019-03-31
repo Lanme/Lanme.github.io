@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://lanme.github.io/2019/02/11/循环神经网络/v2-9f5125e0c99924d2febf25bafd019d6f_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/11/循环神经网络/v2-c0132f0b748eb031c696dae3019a2d82_hd.jpg">
 <meta property="og:image" content="https://lanme.github.io/2019/02/11/循环神经网络/v2-00861a152263cff8b94525d8b8945ee9_hd.jpg">
-<meta property="og:updated_time" content="2019-03-25T03:01:27.315Z">
+<meta property="og:updated_time" content="2019-03-29T05:28:23.678Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="循环神经网络">
 <meta name="twitter:description" content="RNN基本结构在前馈神经网络中，隐藏层的节点之间是无连接的，而简单循环网络增加了从隐藏层到隐藏层的反馈连接。 RNN本质上是一个递推函数，假设在时刻$t$，隐藏层的状态为$h_t$，此时隐藏层不仅和当前时刻的输入$x_t$有关，还和上一个时刻的隐层状态$h_{t-1}$ 有关。">
@@ -298,8 +298,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-25T11:01:27+08:00">
-                2019-03-25
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-29T13:28:23+08:00">
+                2019-03-29
               </time>
             
           </span>
@@ -392,6 +392,7 @@
 h_t = f(U x_t+ W h_{t-1}+ b)\\\\
 o_t=g(V*h_t)</script><p>$f(·)​$和$g(·)​$是非线性激活函数，通常为Tanh函数和Softmax函数。</p>
 <p><img src="/2019/02/11/循环神经网络/20190219151815.png" alt=""></p>
+<p>初始$h_0$：init_state = tf.zeros([batch_size, hidden_dim])</p>
 <p><strong>维度解释</strong></p>
 <ul>
 <li><p>input_dim：输入向量的维度，hidden_dim：隐藏层的维度，output_dim：输出向量的维度</p>
@@ -688,7 +689,7 @@ c_t = c_{t-1} +i_t *\tilde{c_t}</script><p>当输入序列的长度非常大时�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

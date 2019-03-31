@@ -88,7 +88,7 @@
 <meta property="og:description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://lanme.github.io/2019/03/18/GBDT/20190319002637.png">
-<meta property="og:updated_time" content="2019-03-19T06:37:21.801Z">
+<meta property="og:updated_time" content="2019-03-28T09:55:09.468Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GBDT">
 <meta name="twitter:description" content="背景知识CARTGBDT以CART（弱学习器）作为基分类器。在CART当中，采用基尼系数作为分裂标准，基尼系数是熵公式下的一阶展开[2]，衡量的是特征的不纯度，基尼系数越小越好，基尼的不纯度相当于熵所对应的混乱程度。 bagging &amp;amp; boostingBagging">
@@ -280,8 +280,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-03-19T14:37:21+08:00">
-                2019-03-19
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-28T17:55:09+08:00">
+                2019-03-28
               </time>
             
           </span>
@@ -435,7 +435,7 @@ y_i-F(x_i) = -\frac{\partial J}{\partial F(x_i)}</script><p><strong>平方损失
 <p><img src="/2019/03/18/GBDT/20190319002637.png" alt=""></p>
 <p>在前面的介绍中，我们知道采用Square loss为损失函数时，负梯度和残差相等。不过，<strong>当我们采用Absolute loss/Huber loss等其它损失函数时，负梯度只是<code>残差的近似</code>。</strong></p>
 <p>GBDT算法用梯度来取代残差。不过需要说明的是，<strong>这时新模型不再是 <code>F+h</code>（这个 h 是“残差”的拟合）了，而是 <code>F+ρh</code> （这个 h 是“负梯度”的拟合）。我们把<code>负梯度</code>称为<code>伪残差</code>(pseudo-residuals)。</strong></p>
-<p>为什么不直接使用残差，而使用负梯度呢（注：也有一些实现直接使用“残差”）？<strong>因为使用负梯度有时能够减小异常点的影响。</strong> 下面以Huber loss函数以例进行说明。</p>
+<p>为什么不直接使用残差，而使用负梯度呢（注：也有一些实现直接使用“残差”）？<font color="#FF1493">因为使用负梯度有时能够减小异常点的影响。</font> 下面以Huber loss函数以例进行说明。</p>
 <p>Huber loss (more robust to outliers)定义如下：</p>
 <script type="math/tex; mode=display">
 L(y,F) = \left\{
@@ -533,8 +533,8 @@ y_i-F(x_i) , \ |y-F|\leq \delta \\\\
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/25/《脑与意识》/" rel="prev" title="《脑与意识》">
-                《脑与意识》 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/29/依存句法/" rel="prev" title="依存句法">
+                依存句法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -634,7 +634,7 @@ y_i-F(x_i) , \ |y-F|\leq \delta \\\\
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
